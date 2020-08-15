@@ -1,8 +1,10 @@
-package com.example.ultramarket;
+package com.example.ultramarket.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.ultramarket.R;
 
 public class MainActivity extends AppCompatActivity {
 
