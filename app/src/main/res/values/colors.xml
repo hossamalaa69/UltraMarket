@@ -3,4 +3,13 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="transparent">#00ff0000</color>
+
+    <color name="purple1">#5113CB</color>
+    <color name="purple2">#7164c1</color>
+    <color name="pink1">#CF4F98</color>
+    <color name="pink2">#F606A1</color>
+    <color name="White">#FFFFFF</color>
+
 </resources>
