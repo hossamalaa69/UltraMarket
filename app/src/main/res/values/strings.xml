@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">UltraMarket</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="welcome_admin">Welcome Admin</string>
+    <string name="products">Products</string>
+    <string name="customers">Customers</string>
+    <string name="orders">Orders</string>
 </resources>

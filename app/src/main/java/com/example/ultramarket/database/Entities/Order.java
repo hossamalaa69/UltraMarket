@@ -6,7 +6,7 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import java.util.Date;
 
-@Entity(tableName = "cart",
+@Entity(tableName = "order",
         foreignKeys = @ForeignKey(entity = Cart.class,
                 parentColumns = "ID",
                 childColumns = "cart_ID",

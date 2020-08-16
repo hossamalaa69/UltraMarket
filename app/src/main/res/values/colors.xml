@@ -11,5 +11,6 @@
     <color name="pink1">#CF4F98</color>
     <color name="pink2">#F606A1</color>
     <color name="White">#FFFFFF</color>
+    <color name="semi_transparent">#20FFFFFF</color>
 
 </resources>
