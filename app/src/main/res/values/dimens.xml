@@ -11,4 +11,10 @@
     <dimen name="icon_margin">10dp</dimen>
     <dimen name="icon_padding">5dp</dimen>
     <dimen name="body_padding">5dp</dimen>
+    <dimen name="product_item_image_size">100dp</dimen>
+    <dimen name="product_item_image_padding">5dp</dimen>
+    <dimen name="product_item_image_margin">5dp</dimen>
+    <dimen name="user_product_item_price_padding">5dp</dimen>
+    <dimen name="product_item_name_margin">5dp</dimen>
+    <dimen name="product_item_price_margin">5dp</dimen>
 </resources>

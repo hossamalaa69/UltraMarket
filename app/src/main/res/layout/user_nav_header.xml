@@ -1,36 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:background="@android:color/white"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    android:gravity="bottom"
-    android:orientation="vertical">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/icon_margin"
-        android:contentDescription="@string/nav_header_image"
-        android:scaleType="fitXY"
-        android:src="@mipmap/ic_launcher_foreground" />
-
-    <TextView
-        style="@style/titleStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:paddingStart="@dimen/icon_margin"
-        android:paddingEnd="@dimen/icon_margin"
-        android:text="@string/ultra_market" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/icon_margin"
-        android:padding="@dimen/body_padding"
-        android:paddingEnd="@dimen/icon_margin"
-        android:text="@string/enjoy_shopping"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@android:color/white" />
-
-</LinearLayout>
+    android:layout_height="@dimen/nav_drawer_height"
+    android:contentDescription="@string/nav_header_image"
+    android:scaleType="fitCenter"
+    android:src="@drawable/logo" />
