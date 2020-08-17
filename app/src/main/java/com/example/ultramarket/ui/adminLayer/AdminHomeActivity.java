@@ -148,8 +148,8 @@ public class AdminHomeActivity extends AppCompatActivity {
         lineDataSet.setColor(Color.GRAY);
         lineDataSet.setHighLightColor(Color.RED);
         lineDataSet.setDrawValues(false);
-        lineDataSet.setCircleRadius(10f);
-        lineDataSet.setCircleColor(Color.YELLOW);
+        lineDataSet.setCircleRadius(4f);
+        lineDataSet.setCircleColor(Color.GRAY);
 
         //to make the smooth line as the graph is adrapt change so smooth curve
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
@@ -171,7 +171,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         legend.setEnabled(false);
 
         //to remove the cricle from the graph
-        lineDataSet.setDrawCircles(false);
+        lineDataSet.setDrawCircles(true);
 
         //lineDataSet.setColor(ColorTemplate.COLORFUL_COLORS);
 
