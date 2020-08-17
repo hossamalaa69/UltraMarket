@@ -1,5 +1,8 @@
 package com.example.ultramarket.adapters;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,8 +26,10 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Movi
 
     private static final String TAG = "CustomersAdapter";
     List<User> userList;
+    Context context;
 
-    public CustomersAdapter(List<User> userList) {
+    public CustomersAdapter(Context context, List<User> userList) {
+        this.context = context;
         this.userList = userList;
     }
 
@@ -64,7 +69,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Movi
         ConstraintLayout expandableLayout;
         TextView nameTextView, emailTextView, phoneTextView, ordersTextView, rateTextView;
         CircleImageView userImage;
-        ImageView expandIcon;
+        ImageView expandIcon, callIcon;
 
         RelativeLayout mainView;
 
@@ -79,7 +84,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Movi
 
             userImage = (CircleImageView) itemView.findViewById(R.id.user_image);
             expandIcon = (ImageView) itemView.findViewById(R.id.drop_button);
-
+            callIcon = (ImageView) itemView.findViewById(R.id.image_phone);
             expandableLayout = itemView.findViewById(R.id.expandableLayout);
             mainView = (RelativeLayout) itemView.findViewById(R.id.main_view);
 
@@ -92,6 +97,14 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Movi
                 }
             });
 
+            callIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(Intent.ACTION_DIAL);
+                    i.setData(Uri.parse("tel:"+phoneTextView.getText().toString()));
+                    context.startActivity(i);
+                }
+            });
         }
     }
 }

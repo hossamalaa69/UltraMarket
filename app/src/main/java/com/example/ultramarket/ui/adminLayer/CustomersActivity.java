@@ -45,7 +45,7 @@ public class CustomersActivity extends AppCompatActivity {
 
     private void setupRecycler(){
         recyclerView = findViewById(R.id.recyclerView);
-        CustomersAdapter customersAdapter = new CustomersAdapter(userList);
+        CustomersAdapter customersAdapter = new CustomersAdapter(this, userList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(customersAdapter);
     }
