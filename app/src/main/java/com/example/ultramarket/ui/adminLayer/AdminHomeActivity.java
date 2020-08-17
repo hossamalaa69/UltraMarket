@@ -1,8 +1,10 @@
-package com.example.ultramarket.ui;
+package com.example.ultramarket.ui.adminLayer;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -42,6 +44,23 @@ public class AdminHomeActivity extends AppCompatActivity {
         setupRecyclerView();
 
         initLineChartDownFill();
+
+        //holds listener for clicking the notification item
+        statsAdapter.setOnItemClickListener(new StatsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                //gets index of item pressed, then send it to its target
+                sendToTarget(position);
+            }
+        });
+    }
+
+    private void sendToTarget(int position){
+
+        if(position == 2){
+            Intent i = new Intent(this, CustomersActivity.class);
+            startActivity(i);
+        }
     }
 
     private void setupRecyclerView() {

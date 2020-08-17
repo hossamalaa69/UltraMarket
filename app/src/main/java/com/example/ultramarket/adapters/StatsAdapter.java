@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,12 +26,29 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.Holder> {
      */
     private Context mContext;
 
+    private OnItemClickListener mListener;
 
     public StatsAdapter(ArrayList<String> Subjects, ArrayList<Integer> ImagesResources, Context mContext) {
         this.mSubjects = Subjects;
         this.mImagesResources = ImagesResources;
         this.mContext = mContext;
     }
+
+    /**
+     * interface that handles clicking on items
+     */
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    /**
+     * handles item clicking
+     * @param listener object of listener
+     */
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
 
     @NonNull
     @Override
@@ -39,7 +57,7 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.Holder> {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rv_item_stats, parent, false);
 
-        return new Holder(view);
+        return new Holder(view, mListener);
     }
 
     /**
@@ -76,12 +94,25 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.Holder> {
          */
         ImageView image;
 
-        public Holder(@NonNull View itemView) {
+        public Holder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
             //gets text views that holds text
             subject = itemView.findViewById(R.id.txt_id);
             image = itemView.findViewById(R.id.image_id);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        //gets position of clicked item
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
 
         /**

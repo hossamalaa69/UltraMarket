@@ -33,6 +33,15 @@ public class User {
 
     private int rate;
 
+    @Ignore
+    private boolean isExpanded;
+
+    @Ignore
+    private int numOrders;
+
+    @Ignore
+    private int imageID;
+
     public User(long ID, String email, String name, String password,
                 double longitude, double latitude, String building,
                 int floor, String phone, String image, int rate) {
@@ -48,6 +57,18 @@ public class User {
         this.phone = phone;
         this.image = image;
         this.rate = rate;
+        this.isExpanded = false;
+    }
+
+    @Ignore
+    public User(String email, String name, String phone, int rate, int numOrders, int imageID) {
+        this.email = email;
+        this.name = name;
+        this.phone = phone;
+        this.rate = rate;
+        this.numOrders = numOrders;
+        this.imageID = imageID;
+        this.isExpanded = false;
     }
 
     @Ignore
@@ -142,4 +163,33 @@ public class User {
         this.image = image;
     }
 
+    @Ignore
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    @Ignore
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
+    }
+
+    @Ignore
+    public int getNumOrders() {
+        return numOrders;
+    }
+
+    @Ignore
+    public void setNumOrders(int numOrders) {
+        this.numOrders = numOrders;
+    }
+
+    @Ignore
+    public int getImageID() {
+        return imageID;
+    }
+
+    @Ignore
+    public void setImageID(int imageID) {
+        this.imageID = imageID;
+    }
 }
