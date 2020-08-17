@@ -5,4 +5,34 @@
     <string name="products">Products</string>
     <string name="customers">Customers</string>
     <string name="orders">Orders</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="shop_by_category">Shop By Category</string>
+    <string name="nav_header_image">nav_header_image</string>
+    <string name="shop_by_brands">Shop By Brands</string>
+    <string name="shop_by_featured">Featured Products</string>
+    <string name="shop_by_latest">Latest Products</string>
+    <string name="login">Login</string>
+    <string name="great_offers">Great Offers</string>
+    <string name="categories">Categories</string>
+    <string name="wishlist">Wish List</string>
+    <string name="track_product">Track Product</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="terms">Terms</string>
+    <string name="about_us">About Us</string>
+    <string name="open_nav_dawer">Open navigation drawer</string>
+    <string name="close_nav_drawer">Close navigation drawer</string>
+    <string name="logo_image">logo image</string>
+    <string name="ultra_market">Ultra Market</string>
+    <string name="app_icon">app icon</string>
+    <string name="enjoy_shopping">Enjoy your online shopping</string>
 </resources>

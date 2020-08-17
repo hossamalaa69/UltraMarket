@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".ui.userUi.Fragments.UserHomeFrag">
+
+        <TextView
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize"
+            android:layout_margin="@dimen/title_margin"
+            android:background="@color/colorPrimary"
+            android:text="@string/shop_by_latest" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/usr_rv_latest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/rv_padding" />
+
+        <TextView
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize"
+            android:layout_margin="@dimen/title_margin"
+            android:background="@color/colorPrimary"
+            android:text="@string/shop_by_category" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/usr_rv_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/rv_padding" />
+
+        <TextView
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize"
+            android:layout_margin="@dimen/title_margin"
+            android:background="@color/colorPrimary"
+            android:text="@string/shop_by_featured" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/usr_rv_featured"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/rv_padding" />
+
+        <TextView
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize"
+            android:layout_margin="@dimen/title_margin"
+            android:background="@color/colorPrimary"
+            android:text="@string/shop_by_brands" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/usr_rv_brands"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/rv_padding" />
+
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

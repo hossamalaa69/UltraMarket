@@ -3,10 +3,14 @@ package com.example.ultramarket.database.Entities;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Date;
 
-@Entity(tableName = "order",
+@Entity(tableName = "order",  indices = {@Index(value = "cart_ID")},
         foreignKeys = @ForeignKey(entity = Cart.class,
                 parentColumns = "ID",
                 childColumns = "cart_ID",
@@ -14,7 +18,8 @@ import java.util.Date;
 
 public class Order {
 
-    @PrimaryKey(autoGenerate = true)
+    @NotNull
+    @PrimaryKey
     private long ID;
 
     @ColumnInfo(defaultValue = "-1")

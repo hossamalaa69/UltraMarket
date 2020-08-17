@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group
+        android:checkableBehavior="single"
+        android:visible="true">
+        <item
+            android:id="@+id/user_drawer_login"
+            android:icon="@drawable/person_24"
+            android:title="@string/login" />
+        <item
+            android:id="@+id/user_drawer_offers"
+            android:icon="@drawable/star_24"
+            android:title="@string/great_offers" />
+        <item
+            android:id="@+id/user_drawer_category"
+            android:icon="@drawable/category_24"
+            android:title="@string/categories" />
+        <item
+            android:id="@+id/user_drawer_wishlist"
+            android:icon="@drawable/favorite_24"
+            android:title="@string/wishlist" />
+        <item
+            android:id="@+id/user_drawer_track"
+            android:icon="@drawable/motorcycle_24"
+            android:title="@string/track_product" />
+        <item
+            android:id="@+id/user_drawer_contact_us"
+            android:icon="@drawable/email_24"
+            android:title="@string/contact_us" />
+        <item
+            android:id="@+id/user_drawer_terms"
+            android:icon="@drawable/terms_24"
+            android:title="@string/terms" />
+        <item
+            android:id="@+id/user_drawer_about_us"
+
+            android:icon="@drawable/ic_baseline_info_24"
+            android:title="@string/about_us" />
+
+    </group>
+</menu>

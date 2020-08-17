@@ -44,22 +44,22 @@ public class AdminHomeActivity extends AppCompatActivity {
         initLineChartDownFill();
     }
 
-    private void setupRecyclerView(){
+    private void setupRecyclerView() {
 
         fillData();
 
         recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2 ));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         //initializes adapter with the list
-        statsAdapter = new StatsAdapter(descriptions, images,this);
+        statsAdapter = new StatsAdapter(descriptions, images, this);
         //sets adapter for the recycler view
         recyclerView.setAdapter(statsAdapter);
 
 
     }
 
-    private void fillData(){
+    private void fillData() {
         images = new ArrayList<>();
         descriptions = new ArrayList<>();
 

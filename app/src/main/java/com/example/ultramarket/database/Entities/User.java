@@ -4,10 +4,13 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import org.jetbrains.annotations.NotNull;
+
 @Entity(tableName = "user")
 public class User {
 
-    @PrimaryKey(autoGenerate = true)
+    @NotNull
+    @PrimaryKey
     private long ID;
 
     private String email;

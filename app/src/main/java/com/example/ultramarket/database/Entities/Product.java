@@ -2,9 +2,12 @@ package com.example.ultramarket.database.Entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "product",
+import org.jetbrains.annotations.NotNull;
+
+@Entity(tableName = "product", indices = {@Index(value = "category_ID"),@Index(value = "brand_ID")},
         foreignKeys = {@ForeignKey(entity = Category.class,
                         parentColumns = "ID",
                         childColumns = "category_ID",
@@ -14,10 +17,10 @@ import androidx.room.PrimaryKey;
                         childColumns = "brand_ID",
                         onDelete = ForeignKey.CASCADE)
                       })
-
 public class Product {
 
-    @PrimaryKey(autoGenerate = true)
+    @NotNull
+    @PrimaryKey
     private long ID;
 
     private String name;

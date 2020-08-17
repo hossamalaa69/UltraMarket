@@ -3,10 +3,13 @@ package com.example.ultramarket.database.Entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import org.jetbrains.annotations.NotNull;
+
 @Entity(tableName = "category")
 public class Category {
 
-    @PrimaryKey(autoGenerate = true)
+    @NotNull
+    @PrimaryKey
     private long ID;
 
     private String name;

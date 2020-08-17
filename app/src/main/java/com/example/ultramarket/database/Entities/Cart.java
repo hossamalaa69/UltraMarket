@@ -2,11 +2,14 @@ package com.example.ultramarket.database.Entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
-@Entity(tableName = "cart",
+@Entity(tableName = "cart", indices = {@Index(value = "user_ID"), @Index(value = "product_ID")},
         foreignKeys = {@ForeignKey(entity = User.class,
                         parentColumns = "ID",
                         childColumns = "user_ID",
@@ -16,10 +19,10 @@ import java.util.Date;
                         childColumns = "product_ID",
                         onDelete = ForeignKey.CASCADE)
                       })
-
 public class Cart {
 
-    @PrimaryKey(autoGenerate = true)
+    @NotNull
+    @PrimaryKey
     private long ID;
 
     private long user_ID;
