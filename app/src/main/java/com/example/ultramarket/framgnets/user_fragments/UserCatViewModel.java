@@ -1,4 +1,4 @@
-package com.example.ultramarket.ui.userUi.Fragments;
+package com.example.ultramarket.framgnets.user_fragments;
 
 import android.app.Application;
 
@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.ultramarket.database.AppDatabase;
-import com.example.ultramarket.database.DAOs.CatDao;
 import com.example.ultramarket.database.Entities.Category;
 import com.example.ultramarket.database.Repositories.CategoryRepository;
 

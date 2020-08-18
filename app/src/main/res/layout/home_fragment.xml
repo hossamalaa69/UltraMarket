@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context=".ui.userUi.Fragments.UserHomeFrag">
+        tools:context=".framgnets.user_fragments.UserHomeFrag">
 
         <TextView
             style="@style/titleStyle"

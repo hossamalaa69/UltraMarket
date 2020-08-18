@@ -1,4 +1,4 @@
-package com.example.ultramarket.ui.userUi.Fragments;
+package com.example.ultramarket.framgnets.user_fragments;
 
 import androidx.lifecycle.ViewModel;
 

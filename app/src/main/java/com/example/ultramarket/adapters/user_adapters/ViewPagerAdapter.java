@@ -1,4 +1,4 @@
-package com.example.ultramarket.ui.userUi.Adapters;
+package com.example.ultramarket.adapters.user_adapters;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -6,11 +6,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.ultramarket.ui.userUi.Fragments.UserCatFrag;
-import com.example.ultramarket.ui.userUi.Fragments.UserHomeFrag;
-import com.example.ultramarket.ui.userUi.Fragments.UserOffersFrag;
-import com.example.ultramarket.ui.userUi.Fragments.UserOrdersFrag;
-import com.example.ultramarket.ui.userUi.Fragments.UserWishlistFrag;
+import com.example.ultramarket.framgnets.user_fragments.UserCatFrag;
+import com.example.ultramarket.framgnets.user_fragments.UserHomeFrag;
+import com.example.ultramarket.framgnets.user_fragments.UserOffersFrag;
+import com.example.ultramarket.framgnets.user_fragments.UserOrdersFrag;
+import com.example.ultramarket.framgnets.user_fragments.UserWishlistFrag;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     public static final int FRAGS_COUNT = 5;

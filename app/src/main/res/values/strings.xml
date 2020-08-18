@@ -37,4 +37,7 @@
     <string name="app_icon">app icon</string>
     <string name="enjoy_shopping">Enjoy your online shopping</string>
     <string name="product_image">product image</string>
+    <string name="wishlist_icon">wishlist icon</string>
+    <string name="please_login_to_add_items_to_wishlist">Please login to add items to wishlist</string>
+    <string name="add">Add</string>
 </resources>

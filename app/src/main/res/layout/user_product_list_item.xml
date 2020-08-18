@@ -33,33 +33,6 @@
         android:textColor="@android:color/black"
         tools:text="Book" />
 
-    <LinearLayout
-        android:id="@+id/user_product_item_price_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/product_item_price_margin"
-        android:layout_marginRight="@dimen/product_item_price_margin"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/user_product_item_new_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/user_product_item_price_padding"
-            android:textColor="@android:color/holo_red_light"
-            android:textStyle="bold"
-            tools:text="167$" />
-
-        <TextView
-            android:id="@+id/user_product_item_old_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/user_product_item_price_padding"
-            android:textColor="@android:color/darker_gray"
-            android:textStyle=""
-            tools:text="167$" />
-    </LinearLayout>
-
+   <include
+       layout="@layout/price_layout"/>
 </LinearLayout>

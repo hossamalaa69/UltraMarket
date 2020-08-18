@@ -1,10 +1,9 @@
-package com.example.ultramarket.ui.userUi.Adapters;
+package com.example.ultramarket.adapters.user_adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,25 +21,25 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CategoryAdapterCatFrag extends RecyclerView.Adapter<CategoryAdapterCatFrag.ProductViewHolder> {
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ProductViewHolder> {
 
     private Context mContext;
     private List<Category> categoryList;
 
-    public CategoryAdapterCatFrag(Context mContext, ArrayList<Category> categoryList) {
+    public CategoriesAdapter(Context mContext, ArrayList<Category> categoryList) {
         this.mContext = mContext;
         this.categoryList = categoryList;
     }
 
     @NonNull
     @Override
-    public CategoryAdapterCatFrag.ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.user_product_cat_frag_list_item, parent, false);
-        return new CategoryAdapterCatFrag.ProductViewHolder(view);
+    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.user_product_list_item, parent, false);
+        return new ProductViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryAdapterCatFrag.ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         holder.bind(position);
     }
 

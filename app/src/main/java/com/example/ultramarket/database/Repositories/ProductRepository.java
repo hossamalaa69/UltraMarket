@@ -16,6 +16,7 @@ public class ProductRepository {
     private LiveData<List<Product>> mProdList;
     private ProdDao prodDao;
     private LiveData<List<Product>> mFeaturedProdList;
+    private LiveData<List<Product>> mProdWithOffersList;
 
     public ProductRepository(Application application) {
         AppDatabase db = AppDatabase.getInstance(application.getApplicationContext());
@@ -61,6 +62,7 @@ public class ProductRepository {
     public LiveData<List<Product>> loadFeaturedProdList() {
         return mFeaturedProdList;
     }
+
 
     //----------------------------------------------------------------------------------------------
 }

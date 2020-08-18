@@ -13,7 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.ultramarket.R;
-import com.example.ultramarket.ui.userUi.Adapters.ViewPagerAdapter;
+import com.example.ultramarket.adapters.user_adapters.ViewPagerAdapter;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 

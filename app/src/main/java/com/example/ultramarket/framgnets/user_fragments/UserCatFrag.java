@@ -1,6 +1,5 @@
-package com.example.ultramarket.ui.userUi.Fragments;
+package com.example.ultramarket.framgnets.user_fragments;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,19 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
-import com.example.ultramarket.database.Entities.Category;
-import com.example.ultramarket.ui.userUi.Adapters.CategoriesAdapter;
-import com.example.ultramarket.ui.userUi.Adapters.CategoryAdapterCatFrag;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
+import com.example.ultramarket.adapters.user_adapters.CategoryAdapterCatFrag;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

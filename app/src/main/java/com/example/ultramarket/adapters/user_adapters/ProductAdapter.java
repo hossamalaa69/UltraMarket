@@ -1,4 +1,4 @@
-package com.example.ultramarket.ui.userUi.Adapters;
+package com.example.ultramarket.adapters.user_adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

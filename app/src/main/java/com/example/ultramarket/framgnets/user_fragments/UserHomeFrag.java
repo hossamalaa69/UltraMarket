@@ -1,4 +1,4 @@
-package com.example.ultramarket.ui.userUi.Fragments;
+package com.example.ultramarket.framgnets.user_fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,11 +18,10 @@ import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Category;
 import com.example.ultramarket.database.Entities.Product;
-import com.example.ultramarket.ui.userUi.Adapters.BrandAdapter;
-import com.example.ultramarket.ui.userUi.Adapters.CategoriesAdapter;
-import com.example.ultramarket.ui.userUi.Adapters.ProductAdapter;
+import com.example.ultramarket.adapters.user_adapters.BrandAdapter;
+import com.example.ultramarket.adapters.user_adapters.CategoriesAdapter;
+import com.example.ultramarket.adapters.user_adapters.ProductAdapter;
 
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
