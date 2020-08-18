@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Category;
 import com.example.ultramarket.ui.userUi.Adapters.CategoriesAdapter;
+import com.example.ultramarket.ui.userUi.Adapters.CategoryAdapterCatFrag;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
 public class UserCatFrag extends Fragment {
 
     public static final CharSequence TITLE = "Categories";
-    private CategoriesAdapter categoriesAdapter;
+    private CategoryAdapterCatFrag categoriesAdapter;
     private RecyclerView.LayoutManager catLayoutManager;
     @BindView(R.id.usr_rv_featured_cat_frag)
     RecyclerView rvCategories;
@@ -43,7 +44,7 @@ public class UserCatFrag extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_cat_fragment, container, false);
         ButterKnife.bind(this, view);
-        categoriesAdapter = new CategoriesAdapter(getContext(), null);
+        categoriesAdapter = new CategoryAdapterCatFrag(getContext(), null);
         catLayoutManager = new GridLayoutManager(getContext(), 2);
         rvCategories.setLayoutManager(catLayoutManager);
         rvCategories.setAdapter(categoriesAdapter);

@@ -66,7 +66,7 @@ public class UserHomeFrag extends Fragment {
         rvLatestProd.setAdapter(prodAdapter);
         prodLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false);
         rvLatestProd.setLayoutManager(prodLayoutManager);
-        rvLatestProd.setHasFixedSize(true); 
+        rvLatestProd.setHasFixedSize(true);
         //  featured product views
         featuredProdAdapter = new ProductAdapter(getContext(), null);
         rvFeaturedProd.setAdapter(featuredProdAdapter);
