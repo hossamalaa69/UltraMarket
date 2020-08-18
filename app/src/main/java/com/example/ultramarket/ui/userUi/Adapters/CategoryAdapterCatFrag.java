@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
-import com.example.ultramarket.database.Entities.Product;
+import com.example.ultramarket.database.Entities.Category;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -21,49 +22,44 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+public class CategoryAdapterCatFrag extends RecyclerView.Adapter<CategoryAdapterCatFrag.ProductViewHolder> {
 
     private Context mContext;
-    private List<Product> productList;
+    private List<Category> categoryList;
 
-    public ProductAdapter(Context mContext, List<Product> productList) {
+    public CategoryAdapterCatFrag(Context mContext, ArrayList<Category> categoryList) {
         this.mContext = mContext;
-        this.productList = productList;
+        this.categoryList = categoryList;
     }
 
     @NonNull
     @Override
-    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.user_product_list_item, parent, false);
-        return new ProductViewHolder(view);
+    public CategoryAdapterCatFrag.ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.user_product_cat_frag_list_item, parent, false);
+        return new CategoryAdapterCatFrag.ProductViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CategoryAdapterCatFrag.ProductViewHolder holder, int position) {
         holder.bind(position);
     }
 
     @Override
     public int getItemCount() {
-        if (productList == null) return 0;
-        return productList.size();
+        if (categoryList == null) return 0;
+        return categoryList.size();
     }
 
-    public void setProductList(ArrayList<Product> productList) {
-        this.productList = productList;
-        notifyDataSetChanged();
-    }
-
-    public void setProdList(List<Product> products) {
-        productList = products;
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
         notifyDataSetChanged();
     }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.user_product_item_image)
-        ImageView prodImage;
+        ImageView catImage;
         @BindView(R.id.user_product_item_name)
-        TextView prodName;
+        TextView catName;
         @BindView(R.id.user_product_item_price_layout)
         LinearLayout priceLayout;
 
@@ -74,9 +70,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
 
         public void bind(int position) {
-            if (productList.get(position).getImage() != null)
-                Picasso.get().load(productList.get(position).getImage()).into(prodImage);
-            prodName.setText(productList.get(position).getName());
+            if (categoryList.get(position).getImage() != null)
+                Picasso.get().load(categoryList.get(position).getImage()).into(catImage);
+            catName.setText(categoryList.get(position).getName());
         }
     }
 }

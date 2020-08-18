@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.userUi.Fragments.UserCatFrag">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
-
-</FrameLayout>
+    android:orientation="vertical"
+    android:layout_height="match_parent" >
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/usr_rv_featured_cat_frag"
+    android:layout_width="wrap_content"
+    android:padding="@dimen/rv_padding"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content" />
+</LinearLayout>

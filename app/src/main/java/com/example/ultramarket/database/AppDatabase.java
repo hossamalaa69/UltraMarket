@@ -8,6 +8,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.example.ultramarket.database.DAOs.BrandDao;
+import com.example.ultramarket.database.DAOs.CatDao;
+import com.example.ultramarket.database.DAOs.ProdDao;
 import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Cart;
 import com.example.ultramarket.database.Entities.Category;
@@ -16,7 +19,7 @@ import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.database.Entities.User;
 
 @Database(entities = {Brand.class, Cart.class, Category.class, Order.class, Product.class, User.class}
-            , version = 1, exportSchema = false)
+            , version = 2, exportSchema = false)
 
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
@@ -26,12 +29,14 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "ultra_market";
     private static AppDatabase sInstance;
 
+
     public static AppDatabase getInstance(Context context) {
         if (sInstance == null) {
             synchronized (LOCK) {
                 Log.d(LOG_TAG, "Creating new database instance");
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class, AppDatabase.DATABASE_NAME)
+                        .fallbackToDestructiveMigration()
                         .build();
             }
         }
@@ -39,7 +44,10 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
-    public abstract UltraDao taskDao();
+   // public abstract UltraDao taskDao();
+    public abstract CatDao catDao();
+    public abstract ProdDao prodDao();
+    public abstract BrandDao brandDao();
 
 }
 

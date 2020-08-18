@@ -12,65 +12,66 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
-import com.example.ultramarket.database.Entities.Brand;
+import com.example.ultramarket.database.Entities.Category;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHolder> {
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ProductViewHolder> {
 
     private Context mContext;
-    private List<Brand> brandList;
+    private List<Category> categoryList;
 
-    public BrandAdapter(Context mContext, List<Brand> brandList) {
+    public CategoriesAdapter(Context mContext, ArrayList<Category> categoryList) {
         this.mContext = mContext;
-        this.brandList = brandList;
+        this.categoryList = categoryList;
     }
 
     @NonNull
     @Override
-    public BrandViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.user_product_list_item, parent, false);
-        return new BrandViewHolder(view);
+        return new ProductViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BrandViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         holder.bind(position);
     }
 
     @Override
     public int getItemCount() {
-        if (brandList == null) return 0;
-        return brandList.size();
+        if (categoryList == null) return 0;
+        return categoryList.size();
     }
 
-    public void setBrandList(List<Brand> brands) {
-        brandList = brands;
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
         notifyDataSetChanged();
     }
 
-    public class BrandViewHolder extends RecyclerView.ViewHolder {
+    public class ProductViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.user_product_item_image)
-        ImageView brandImage;
+        ImageView catImage;
         @BindView(R.id.user_product_item_name)
-        TextView brandName;
+        TextView catName;
         @BindView(R.id.user_product_item_price_layout)
         LinearLayout priceLayout;
 
-        public BrandViewHolder(@NonNull View itemView) {
+        public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             priceLayout.setVisibility(View.GONE);
         }
 
         public void bind(int position) {
-            if (brandList.get(position).getImage() != null)
-                Picasso.get().load(brandList.get(position).getImage()).into(brandImage);
-            brandName.setVisibility(View.GONE);
+            if (categoryList.get(position).getImage() != null)
+                Picasso.get().load(categoryList.get(position).getImage()).into(catImage);
+            catName.setText(categoryList.get(position).getName());
         }
     }
 }

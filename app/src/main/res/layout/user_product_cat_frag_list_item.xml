@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/user_product_item_image"
-        android:layout_width="@dimen/product_item_image_size"
-        android:layout_height="@dimen/product_item_image_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/product_item_image_margin"
         android:layout_marginTop="@dimen/product_item_image_margin"
         android:layout_marginRight="@dimen/product_item_image_margin"

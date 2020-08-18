@@ -7,16 +7,18 @@ import androidx.room.PrimaryKey;
 
 import org.jetbrains.annotations.NotNull;
 
-@Entity(tableName = "product", indices = {@Index(value = "category_ID"),@Index(value = "brand_ID")},
+import java.util.Date;
+
+@Entity(tableName = "product", indices = {@Index(value = "category_ID"), @Index(value = "brand_ID")},
         foreignKeys = {@ForeignKey(entity = Category.class,
-                        parentColumns = "ID",
-                        childColumns = "category_ID",
-                        onDelete = ForeignKey.CASCADE),
-                        @ForeignKey(entity = Brand.class,
+                parentColumns = "ID",
+                childColumns = "category_ID",
+                onDelete = ForeignKey.CASCADE),
+                @ForeignKey(entity = Brand.class,
                         parentColumns = "ID",
                         childColumns = "brand_ID",
                         onDelete = ForeignKey.CASCADE)
-                      })
+        })
 public class Product {
 
     @NotNull
@@ -42,10 +44,19 @@ public class Product {
     private long brand_ID;
 
     private long category_ID;
+    private Date launch_date;
+
+    public void setLaunch_date(Date launch_date) {
+        this.launch_date = launch_date;
+    }
+
+    public Date getLaunch_date() {
+        return launch_date;
+    }
 
     public Product(long ID, String name, String image, String unit,
                    double price, int count, String description,
-                   boolean hasOffer, double percentage, long brand_ID, long category_ID) {
+                   boolean hasOffer, double percentage, long brand_ID, long category_ID, Date launch_date) {
         this.ID = ID;
         this.name = name;
         this.image = image;
@@ -57,6 +68,7 @@ public class Product {
         this.percentage = percentage;
         this.brand_ID = brand_ID;
         this.category_ID = category_ID;
+        this.launch_date = launch_date;
     }
 
     public long getID() {
