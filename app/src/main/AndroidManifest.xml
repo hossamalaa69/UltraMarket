@@ -30,7 +30,6 @@
         <activity
             android:name=".ui.adminLayer.AdminHomeActivity"
             android:label="Home">
-
         </activity>
     </application>
 

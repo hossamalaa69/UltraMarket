@@ -69,7 +69,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Movi
         ConstraintLayout expandableLayout;
         TextView nameTextView, emailTextView, phoneTextView, ordersTextView, rateTextView;
         CircleImageView userImage;
-        ImageView expandIcon, callIcon;
+        ImageView expandIcon, callIcon, mailIcon;
 
         RelativeLayout mainView;
 
@@ -85,6 +85,8 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Movi
             userImage = (CircleImageView) itemView.findViewById(R.id.user_image);
             expandIcon = (ImageView) itemView.findViewById(R.id.drop_button);
             callIcon = (ImageView) itemView.findViewById(R.id.image_phone);
+            mailIcon = (ImageView) itemView.findViewById(R.id.image_email);
+
             expandableLayout = itemView.findViewById(R.id.expandableLayout);
             mainView = (RelativeLayout) itemView.findViewById(R.id.main_view);
 
@@ -103,6 +105,17 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Movi
                     Intent i = new Intent(Intent.ACTION_DIAL);
                     i.setData(Uri.parse("tel:"+phoneTextView.getText().toString()));
                     context.startActivity(i);
+                }
+            });
+
+            mailIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(Uri.parse("mailto:"+emailTextView.getText().toString()));
+                    if (intent.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(intent);
+                    }
                 }
             });
         }
