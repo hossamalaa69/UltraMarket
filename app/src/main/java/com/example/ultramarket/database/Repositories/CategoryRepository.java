@@ -7,7 +7,10 @@ import androidx.lifecycle.LiveData;
 import com.example.ultramarket.database.AppDatabase;
 import com.example.ultramarket.database.DAOs.CatDao;
 import com.example.ultramarket.database.Entities.Category;
+import com.example.ultramarket.database.firebase.realtime_database.BrandFbDao;
+import com.example.ultramarket.database.firebase.realtime_database.CategoryFbDao;
 import com.example.ultramarket.helpers.AppExecutors;
+import com.example.ultramarket.helpers.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +19,12 @@ public class CategoryRepository {
     private LiveData<List<Category>> categoryList;
     private CatDao catDao;
     public CategoryRepository(Application application) {
-        AppDatabase db = AppDatabase.getInstance(application.getApplicationContext());
-        catDao = db.catDao();
+        if (Utils.LOCAL) {
+            AppDatabase db = AppDatabase.getInstance(application.getApplicationContext());
+            catDao = db.catDao();
+        } else {
+            catDao = CategoryFbDao.getsInstance(application.getApplicationContext());
+        }
         categoryList = catDao.loadAllCategories();
     }
     // user categories DAO

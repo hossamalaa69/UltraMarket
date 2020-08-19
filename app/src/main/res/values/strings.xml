@@ -51,4 +51,7 @@
     <string name="facebook_login_protocol_scheme" translatable="false">fbcom.example.ultramarket</string>
     <string name="you_saved_money">You Saved %1$.2f $</string>
     <string name="price">%1$.2f $</string>
+    <string name="try_again">try again</string>
+    <string name="show_more">Show More</string>
+    <string name="show_less">show less</string>
 </resources>

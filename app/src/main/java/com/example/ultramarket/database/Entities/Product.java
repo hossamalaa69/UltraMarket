@@ -2,6 +2,7 @@ package com.example.ultramarket.database.Entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -19,7 +20,7 @@ import java.util.Date;
                         childColumns = "brand_ID",
                         onDelete = ForeignKey.CASCADE)
         })
-public class Product {
+public class Product implements Comparable<Product>{
 
     @NotNull
     @PrimaryKey
@@ -54,6 +55,10 @@ public class Product {
         return launch_date;
     }
 
+    @Ignore
+    public Product() {
+    }
+
     public Product(long ID, String name, String image, String unit,
                    double price, int count, String description,
                    boolean hasOffer, double percentage, long brand_ID, long category_ID, Date launch_date) {
@@ -69,6 +74,11 @@ public class Product {
         this.brand_ID = brand_ID;
         this.category_ID = category_ID;
         this.launch_date = launch_date;
+    }
+
+    @Override
+    public int compareTo(Product product) {
+        return  this.getLaunch_date().compareTo(product.getLaunch_date());
     }
 
     public long getID() {

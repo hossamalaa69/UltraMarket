@@ -27,4 +27,6 @@
     <dimen name="user_orders_login_paddding">10dp</dimen>
     <dimen name="user_drawer_icon_image_size">40dp</dimen>
     <dimen name="nav_view_image_padding">10dp</dimen>
+    <dimen name="title_padding">5dp</dimen>
+    <dimen name="category_rv_height">270dp</dimen>
 </resources>

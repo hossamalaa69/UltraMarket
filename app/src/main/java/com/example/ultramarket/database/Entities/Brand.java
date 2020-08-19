@@ -1,6 +1,7 @@
 package com.example.ultramarket.database.Entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,10 @@ public class Brand {
         this.ID = ID;
         this.name = name;
         this.image = image;
+    }
+
+    @Ignore
+    public Brand() {
     }
 
     public long getID() {

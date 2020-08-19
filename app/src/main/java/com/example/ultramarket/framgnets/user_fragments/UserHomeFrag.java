@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,9 +27,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class UserHomeFrag extends Fragment {
     public static final CharSequence TITLE = "Home";
+    public static boolean catRvExtended = false;
     @BindView(R.id.usr_rv_category)
     RecyclerView rvCategories;
     @BindView(R.id.usr_rv_latest)
@@ -51,6 +54,25 @@ public class UserHomeFrag extends Fragment {
         return new UserHomeFrag();
     }
 
+    @BindView(R.id.user_home_show_more)
+    Button showMoreBtn;
+
+    @OnClick(R.id.user_home_show_more)
+    void extendCatRv(View view) {
+        if (catRvExtended) {
+            ViewGroup.LayoutParams params = rvCategories.getLayoutParams();
+            params.height = 300;
+            showMoreBtn.setText(R.string.show_more);
+            rvCategories.setLayoutParams(params);
+        } else {
+            ViewGroup.LayoutParams params = rvCategories.getLayoutParams();
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            rvCategories.setLayoutParams(params);
+            showMoreBtn.setText(R.string.show_less);
+        }
+        catRvExtended = !catRvExtended;
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -60,6 +82,7 @@ public class UserHomeFrag extends Fragment {
         rvCategories.setAdapter(catAdapter);
         catLayoutManager = new GridLayoutManager(getContext(), 3);
         rvCategories.setLayoutManager(catLayoutManager);
+        rvCategories.setNestedScrollingEnabled(false);
         // product views
         prodAdapter = new ProductAdapter(getContext(), null);
         rvLatestProd.setAdapter(prodAdapter);
@@ -88,9 +111,9 @@ public class UserHomeFrag extends Fragment {
         super.onActivityCreated(savedInstanceState);
         setObservers();
 
-      /*  for (int i = 1; i < 10; i++)
+    /*  for (int i = 1; i < 10; i++)
             mViewModel.insertBrand(new Brand(i, "brand", null));
-        for (int i = 1; i < 10; i++)
+         for (int i = 1; i < 10; i++)
             mViewModel.insertCategory(new Category(i, "food", null));
          for (int i = 1; i < 5; i++)
             mViewModel.insertProd(new Product(i, "featured prod" + i, null, "1 kg", 123, 14, "hahah", true, 0.5, i, i , new Date()));

@@ -44,7 +44,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
-   // public abstract UltraDao taskDao();
+   //  abstract UltraDao Daos
     public abstract CatDao catDao();
     public abstract ProdDao prodDao();
     public abstract BrandDao brandDao();

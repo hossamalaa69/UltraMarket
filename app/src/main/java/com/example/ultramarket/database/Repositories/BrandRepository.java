@@ -7,7 +7,9 @@ import androidx.lifecycle.LiveData;
 import com.example.ultramarket.database.AppDatabase;
 import com.example.ultramarket.database.DAOs.BrandDao;
 import com.example.ultramarket.database.Entities.Brand;
+import com.example.ultramarket.database.firebase.realtime_database.BrandFbDao;
 import com.example.ultramarket.helpers.AppExecutors;
+import com.example.ultramarket.helpers.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +19,12 @@ public class BrandRepository {
     private BrandDao brandDao;
 
     public BrandRepository(Application application) {
-        AppDatabase db = AppDatabase.getInstance(application.getApplicationContext());
-        brandDao = db.brandDao();
+        if (Utils.LOCAL) {
+            AppDatabase db = AppDatabase.getInstance(application.getApplicationContext());
+            brandDao = db.brandDao();
+        } else {
+            brandDao = BrandFbDao.getsInstance(application.getApplicationContext());
+        }
         mBrandList = brandDao.loadAllBrands();
     }
 
@@ -33,6 +39,7 @@ public class BrandRepository {
     }
 
     public void insertBrandList(ArrayList<Brand> brands) {
+
     }
 
     public void updateBrand(Brand brand) {

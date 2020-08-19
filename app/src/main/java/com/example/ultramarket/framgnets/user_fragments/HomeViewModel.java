@@ -12,8 +12,11 @@ import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.database.Repositories.BrandRepository;
 import com.example.ultramarket.database.Repositories.CategoryRepository;
 import com.example.ultramarket.database.Repositories.ProductRepository;
+import com.example.ultramarket.helpers.Utils;
 
 import java.util.List;
+
+import okhttp3.internal.Util;
 
 public class HomeViewModel extends AndroidViewModel {
     private LiveData<List<Product>> mLatestProdList;

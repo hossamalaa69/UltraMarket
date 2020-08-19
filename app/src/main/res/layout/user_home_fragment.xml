@@ -14,9 +14,10 @@
         <TextView
             style="@style/titleStyle"
             android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/title_margin"
             android:background="@color/colorPrimary"
+            android:padding="@dimen/title_padding"
             android:text="@string/shop_by_latest" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -29,23 +30,35 @@
         <TextView
             style="@style/titleStyle"
             android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/title_margin"
             android:background="@color/colorPrimary"
+            android:padding="@dimen/title_padding"
             android:text="@string/shop_by_category" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/usr_rv_category"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/category_rv_height"
             android:padding="@dimen/rv_padding" />
+
+        <Button
+            android:id="@+id/user_home_show_more"
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/title_margin"
+            android:background="@color/colorPrimary"
+            android:padding="@dimen/title_padding"
+            android:text="@string/show_more" />
 
         <TextView
             style="@style/titleStyle"
             android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/title_margin"
             android:background="@color/colorPrimary"
+            android:padding="@dimen/title_padding"
             android:text="@string/shop_by_featured" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -58,9 +71,10 @@
         <TextView
             style="@style/titleStyle"
             android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/title_margin"
             android:background="@color/colorPrimary"
+            android:padding="@dimen/title_padding"
             android:text="@string/shop_by_brands" />
 
         <androidx.recyclerview.widget.RecyclerView

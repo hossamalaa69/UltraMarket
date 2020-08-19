@@ -7,7 +7,10 @@ import androidx.lifecycle.LiveData;
 import com.example.ultramarket.database.AppDatabase;
 import com.example.ultramarket.database.DAOs.ProdDao;
 import com.example.ultramarket.database.Entities.Product;
+import com.example.ultramarket.database.firebase.realtime_database.CategoryFbDao;
+import com.example.ultramarket.database.firebase.realtime_database.ProductFbDao;
 import com.example.ultramarket.helpers.AppExecutors;
+import com.example.ultramarket.helpers.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +19,14 @@ public class ProductRepository {
     private LiveData<List<Product>> mProdList;
     private ProdDao prodDao;
     private LiveData<List<Product>> mFeaturedProdList;
-    private LiveData<List<Product>> mProdWithOffersList;
 
     public ProductRepository(Application application) {
-        AppDatabase db = AppDatabase.getInstance(application.getApplicationContext());
-        prodDao = db.prodDao();
+        if (Utils.LOCAL) {
+            AppDatabase db = AppDatabase.getInstance(application.getApplicationContext());
+            prodDao = db.prodDao();
+        } else {
+            prodDao = ProductFbDao.getsInstance(application.getApplicationContext());
+        }
         mProdList = prodDao.loadAllLatestProducts();
         mFeaturedProdList = prodDao.loadFeaturedProducts();
     }
