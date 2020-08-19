@@ -5,9 +5,53 @@
     android:layout_height="match_parent"
     tools:context=".framgnets.user_fragments.UserOrdersFrag">
 
-    <TextView
+
+    <LinearLayout
+        android:id="@+id/user_orders_frag_login_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/user_orders_login_paddding">
+
+        <ImageView
+            android:layout_width="@dimen/user_icon_image_size"
+            android:layout_height="80dp"
+            android:contentDescription="@string/orders_icon"
+            android:src="@drawable/motorcycle_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/title_margin"
+            android:gravity="center_horizontal"
+            android:text="@string/track_ur_order"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/title_margin"
+            android:gravity="center_horizontal"
+            android:text="@string/for_quick_checkout"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/button_margin"
+            android:background="@color/colorPrimaryDark">
+
+            <Button
+                android:id="@+id/user_orders_track_order_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:padding="@dimen/button_margin"
+                android:text="@string/track_order"
+                android:textColor="@android:color/white" />
+        </FrameLayout>
+    </LinearLayout>
 
 </FrameLayout>

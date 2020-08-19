@@ -24,4 +24,7 @@
     <dimen name="user_offers_item_image_margin">10dp</dimen>
     <dimen name="user_offers_item_image_height">120dp</dimen>
     <dimen name="user_offers_item_image_width">100dp</dimen>
+    <dimen name="user_orders_login_paddding">10dp</dimen>
+    <dimen name="user_drawer_icon_image_size">40dp</dimen>
+    <dimen name="nav_view_image_padding">10dp</dimen>
 </resources>

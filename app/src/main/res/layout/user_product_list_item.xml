@@ -34,5 +34,5 @@
         tools:text="Book" />
 
    <include
-       layout="@layout/price_layout"/>
+       layout="@layout/user_price_layout"/>
 </LinearLayout>

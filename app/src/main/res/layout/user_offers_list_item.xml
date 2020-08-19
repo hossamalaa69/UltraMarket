@@ -39,7 +39,7 @@
 
         <include
             android:id="@+id/user_offers_item_price_layout"
-            layout="@layout/price_layout"
+            layout="@layout/user_price_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_offers_item_title"

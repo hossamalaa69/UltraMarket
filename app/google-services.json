@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "387314594386",
+    "firebase_url": "https://ultra-market.firebaseio.com",
+    "project_id": "ultra-market",
+    "storage_bucket": "ultra-market.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387314594386:android:bfbe9f2edb3eb50226a58b",
+        "android_client_info": {
+          "package_name": "com.example.ultramarket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "387314594386-8hdi2fhvg97jpolm96vofih5a5rg6nhd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ultramarket",
+            "certificate_hash": "58d6b787c8c08a18b9d1a527257edb4e6b1b2521"
+          }
+        },
+        {
+          "client_id": "387314594386-g9mdbmhr7d7a1qk640jerk53tgdeea2s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUEaM7mpEkvi4ieTDJRhKjLn54e65IfXs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "387314594386-g9mdbmhr7d7a1qk640jerk53tgdeea2s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

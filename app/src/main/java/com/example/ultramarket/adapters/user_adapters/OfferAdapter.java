@@ -80,7 +80,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            priceLayout.setVisibility(View.GONE);
+            priceLayout.setVisibility(View.VISIBLE);
         }
 
         public void bind(int position) {
@@ -89,8 +89,9 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
             prodName.setText(productList.get(position).getName());
             prodWeight.setText(productList.get(position).getUnit());
             double nPrice = productList.get(position).getPercentage() * productList.get(position).getPrice();
-            newPrice.setText(String.valueOf(nPrice));
-            oldPrice.setText(String.valueOf(productList.get(position).getPrice()));
+            newPrice.setText(mContext.getString(R.string.price, nPrice));
+            oldPrice.setText(mContext.getString(R.string.price, productList.get(position).getPrice()));
+            prodSavedAmount.setText(mContext.getString(R.string.you_saved_money, nPrice));
             oldPrice.setPaintFlags(oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }

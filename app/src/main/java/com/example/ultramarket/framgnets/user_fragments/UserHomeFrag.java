@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
-import com.example.ultramarket.database.Entities.Brand;
-import com.example.ultramarket.database.Entities.Category;
-import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.adapters.user_adapters.BrandAdapter;
 import com.example.ultramarket.adapters.user_adapters.CategoriesAdapter;
 import com.example.ultramarket.adapters.user_adapters.ProductAdapter;
+import com.example.ultramarket.database.Entities.Brand;
+import com.example.ultramarket.database.Entities.Category;
+import com.example.ultramarket.database.Entities.Product;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class UserHomeFrag extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_fragment, container, false);
+        View view = inflater.inflate(R.layout.user_home_fragment, container, false);
         ButterKnife.bind(this, view);
         catAdapter = new CategoriesAdapter(getContext(), null);
         rvCategories.setAdapter(catAdapter);
@@ -63,19 +63,19 @@ public class UserHomeFrag extends Fragment {
         // product views
         prodAdapter = new ProductAdapter(getContext(), null);
         rvLatestProd.setAdapter(prodAdapter);
-        prodLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false);
+        prodLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         rvLatestProd.setLayoutManager(prodLayoutManager);
         rvLatestProd.setHasFixedSize(true);
         //  featured product views
         featuredProdAdapter = new ProductAdapter(getContext(), null);
         rvFeaturedProd.setAdapter(featuredProdAdapter);
-        featuredProdLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false);
+        featuredProdLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         rvFeaturedProd.setLayoutManager(featuredProdLayoutManager);
         rvFeaturedProd.setHasFixedSize(true);
         //brand views
         brandAdapter = new BrandAdapter(getContext(), null);
         rvBrands.setAdapter(brandAdapter);
-        brandLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false);
+        brandLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         rvBrands.setLayoutManager(brandLayoutManager);
         rvBrands.setHasFixedSize(true);
 
@@ -88,15 +88,18 @@ public class UserHomeFrag extends Fragment {
         super.onActivityCreated(savedInstanceState);
         setObservers();
 
-   /*    for (int i = 1; i < 10; i++)
+      /*  for (int i = 1; i < 10; i++)
             mViewModel.insertBrand(new Brand(i, "brand", null));
-       for (int i = 1; i < 10; i++)
+        for (int i = 1; i < 10; i++)
             mViewModel.insertCategory(new Category(i, "food", null));
-        for (int i = 20; i < 30; i++)
-            mViewModel.insertProd(new Product(i, "featured prod"+ i, null,"kg",123,14,"hahah",true,12,i-19,i-19,new Date()));
+         for (int i = 1; i < 5; i++)
+            mViewModel.insertProd(new Product(i, "featured prod" + i, null, "1 kg", 123, 14, "hahah", true, 0.5, i, i , new Date()));
+       for (int i = 5; i < 10; i++)
+            mViewModel.insertProd(new Product(i, "product" + i, null, "500 g", 123, 14, "hahah", false, 0, i, i, new Date()));
 */
     }
-    private void setObservers(){
+
+    private void setObservers() {
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         mViewModel.getmCatList().observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
             @Override
