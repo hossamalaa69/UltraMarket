@@ -45,15 +45,8 @@ public class ProductFbDao implements ProdDao {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ProdDao prodDao = AppDatabase.getInstance(mContext).prodDao();
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     products.add(snap.getValue(Product.class));
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            prodDao.insertProduct(snap.getValue(Product.class));
-                        }
-                    });//insert into local database
                 }
                 Collections.sort(products);
                 liveData.setValue(products);
@@ -75,17 +68,10 @@ public class ProductFbDao implements ProdDao {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ProdDao prodDao = AppDatabase.getInstance(mContext).prodDao();
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     Product product = snap.getValue(Product.class);
                     if (product != null && product.isHasOffer()) {
                         products.add(product);
-                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                prodDao.insertProduct(snap.getValue(Product.class));
-                            }
-                        });//insert into local database
                     }
                 }
                 Collections.sort(products);

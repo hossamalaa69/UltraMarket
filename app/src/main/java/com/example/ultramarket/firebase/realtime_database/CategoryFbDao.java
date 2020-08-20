@@ -47,15 +47,8 @@ public class CategoryFbDao implements CatDao {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                CatDao catDao = AppDatabase.getInstance(mContext).catDao();
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     categories.add(snap.getValue(Category.class));
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            catDao.insertCategory(snap.getValue(Category.class));
-                        }
-                    });//insert into local database
                 }
                 liveData.setValue(categories);
 

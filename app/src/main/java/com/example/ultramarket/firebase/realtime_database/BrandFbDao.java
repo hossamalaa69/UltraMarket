@@ -52,15 +52,8 @@ public class BrandFbDao implements BrandDao {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //get instance of database to add fetched data
-                BrandDao bd = AppDatabase.getInstance(mContext).brandDao();
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     brands.add(snap.getValue(Brand.class));
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            bd.insertBrand(snap.getValue(Brand.class)); // insert into database
-                        }
-                    }); // insert into local database
                 }
                 brandListLivedata.setValue(brands);
             }
