@@ -1,4 +1,4 @@
-package com.example.ultramarket.database.firebase.realtime_database;
+package com.example.ultramarket.firebase.realtime_database;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.ultramarket.database.AppDatabase;
 import com.example.ultramarket.database.DAOs.BrandDao;
-import com.example.ultramarket.database.DAOs.CatDao;
 import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.helpers.AppExecutors;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class BrandFbDao implements BrandDao {

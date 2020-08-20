@@ -1,4 +1,4 @@
-package com.example.ultramarket.database.firebase.realtime_database;
+package com.example.ultramarket.firebase.realtime_database;
 
 import android.content.Context;
 import android.widget.Toast;

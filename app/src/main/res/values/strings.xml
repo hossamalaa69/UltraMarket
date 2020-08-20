@@ -54,4 +54,12 @@
     <string name="try_again">try again</string>
     <string name="show_more">Show More</string>
     <string name="show_less">show less</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="network_connection">Network Connection</string>
+    <string name="you_dont_have_connection">sorry, you don\'t have internet connection</string>
+    <string name="splash_logo_image">splash logo image</string>
+    <string name="you_are_offline">you are offline</string>
+    <string name="you_are_online">you are online</string>
+    <string name="back_online">back_online</string>
 </resources>

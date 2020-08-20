@@ -67,5 +67,4 @@ public class HomeViewModel extends AndroidViewModel {
     public LiveData<List<Product>> getmFeaturedProdList() {
         return mFeaturedProdList;
     }
-    // TODO: Implement the ViewModel
 }

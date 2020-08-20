@@ -12,7 +12,7 @@ import com.example.ultramarket.helpers.Utils;
 public class NetworkReceiver extends BroadcastReceiver {
     private ConnectionReceiver mCR;
     public interface ConnectionReceiver{
-        void onConnectionReceived();
+        void onConnectionReceived(boolean connected);
     }
 
     public NetworkReceiver(Context mContext) {
@@ -21,16 +21,16 @@ public class NetworkReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        //TODO add listener for connection changes
+      /*  ConnectivityManager conn = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = conn.getActiveNetworkInfo();
+        mCR.onConnectionReceived((networkInfo != null) && networkInfo.isConnected()); */
+    }
+    public static boolean isInternetConnected(Context context){
         ConnectivityManager conn = (ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = conn.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-            Utils.LOCAL = false;
-            Toast.makeText(context, "wifi", Toast.LENGTH_SHORT).show();
-        } else {
-            Utils.LOCAL = true;
-            Toast.makeText(context, "local", Toast.LENGTH_SHORT).show();
-        }
-        mCR.onConnectionReceived();
+        return (networkInfo != null) && networkInfo.isConnected();
     }
 }

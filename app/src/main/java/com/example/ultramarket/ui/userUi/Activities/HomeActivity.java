@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,11 +20,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.user_adapters.ViewPagerAdapter;
+import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.framgnets.user_fragments.UserWishlistFrag;
 import com.example.ultramarket.helpers.Utils;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
@@ -34,13 +34,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        FirebaseAuthHelper.FirebaseAuthCallBacks,
+        UserWishlistFrag.OnClickedListener {
 
     private static final int RC_SIGN_IN = 1;
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @BindView(R.id.user_nav_view)
@@ -52,12 +51,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.user_toolbar)
     Toolbar toolbar;
 
-   private TextView mEmail;
-   private ImageView mUserIcon;
+    private TextView mEmail;
+    private ImageView mUserIcon;
 
     private void updateNavViewHeader(String imageUri, String email) {
         mEmail.setText(email);
         Picasso.get().load(imageUri).into(mUserIcon);
+    }
+
+    @Override
+    public void onLoginStateChanges(FirebaseUser user) {
+        Utils.user = user;
+        updateNavViewHeader(user.getPhotoUrl().toString(), user.getEmail());
+        Toast.makeText(HomeActivity.this, "logged in\n".concat(user.getEmail()), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoggedOutStateChanges() {
+        Utils.user = null;
+        updateNavViewHeader(null, null);
+    }
+
+    @Override
+    public void onLoginClickListener() {
+        loginToFirebase();
     }
 
 
@@ -69,35 +86,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         setupViewPager();
         setUpDrawerLayout();
-        mFirebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // loggedIn
-                    updateNavViewHeader(user.getPhotoUrl().toString(), user.getEmail());
-                    Utils.user = user;
-                    Toast.makeText(HomeActivity.this, "logged in\n".concat(user.getEmail()), Toast.LENGTH_SHORT).show();
-                } else {
-                    // logged out
-                }
-            }
-        };
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        FirebaseAuthHelper.getsInstance().attachAuthStateListener(this);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mAuthStateListener != null)
-            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-        mAuthStateListener = null;
+        FirebaseAuthHelper.getsInstance().detachAuthStateListener();
+
+
     }
 
     @Override
@@ -144,6 +147,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         .build(),
                 RC_SIGN_IN);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

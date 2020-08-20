@@ -7,8 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.example.ultramarket.database.AppDatabase;
 import com.example.ultramarket.database.DAOs.CatDao;
 import com.example.ultramarket.database.Entities.Category;
-import com.example.ultramarket.database.firebase.realtime_database.BrandFbDao;
-import com.example.ultramarket.database.firebase.realtime_database.CategoryFbDao;
+import com.example.ultramarket.firebase.realtime_database.CategoryFbDao;
 import com.example.ultramarket.helpers.AppExecutors;
 import com.example.ultramarket.helpers.Utils;
 
