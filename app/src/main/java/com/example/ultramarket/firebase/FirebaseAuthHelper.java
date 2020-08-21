@@ -5,7 +5,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.example.ultramarket.database.Entities.User;
-import com.example.ultramarket.helpers.Utils;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,13 +29,10 @@ public class FirebaseAuthHelper {
 
     private static FirebaseAuthCallBacks firebaseAuthCallBacks;
 
-    public void updateUserData(User user) {
+    public void updateUserData(User user, OnSuccessListener<Void> listener ) {
         FirebaseDatabase.getInstance().getReference()
-                .child(User.class.getSimpleName())
-                .child(user.getID()).child("latitude").setValue(user.getLatitude());
-        FirebaseDatabase.getInstance().getReference()
-                .child(User.class.getSimpleName())
-                .child(user.getID()).child("longitude").setValue(user.getLongitude());
+                .child(User.class.getSimpleName()).child(user.getID())
+                .setValue(user).addOnSuccessListener(listener);
     }
 
     public interface FirebaseAuthCallBacks {

@@ -44,6 +44,9 @@ public class User {
     @Ignore
     @Exclude
     private int imageID;
+    private String city;
+    private String road;
+    private String country;
 
     public User(String ID, String email, String name,
                 double longitude, double latitude, String building,
@@ -110,6 +113,13 @@ public class User {
         this.name = name;
     }
 
+    public void setRoad(String road) {
+        this.road = road;
+    }
+
+    public String getCountry() {
+        return country;
+    }
 
     public double getLongitude() {
         return longitude;
@@ -125,6 +135,10 @@ public class User {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getBuilding() {
@@ -145,6 +159,10 @@ public class User {
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public void setPhone(String phone) {
@@ -198,5 +216,13 @@ public class User {
     @Ignore
     public void setImageID(int imageID) {
         this.imageID = imageID;
+    }
+
+    public String getCity() {
+        return this.city;
+    }
+
+    public String getRoad() {
+     return this.road;
     }
 }

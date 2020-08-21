@@ -73,4 +73,20 @@
     <string name="permission_confirmed">Permission Confirmed</string>
     <string name="you_must_signin_first">you must sign in first</string>
     <string name="location_saved">location saved</string>
+    <string name="edit">Edit</string>
+    <string name="country">Country: %1$s</string>
+    <string name="city">City: %1$s</string>
+    <string name="road">Road: %1$s</string>
+    <string name="floor">Floor: %1$s</string>
+    <string name="personal_info">Personal Info.</string>
+    <string name="email_container">Email: %1$s</string>
+    <string name="phone_container">Phone: %1$s</string>
+    <string name="profile">Profile</string>
+    <string name="failed_location_details_go_to_profile">failed to get location details. please go to profile and add it manually</string>
+    <string name="go_to_profile">Go to profile</string>
+    <string name="save">Save</string>
+    <string name="data_ignored">data ignored</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="data_saved">data saved</string>
 </resources>

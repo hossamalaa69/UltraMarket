@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:layout_margin="5dp"
+        android:textColor="@android:color/black"
+        android:padding="5dp"/>
+    <EditText
+        android:id="@+id/user_personal_dialog_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dialog_view_margin"
+        android:autofillHints="City"
+        android:background="@drawable/weight_background_shape"
+        android:hint="user@example.com"
+        android:inputType="text"
+        android:padding="5dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/phone"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:layout_margin="5dp"
+        android:textColor="@android:color/black"
+        android:padding="5dp"/>
+
+    <EditText
+        android:id="@+id/user_personal_dialog_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dialog_view_margin"
+        android:autofillHints="City"
+        android:background="@drawable/weight_background_shape"
+        android:hint="+20 1123827968"
+        android:inputType="phone"
+        android:padding="5dp" />
+</LinearLayout>

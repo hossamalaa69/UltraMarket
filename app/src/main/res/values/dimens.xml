@@ -31,4 +31,9 @@
     <dimen name="category_rv_height">270dp</dimen>
     <dimen name="splash_logo_margin">20dp</dimen>
     <dimen name="left_drawable_menu_padding">5dp</dimen>
+    <dimen name="prifile_img_size">120dp</dimen>
+    <dimen name="profile_title_margin">5dp</dimen>
+    <dimen name="profile_button_margin">10dp</dimen>
+    <dimen name="profile_user_name_size">28sp</dimen>
+    <dimen name="dialog_view_margin">10dp</dimen>
 </resources>

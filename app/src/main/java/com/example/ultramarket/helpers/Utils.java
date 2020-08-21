@@ -13,6 +13,7 @@ public class Utils {
     public static boolean LOCAL = false;
     public static  User user = null;
 
+    public static String[] availableCountries = new String[]{"Available Countries","Egypt","Palestine","Libya"};
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager connMgr =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/SideTitle"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/location"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/user_location_dialog_country_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize"
+            style="@android:style/Widget.Spinner.DropDown"
+            android:layout_margin="@dimen/dialog_view_margin"
+            android:autofillHints="Country"
+            android:background="@color/colorPrimary"
+            android:spinnerMode="dropdown" />
+
+        <EditText
+            android:id="@+id/user_location_dialog_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dialog_view_margin"
+            android:autofillHints="City"
+            android:background="@drawable/weight_background_shape"
+            android:hint="City"
+            android:inputType="text"
+            android:padding="5dp" />
+
+        <EditText
+            android:id="@+id/user_location_dialog_road"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dialog_view_margin"
+            android:autofillHints="City"
+            android:background="@drawable/weight_background_shape"
+            android:hint="Road"
+            android:inputType="text"
+            android:padding="5dp" />
+
+        <EditText
+            android:id="@+id/user_location_dialog_floor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dialog_view_margin"
+            android:autofillHints="City"
+            android:background="@drawable/weight_background_shape"
+            android:hint="Floor"
+            android:inputType="number"
+            android:padding="5dp" />
+    </LinearLayout>
+</ScrollView>

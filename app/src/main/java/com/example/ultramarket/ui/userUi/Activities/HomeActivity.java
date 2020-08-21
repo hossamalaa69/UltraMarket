@@ -147,8 +147,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build());
+                new AuthUI.IdpConfig.GoogleBuilder().build());
         // Create and launch sign-in intent
         startActivityForResult(
                 AuthUI.getInstance()
@@ -176,6 +175,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         navView.setNavigationItemSelectedListener(this);
         mEmail = navView.getHeaderView(0).findViewById(R.id.user_drawer_header_email);
+        mEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this,UserProfile.class));
+            }
+        });
         mUserIcon = navView.getHeaderView(0).findViewById(R.id.user_drawer_header_icon);
         toggle.syncState();
     }
