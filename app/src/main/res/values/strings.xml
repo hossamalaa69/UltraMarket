@@ -62,4 +62,15 @@
     <string name="you_are_offline">you are offline</string>
     <string name="you_are_online">you are online</string>
     <string name="back_online">back_online</string>
+    <string name="location">location</string>
+    <string name="lets_try_to_find_if_we_deliver_to_your_place">lets try to find if we deliver to your place</string>
+    <string name="choose_your_location">CHOOSE YOUR LOCATION</string>
+    <string name="use_my_current_location">USE MY CURRENT LOCATION</string>
+    <string name="choose_manually">Choose manually</string>
+    <string name="allow_location_perimission">you should allow app to know your location</string>
+    <string name="location_access_message">to add locatoin you need to allow locatioin access</string>
+    <string name="permission_denied">permission denied</string>
+    <string name="permission_confirmed">Permission Confirmed</string>
+    <string name="you_must_signin_first">you must sign in first</string>
+    <string name="location_saved">location saved</string>
 </resources>

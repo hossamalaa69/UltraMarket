@@ -1,36 +1,44 @@
 package com.example.ultramarket.firebase;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 
-import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.User;
 import com.example.ultramarket.helpers.Utils;
-import com.example.ultramarket.ui.userUi.Activities.HomeActivity;
-import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Arrays;
-import java.util.List;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class FirebaseAuthHelper {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private static FirebaseAuthHelper sInstance;
-    public static FirebaseAuthHelper getsInstance(){
-        if(sInstance==null){
+
+    public static FirebaseAuthHelper getsInstance() {
+        if (sInstance == null) {
             sInstance = new FirebaseAuthHelper();
         }
         return sInstance;
     }
 
     private static FirebaseAuthCallBacks firebaseAuthCallBacks;
-    public interface FirebaseAuthCallBacks{
-        void onLoginStateChanges(FirebaseUser user);
+
+    public void updateUserData(User user) {
+        FirebaseDatabase.getInstance().getReference()
+                .child(User.class.getSimpleName())
+                .child(user.getID()).child("latitude").setValue(user.getLatitude());
+        FirebaseDatabase.getInstance().getReference()
+                .child(User.class.getSimpleName())
+                .child(user.getID()).child("longitude").setValue(user.getLongitude());
+    }
+
+    public interface FirebaseAuthCallBacks {
+        void onLoginStateChanges(User user);
 
         void onLoggedOutStateChanges();
     }
@@ -38,7 +46,8 @@ public class FirebaseAuthHelper {
     public FirebaseAuthHelper() {
         mFirebaseAuth = FirebaseAuth.getInstance();
     }
-    public void attachAuthStateListener(Context context){
+
+    public void attachAuthStateListener(Context context) {
         firebaseAuthCallBacks = (FirebaseAuthCallBacks) context;
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -46,15 +55,34 @@ public class FirebaseAuthHelper {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // loggedIn
-                    firebaseAuthCallBacks.onLoginStateChanges(user);
+                    insertUser(user);
+                    firebaseAuthCallBacks.onLoginStateChanges(new User(user));
+
                 } else {
                     firebaseAuthCallBacks.onLoggedOutStateChanges();
-
                     // logged out
                 }
             }
         };
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    private void insertUser(FirebaseUser user) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child(User.class.getSimpleName());
+        userRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+
+                    userRef.child(user.getUid()).setValue(new User(user));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void detachAuthStateListener() {

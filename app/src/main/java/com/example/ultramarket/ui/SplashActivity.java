@@ -21,6 +21,7 @@ import gr.net.maroulis.library.EasySplashScreen;
 public class SplashActivity extends AppCompatActivity implements NetworkReceiver.ConnectionReceiver {
     BroadcastReceiver br;
     private AlertDialog mAlertDialog;
+    public static boolean isBackPressed = false;
 
     @Override
     public void onConnectionReceived(boolean isConnected) {
@@ -78,6 +79,14 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
         this.registerReceiver(br, filter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isBackPressed){
+            finish();
+        }
     }
 
     @Override

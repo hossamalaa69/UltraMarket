@@ -4,6 +4,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.Exclude;
+
 import org.jetbrains.annotations.NotNull;
 
 @Entity(tableName = "user")
@@ -11,13 +14,11 @@ public class User {
 
     @NotNull
     @PrimaryKey
-    private long ID;
+    private String ID;
 
     private String email;
 
     private String name;
-
-    private String password;
 
     private double longitude;
 
@@ -29,10 +30,11 @@ public class User {
 
     private String phone;
 
-    private String image;
+    private String imageUrl;
 
     private int rate;
 
+    @Exclude
     @Ignore
     private boolean isExpanded;
 
@@ -40,22 +42,22 @@ public class User {
     private int numOrders;
 
     @Ignore
+    @Exclude
     private int imageID;
 
-    public User(long ID, String email, String name, String password,
+    public User(String ID, String email, String name,
                 double longitude, double latitude, String building,
-                int floor, String phone, String image, int rate) {
+                int floor, String phone, String imageUrl, int rate) {
 
         this.ID = ID;
         this.email = email;
         this.name = name;
-        this.password = password;
         this.longitude = longitude;
         this.latitude = latitude;
         this.building = building;
         this.floor = floor;
         this.phone = phone;
-        this.image = image;
+        this.imageUrl = imageUrl;
         this.rate = rate;
         this.isExpanded = false;
     }
@@ -75,11 +77,20 @@ public class User {
     public User() {
     }
 
-    public long getID() {
+    @Ignore
+    public  User(FirebaseUser user) {
+        ID = user.getUid();
+        imageUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null;
+        email = user.getEmail();
+        name = user.getDisplayName();
+        phone = user.getPhoneNumber();
+    }
+
+    public String getID() {
         return ID;
     }
 
-    public void setID(long ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
@@ -99,13 +110,6 @@ public class User {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public double getLongitude() {
         return longitude;
@@ -155,15 +159,16 @@ public class User {
         this.rate = rate;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Ignore
+    @Exclude
     public boolean isExpanded() {
         return isExpanded;
     }
@@ -174,6 +179,7 @@ public class User {
     }
 
     @Ignore
+    @Exclude
     public int getNumOrders() {
         return numOrders;
     }
@@ -184,6 +190,7 @@ public class User {
     }
 
     @Ignore
+    @Exclude
     public int getImageID() {
         return imageID;
     }

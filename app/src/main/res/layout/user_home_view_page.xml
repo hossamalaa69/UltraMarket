@@ -16,6 +16,15 @@
             android:theme="@style/Widget.AppCompat.Light.ActionBar"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <Button
+                android:id="@+id/user_toolbar_location"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:drawableEnd="@drawable/edit_location_24"
+                android:drawablePadding="@dimen/left_drawable_menu_padding"
+                android:text="@string/location"/>
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

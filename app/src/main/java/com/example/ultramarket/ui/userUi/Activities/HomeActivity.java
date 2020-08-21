@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,13 +18,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.user_adapters.ViewPagerAdapter;
+import com.example.ultramarket.database.Entities.User;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.framgnets.user_fragments.UserWishlistFrag;
 import com.example.ultramarket.helpers.Utils;
+import com.example.ultramarket.ui.SplashActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -34,6 +40,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         FirebaseAuthHelper.FirebaseAuthCallBacks,
@@ -50,9 +57,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     TabLayout tabLayout;
     @BindView(R.id.user_toolbar)
     Toolbar toolbar;
+    @OnClick(R.id.user_toolbar_location)
+    public void onLocationButtonClicked(View view){
+        startActivity(new Intent(this,LocationActivity.class));
+    }
 
     private TextView mEmail;
     private ImageView mUserIcon;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.user_activity_home);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        setupViewPager();
+        setUpDrawerLayout();
+    }
 
     private void updateNavViewHeader(String imageUri, String email) {
         mEmail.setText(email);
@@ -60,9 +81,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onLoginStateChanges(FirebaseUser user) {
+    public void onLoginStateChanges(User user) {
         Utils.user = user;
-        updateNavViewHeader(user.getPhotoUrl().toString(), user.getEmail());
+        updateNavViewHeader(user.getImageUrl(), user.getEmail());
         Toast.makeText(HomeActivity.this, "logged in\n".concat(user.getEmail()), Toast.LENGTH_SHORT).show();
     }
 
@@ -77,16 +98,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         loginToFirebase();
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_activity_home);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        setupViewPager();
-        setUpDrawerLayout();
-    }
 
     @Override
     protected void onResume() {
@@ -174,8 +185,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //check if drawer is open
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {   //close drawer
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else
+        } else if(viewPager.getCurrentItem() == 0) {
+            SplashActivity.isBackPressed = true;
             super.onBackPressed();
+        }
 
     }
 
@@ -197,4 +210,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.user_menu_cart:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

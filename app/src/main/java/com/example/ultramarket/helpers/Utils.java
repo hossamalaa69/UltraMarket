@@ -4,13 +4,15 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
-import android.util.DisplayMetrics;
 
-import com.google.firebase.auth.FirebaseUser;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.ultramarket.database.Entities.User;
 
 public class Utils {
-    public static boolean LOCAL = false ;
-    public static FirebaseUser user = null;
+    public static boolean LOCAL = false;
+    public static  User user = null;
+
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager connMgr =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -25,6 +27,6 @@ public class Utils {
                 isMobileConn |= networkInfo.isConnected();
             }
         }
-        return isMobileConn|isWifiConn;
+        return isMobileConn | isWifiConn;
     }
 }
