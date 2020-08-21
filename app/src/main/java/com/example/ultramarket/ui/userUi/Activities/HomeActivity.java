@@ -153,6 +153,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(false)
                         .setLogo(R.drawable.logo)
                         .setAvailableProviders(providers)
                         .build(),
