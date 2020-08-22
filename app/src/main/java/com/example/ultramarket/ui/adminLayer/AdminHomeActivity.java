@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.StatsAdapter;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.ui.SplashActivity;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -22,6 +23,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
@@ -198,6 +200,13 @@ public class AdminHomeActivity extends AppCompatActivity {
     }
 
     public void logout_admin(View view) {
-        Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
+        FirebaseAuthHelper.getsInstance().logOut(this, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Intent i = new Intent(AdminHomeActivity.this, SplashActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 }

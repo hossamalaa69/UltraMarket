@@ -1,6 +1,8 @@
 package com.example.ultramarket.ui.adminLayer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,7 +19,11 @@ public class CustomersActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
 
+    CustomersAdapter customersAdapter;
+
     List<User> userList;
+
+    CustomersViewModel customersViewModel;
 
 
     @Override
@@ -25,9 +31,26 @@ public class CustomersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customers);
 
-        insertDummyData();
         setupRecycler();
+
+        setupLiveData();
+
     }
+
+    private void setupLiveData() {
+        customersViewModel  = new ViewModelProvider(this).get(CustomersViewModel.class);
+        customersViewModel.loadAllCustomers();
+        customersViewModel.loadAllCustomers().observe(this, users -> customersAdapter.setUserList(users));
+    }
+
+    private void setupRecycler(){
+        userList = new ArrayList<>();
+        recyclerView = findViewById(R.id.recyclerView);
+        customersAdapter = new CustomersAdapter(this, userList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(customersAdapter);
+    }
+
 
     private void insertDummyData(){
         userList = new ArrayList<>();
@@ -43,10 +66,4 @@ public class CustomersActivity extends AppCompatActivity {
 
     }
 
-    private void setupRecycler(){
-        recyclerView = findViewById(R.id.recyclerView);
-        CustomersAdapter customersAdapter = new CustomersAdapter(this, userList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(customersAdapter);
-    }
 }

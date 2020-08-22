@@ -92,4 +92,5 @@
     <string name="fields_cant_be_empty">fields can\'t be empty</string>
     <string name="invalid_mail_or_phone">Invalid Email or Phone number</string>
     <string name="logout">Log Out</string>
+    <string name="admin_email">admin@ultramarket.com</string>
 </resources>

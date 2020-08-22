@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.User;
 
@@ -50,12 +51,29 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Movi
         holder.rateTextView.setText("" + user.getRate());
         holder.ordersTextView.setText("" + user.getNumOrders());
 
-        holder.userImage.setImageResource(user.getImageID());
+        if(user.getImageUrl() == null){
+            holder.userImage.setImageResource(R.drawable.ic_customers);
+        }else{
+            Glide.with(context)
+                    .load(user.getImageUrl())
+                    .placeholder(R.drawable.ic_customers)
+                    .into(holder.userImage);
+        }
 
         boolean isExpanded = userList.get(position).isExpanded();
         holder.expandableLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.expandIcon.setImageResource(isExpanded? R.drawable.ic_collapse : R.drawable.ic_expand);
     }
+
+    /**
+     * When data changes, this method updates the list of taskEntries
+     * and notifies the adapter to use the new values on it
+     */
+    public void setUserList(List<User> users) {
+        userList = users;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getItemCount() {
