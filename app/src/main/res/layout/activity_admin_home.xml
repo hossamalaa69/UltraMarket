@@ -7,31 +7,36 @@
     android:background="@drawable/gradient_purple_background"
     tools:context=".ui.adminLayer.AdminHomeActivity">
 
-    <TextView
-        android:id="@+id/welcome_text"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/info_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:text="@string/welcome_admin"
-        android:fontFamily="sans-serif"
-        android:textColor="@color/White"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp">
+        <TextView
+            android:id="@+id/welcome_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@string/welcome_admin"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/White"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"/>
 
-    <ImageView
-        android:id="@+id/ic_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_logout_white"
-        android:background="@color/transparent"
-        android:layout_margin="10dp"
-        android:onClick="logout_admin"
-        />
+        <ImageView
+            android:id="@+id/ic_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_logout_white"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_logout_backgrounds"
+            android:onClick="logout_admin"
+            />
+    </RelativeLayout>
 
     <LinearLayout
-        android:layout_below="@id/welcome_text"
+        android:layout_below="@id/info_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">

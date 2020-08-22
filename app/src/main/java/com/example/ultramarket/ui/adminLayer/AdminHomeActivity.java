@@ -198,6 +198,6 @@ public class AdminHomeActivity extends AppCompatActivity {
     }
 
     public void logout_admin(View view) {
-
+        Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
     }
 }
