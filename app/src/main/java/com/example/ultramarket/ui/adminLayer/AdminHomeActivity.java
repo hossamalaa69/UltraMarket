@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.StatsAdapter;
+import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -193,5 +195,9 @@ public class AdminHomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         finishAffinity();
         finish();
+    }
+
+    public void logout_admin(View view) {
+
     }
 }
