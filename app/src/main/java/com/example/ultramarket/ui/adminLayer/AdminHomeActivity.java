@@ -187,7 +187,11 @@ public class AdminHomeActivity extends AppCompatActivity {
         lineChartDownFill.setData(lineData);
         lineChartDownFill.invalidate();
 
-
     }
 
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+        finish();
+    }
 }
