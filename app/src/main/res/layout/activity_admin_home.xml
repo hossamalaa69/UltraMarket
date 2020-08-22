@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_logout_white"
+            android:src="@drawable/ic_logout_backgrounds"
             android:layout_centerVertical="true"
             android:background="@drawable/ic_logout_backgrounds"
             android:onClick="logout_admin"
