@@ -2,6 +2,7 @@ package com.example.ultramarket.ui.userUi.Activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -93,10 +94,24 @@ public class UserProfile extends AppCompatActivity {
     }
 
     private void updatePersonalData() {
-        Utils.user.setEmail(mEmail.getText().toString().trim());
-        Utils.user.setPhone(mPhone.getText().toString().trim());
-        updateUserFirebaseData();
-        updateProfile();
+        String email = mEmail.getText().toString().trim();
+        String phone = mPhone.getText().toString().trim();
+        if (checkIsValidMail(email) && checkIsValidPhone(phone)) {
+            Utils.user.setEmail(email);
+            Utils.user.setPhone(phone);
+            updateUserFirebaseData();
+            updateProfile();
+        } else {
+            Toast.makeText(this, R.string.invalid_mail_or_phone, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkIsValidPhone(String phone) {
+        return Patterns.PHONE.matcher(phone).matches()&&phone.length()>6&&phone.length()<13;
+    }
+
+    private boolean checkIsValidMail(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private void updatePersonalDialog() {
@@ -149,7 +164,7 @@ public class UserProfile extends AppCompatActivity {
     }
 
     private void updateLocationDialog() {
-        mFloor.setText(Utils.user.getFloor());
+        mFloor.setText(String.valueOf(Utils.user.getFloor()));
         mCity.setText(Utils.user.getCity());
         mRoad.setText(Utils.user.getRoad());
         if (adapter.getPosition(Utils.user.getCountry() != null ? Utils.user.getCountry() : "") > -1)
@@ -170,9 +185,16 @@ public class UserProfile extends AppCompatActivity {
     }
 
     private void updateLocationData() {
-        Utils.user.setRoad(mRoad.getText().toString().trim());
-        Utils.user.setCity(mCity.getText().toString().trim());
-        Utils.user.setFloor(Integer.parseInt(mFloor.getText().toString().trim()));
+        String road = mRoad.getText().toString().trim();
+        String city = mCity.getText().toString().trim();
+        int floor = Integer.parseInt(mFloor.getText().toString().trim());
+        if (road.matches("") || city.matches("") || floor < 0) {
+            Toast.makeText(this, R.string.fields_cant_be_empty, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Utils.user.setRoad(road);
+        Utils.user.setCity(city);
+        Utils.user.setFloor(floor);
         FirebaseAuthHelper.getsInstance().updateUserData(Utils.user, onUpdateUserListener);
         updateProfile();
     }

@@ -14,15 +14,47 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ultramarket.NetworkConnection.NetworkReceiver;
 import com.example.ultramarket.R;
+import com.example.ultramarket.database.Entities.User;
+import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.helpers.Utils;
+import com.example.ultramarket.ui.adminLayer.AdminHomeActivity;
 import com.example.ultramarket.ui.userUi.Activities.HomeActivity;
+import com.firebase.ui.auth.AuthUI;
+
+import java.util.Arrays;
+import java.util.List;
 
 import gr.net.maroulis.library.EasySplashScreen;
 
-public class SplashActivity extends AppCompatActivity implements NetworkReceiver.ConnectionReceiver {
+public class SplashActivity extends AppCompatActivity implements NetworkReceiver.ConnectionReceiver,
+        FirebaseAuthHelper.FirebaseAuthCallBacks{
     BroadcastReceiver br;
     private AlertDialog mAlertDialog;
     public static boolean isBackPressed = false;
 
+    @Override
+    public void onLoginStateChanges(User user) {
+        Utils.user = user;
+        FirebaseAuthHelper.getsInstance().isAdmin(user.getID(),this);
+    }
+
+    @Override
+    public void onCheckAdminResult(boolean isAdmin) {
+        if(isAdmin){
+            startActivity(new Intent(this, AdminHomeActivity.class));
+            Toast.makeText(this, "Admin ".concat(Utils.user.getEmail()), Toast.LENGTH_SHORT).show();
+
+        }else{
+            startActivity(new Intent(this, HomeActivity.class));
+            Toast.makeText(this, "logged in\n".concat(Utils.user.getEmail()), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onLoggedOutStateChanges() {
+        Utils.user = null;
+        startActivity(new Intent(this, HomeActivity.class));
+    }
     @Override
     public void onConnectionReceived(boolean isConnected) {
         //TODO add listener for connectivity changes
@@ -30,12 +62,16 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
         if(mAlertDialog!=null && isConnected){
             mAlertDialog.dismiss();
             mAlertDialog = null;
-            startActivity(new Intent(SplashActivity.this,HomeActivity.class));
+            attachAuthListener();
         }
         else if (!isConnected){
             toastMsg = R.string.you_are_offline;
         }
         Toast.makeText(SplashActivity.this, toastMsg,Toast.LENGTH_SHORT).show();
+    }
+
+    private void attachAuthListener() {
+        FirebaseAuthHelper.getsInstance().attachAuthStateListener(this);
     }
 
     @Override
@@ -47,7 +83,7 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
 
     private void checkInternetConnection() {
         if (NetworkReceiver.isInternetConnected(this)) {
-            startActivity(new Intent(this, HomeActivity.class));
+            attachAuthListener();
         } else {
             showAlertDialog(getString(R.string.network_connection), getString(R.string.you_dont_have_connection));
         }
@@ -93,5 +129,6 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
     protected void onDestroy() {
         super.onDestroy();
         //this.unregisterReceiver(br);
+        FirebaseAuthHelper.getsInstance().detachAuthStateListener();
     }
 }

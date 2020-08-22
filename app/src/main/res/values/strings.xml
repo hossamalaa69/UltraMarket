@@ -89,4 +89,6 @@
     <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="data_saved">data saved</string>
+    <string name="fields_cant_be_empty">fields can\'t be empty</string>
+    <string name="invalid_mail_or_phone">Invalid Email or Phone number</string>
 </resources>

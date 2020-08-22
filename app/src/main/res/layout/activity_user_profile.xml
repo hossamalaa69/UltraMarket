@@ -1,115 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context=".ui.userUi.Activities.UserProfile">
+    android:layout_height="match_parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/user_profile_img"
-        android:layout_width="@dimen/com_facebook_profilepictureview_preset_size_large"
-        android:layout_height="@dimen/com_facebook_profilepictureview_preset_size_large"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/splash_logo_margin"
-        android:background="@drawable/cirucler_background"
-        android:padding="7dp"
-        android:src="@drawable/logo" />
-
-    <TextView
-        android:id="@+id/user_profile_user_name"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/user_profile_img"
-        android:layout_marginTop="@dimen/profile_title_margin"
-        android:gravity="center"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/profile_user_name_size"
-        tools:text="kahled ali" />
+        android:background="@drawable/ultra_layout_background"
+        tools:context=".ui.userUi.Activities.UserProfile">
 
-    <View
-        android:id="@+id/line1"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/user_profile_user_name"
-        android:layout_margin="5dp"
-        android:background="@android:color/darker_gray" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_profile_img"
+            android:layout_width="@dimen/com_facebook_profilepictureview_preset_size_large"
+            android:layout_height="@dimen/com_facebook_profilepictureview_preset_size_large"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/splash_logo_margin"
+            android:background="@drawable/cirucler_background"
+            android:padding="7dp"
+            android:src="@drawable/logo" />
 
-    <TextView
-        android:id="@+id/location_view"
-        style="@style/SideTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/line1"
-        android:drawablePadding="5dp"
-        android:text="@string/location"
-        app:drawableEndCompat="@drawable/ic_baseline_edit_24" />
+        <TextView
+            android:id="@+id/user_profile_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_profile_img"
+            android:layout_marginTop="@dimen/profile_title_margin"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/profile_user_name_size"
+            tools:text="kahled ali" />
 
-    <TextView
-        android:id="@+id/user_profile_country"
-        style="@style/SideTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/location_view"
-        android:textColor="@android:color/darker_gray" />
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/user_profile_user_name"
+            android:layout_margin="5dp"
+            android:background="@android:color/darker_gray" />
 
-    <TextView
-        android:id="@+id/user_profile_city"
-        style="@style/SideTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_profile_country"
-        android:textColor="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/location_view"
+            style="@style/SideTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line1"
+            android:drawablePadding="5dp"
+            android:text="@string/location"
+            app:drawableEndCompat="@drawable/ic_baseline_edit_24" />
 
-    <TextView
-        android:id="@+id/user_profile_road"
-        style="@style/SideTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_profile_city"
-        android:textColor="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/user_profile_country"
+            style="@style/SideTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/location_view"
+            android:textColor="@color/dark_gray" />
 
-    <TextView
-        android:id="@+id/user_profile_floor"
-        style="@style/SideTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_profile_road"
-        android:textColor="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/user_profile_city"
+            style="@style/SideTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_profile_country"
+            android:textColor="@color/dark_gray" />
 
-    <View
-        android:id="@+id/line2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/user_profile_floor"
-        android:layout_margin="5dp"
-        android:background="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/user_profile_road"
+            style="@style/SideTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_profile_city"
+            android:textColor="@color/dark_gray" />
 
-    <TextView
-        android:id="@+id/personal_info"
-        style="@style/SideTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/line2"
-        android:drawablePadding="5dp"
-        android:text="@string/personal_info"
-        app:drawableEndCompat="@drawable/ic_baseline_edit_24" />
+        <TextView
+            android:id="@+id/user_profile_floor"
+            style="@style/SideTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_profile_road"
+            android:textColor="@color/dark_gray" />
 
-    <TextView
-        android:id="@+id/user_profile_email"
-        style="@style/SideTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/personal_info"
-        android:textColor="@android:color/darker_gray" />
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/user_profile_floor"
+            android:layout_margin="5dp"
+            android:background="@android:color/darker_gray" />
 
-    <TextView
-        android:id="@+id/user_profile_phone"
-        style="@style/SideTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_profile_email"
-        android:textColor="@android:color/darker_gray" />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/personal_info"
+            style="@style/SideTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line2"
+            android:drawablePadding="5dp"
+            android:text="@string/personal_info"
+            app:drawableEndCompat="@drawable/ic_baseline_edit_24" />
+
+        <TextView
+            android:id="@+id/user_profile_email"
+            style="@style/SideTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/personal_info"
+            android:textColor="@color/dark_gray" />
+
+        <TextView
+            android:id="@+id/user_profile_phone"
+            style="@style/SideTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_profile_email"
+            android:textColor="@color/dark_gray" />
+    </RelativeLayout>
+</ScrollView>
