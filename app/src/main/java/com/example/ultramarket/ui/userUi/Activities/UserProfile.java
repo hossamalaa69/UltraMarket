@@ -1,6 +1,7 @@
 package com.example.ultramarket.ui.userUi.Activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +60,8 @@ public class UserProfile extends AppCompatActivity {
     private EditText mFloor;
     private Spinner mCountrySpinner;
     private ArrayAdapter<String> adapter;
+    @BindView(R.id.user_profile_progress_bar)
+    ProgressBar mProgressBar;
 
     @OnClick(R.id.location_view)
     public void onLocationEditClicked(View view) {
@@ -67,6 +71,53 @@ public class UserProfile extends AppCompatActivity {
     @OnClick(R.id.personal_info)
     public void onPersonalInfoEditClicked(View view) {
         showPersonalInfoDialog();
+    }
+    @OnClick(R.id.user_profile_logout)
+    public void onLogOutPressed(View view){
+        showProgressBar();
+        FirebaseAuthHelper.getsInstance().logOut(this, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Utils.user = null;
+                hideProgressBar();
+                startActivity(new Intent(UserProfile.this,HomeActivity.class));
+            }
+        });
+    }
+
+    private void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+    private void hideProgressBar() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_profile);
+        ButterKnife.bind(this);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.profile);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayUseLogoEnabled(true);
+            actionBar.setLogo(R.mipmap.ic_launcher_foreground);
+        }
+        hideProgressBar();
+        FirebaseDatabase.getInstance().getReference().child(User.class.getSimpleName()).child(Utils.user.getID())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Utils.user = snapshot.getValue(User.class);
+                        updateProfile();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     private void showPersonalInfoDialog() {
@@ -107,7 +158,7 @@ public class UserProfile extends AppCompatActivity {
     }
 
     private boolean checkIsValidPhone(String phone) {
-        return Patterns.PHONE.matcher(phone).matches()&&phone.length()>6&&phone.length()<13;
+        return Patterns.PHONE.matcher(phone).matches()&&phone.length()>6&&phone.length()<14;
     }
 
     private boolean checkIsValidMail(String email) {
@@ -200,33 +251,7 @@ public class UserProfile extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
-        ButterKnife.bind(this);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(R.string.profile);
-            actionBar.setLogo(R.mipmap.ic_launcher_foreground);
-        }
-        FirebaseDatabase.getInstance().getReference().child(User.class.getSimpleName()).child(Utils.user.getID())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Utils.user = snapshot.getValue(User.class);
-                        updateProfile();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-    }
-
     private void updateProfile() {
-
         if (Utils.user != null) {
             mUserCity.setText(getString(R.string.city, Utils.user.getCity()));
             mUserFloor.setText(getString(R.string.floor, String.valueOf(Utils.user.getFloor())));

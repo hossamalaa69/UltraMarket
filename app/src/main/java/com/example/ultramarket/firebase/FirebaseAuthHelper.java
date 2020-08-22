@@ -62,6 +62,10 @@ public class FirebaseAuthHelper {
         });
     }
 
+    public void logOut(Context context,OnSuccessListener<Void> listener) {
+        AuthUI.getInstance().signOut(context).addOnSuccessListener(listener);
+    }
+
     public interface FirebaseAuthCallBacks {
         void onLoginStateChanges(User user);
 

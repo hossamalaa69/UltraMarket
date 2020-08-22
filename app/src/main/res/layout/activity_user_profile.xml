@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ultra_layout_background"
+        android:background="@android:color/white"
         tools:context=".ui.userUi.Activities.UserProfile">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -49,7 +49,8 @@
             android:layout_below="@id/line1"
             android:drawablePadding="5dp"
             android:text="@string/location"
-            app:drawableEndCompat="@drawable/ic_baseline_edit_24" />
+            app:drawableEndCompat="@drawable/edit_location_24"
+            app:drawableTint="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/user_profile_country"
@@ -57,15 +58,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/location_view"
-            android:textColor="@color/dark_gray" />
+            android:drawablePadding="5dp"
+
+            android:textColor="@color/dark_gray"
+            app:drawableStartCompat="@drawable/country"
+            app:drawableTint="@color/purple2" />
 
         <TextView
             android:id="@+id/user_profile_city"
             style="@style/SideTitle"
             android:layout_width="match_parent"
+            android:drawablePadding="5dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_profile_country"
-            android:textColor="@color/dark_gray" />
+            android:textColor="@color/dark_gray"
+            app:drawableStartCompat="@drawable/city"
+            app:drawableTint="@color/purple2" />
 
         <TextView
             android:id="@+id/user_profile_road"
@@ -73,15 +81,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_profile_city"
-            android:textColor="@color/dark_gray" />
+            android:textColor="@color/dark_gray"
+            android:drawablePadding="5dp"
+
+            app:drawableStartCompat="@drawable/road"
+            app:drawableTint="@color/purple2" />
 
         <TextView
             android:id="@+id/user_profile_floor"
             style="@style/SideTitle"
             android:layout_width="match_parent"
+            android:drawablePadding="5dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_profile_road"
-            android:textColor="@color/dark_gray" />
+            android:textColor="@color/dark_gray"
+            app:drawableStartCompat="@drawable/floor"
+            app:drawableTint="@color/purple2" />
 
         <View
             android:id="@+id/line2"
@@ -107,14 +122,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/personal_info"
-            android:textColor="@color/dark_gray" />
+            android:drawablePadding="5dp"
+            android:textColor="@color/dark_gray"
+            app:drawableStartCompat="@drawable/email_24"
+            app:drawableTint="@color/purple2" />
 
         <TextView
             android:id="@+id/user_profile_phone"
             style="@style/SideTitle"
             android:layout_width="match_parent"
+            android:drawablePadding="5dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_profile_email"
-            android:textColor="@color/dark_gray" />
+            android:textColor="@color/dark_gray"
+            app:drawableStartCompat="@drawable/ic_phone_purple" />
+
+        <Button
+            android:id="@+id/user_profile_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_profile_phone"
+            android:layout_margin="@dimen/button_margin"
+            android:background="@color/colorPrimary"
+            android:text="@string/logout"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/user_profile_progress_bar"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 </ScrollView>
