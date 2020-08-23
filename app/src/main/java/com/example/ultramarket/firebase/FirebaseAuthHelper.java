@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ultramarket.R;
+import com.example.ultramarket.database.Entities.Location;
 import com.example.ultramarket.database.Entities.User;
+import com.example.ultramarket.helpers.AppExecutors;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class FirebaseAuthHelper {
     private FirebaseAuth mFirebaseAuth;
@@ -42,59 +43,94 @@ public class FirebaseAuthHelper {
     private static FirebaseAuthCallBacks firebaseAuthCallBacks;
 
     public void updateUserData(User user, OnSuccessListener<Void> listener) {
-        FirebaseDatabase.getInstance().getReference()
-                .child(User.class.getSimpleName()).child(user.getID())
-                .setValue(user).addOnSuccessListener(listener);
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseDatabase.getInstance().getReference()
+                        .child(User.class.getSimpleName()).child(user.getID())
+                        .setValue(user).addOnSuccessListener(listener);
+            }
+        });
+
     }
 
     public void isAdmin(String id, Context context) {
-        FirebaseDatabase.getInstance().getReference().child("admins").addValueEventListener(new ValueEventListener() {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot user : snapshot.getChildren()) {
-                    if (id.matches(user.getKey())) {
-                        firebaseAuthCallBacks.onCheckAdminResult(true);
-                        return;
+            public void run() {
+                FirebaseDatabase.getInstance().getReference().child("admins").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot user : snapshot.getChildren()) {
+                            if (id.matches(user.getKey())) {
+                                firebaseAuthCallBacks = (FirebaseAuthCallBacks) context;
+                                firebaseAuthCallBacks.onCheckAdminResult(true);
+                                return;
+                            }
+                        }
+                        firebaseAuthCallBacks.onCheckAdminResult(false);
                     }
-                }
-                firebaseAuthCallBacks.onCheckAdminResult(false);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
+                    }
+                });
             }
         });
+
     }
 
     public void logOut(Context context, OnSuccessListener<Void> listener) {
         AuthUI.getInstance().signOut(context).addOnSuccessListener(listener);
     }
 
-    public void createUserWithEmailAndPassword(User user, String password,FirebaseAuthCallBacks firebaseAuthCallBacks) {
-        mFirebaseAuth
-                .createUserWithEmailAndPassword(user.getEmail(), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    public void createUserWithEmailAndPassword(User user, String password, FirebaseAuthCallBacks firebaseAuthCallBacks) {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    signInUserWithEmailAndPassword(user,password,firebaseAuthCallBacks);
-                }
+            public void run() {
+                mFirebaseAuth.createUserWithEmailAndPassword(user.getEmail(), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                            signInUserWithEmailAndPassword(user, password, firebaseAuthCallBacks);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    private void signInUserWithEmailAndPassword(User user, String password, FirebaseAuthCallBacks firebaseAuthCallBacks) {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mFirebaseAuth.signInWithEmailAndPassword(user.getEmail(), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            user.setID(mFirebaseAuth.getCurrentUser().getUid());
+                            insertUser(user);
+                        }
+                    }
+                });
             }
         });
 
     }
 
-    private void signInUserWithEmailAndPassword(User user, String password,FirebaseAuthCallBacks firebaseAuthCallBacks) {
-        mFirebaseAuth.signInWithEmailAndPassword(user.getEmail(),password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    public void updateLocation(Location location, String id, OnSuccessListener<Void> listener) {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    insertUser(Objects.requireNonNull(mFirebaseAuth.getCurrentUser()));
-                    firebaseAuthCallBacks.onSignedInSuccessfully(user);
-                }
+            public void run() {
+                FirebaseDatabase.getInstance().getReference()
+                        .child(User.class.getSimpleName()).child(id).child(Location.class.getSimpleName().toLowerCase())
+                        .setValue(location).addOnSuccessListener(listener);
             }
         });
     }
+
 
     public interface FirebaseAuthCallBacks {
         void onLoginStateChanges(User user);
@@ -102,8 +138,6 @@ public class FirebaseAuthHelper {
         void onCheckAdminResult(boolean isAdmin);
 
         void onLoggedOutStateChanges();
-
-        void onSignedInSuccessfully(User user);
     }
 
     public FirebaseAuthHelper() {
@@ -112,22 +146,22 @@ public class FirebaseAuthHelper {
 
     public void attachAuthStateListener(Context context) {
         firebaseAuthCallBacks = (FirebaseAuthCallBacks) context;
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // loggedIn
-                    insertUser(user);
-                    firebaseAuthCallBacks.onLoginStateChanges(new User(user));
+        mAuthStateListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                // loggedIn
+                firebaseAuthCallBacks.onLoginStateChanges(new User(user));
 
-                } else {
-                    firebaseAuthCallBacks.onLoggedOutStateChanges();
-                    // logged out
-                }
+            } else {
+                firebaseAuthCallBacks.onLoggedOutStateChanges();
+                // logged out
             }
         };
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    public FirebaseUser getCurrUser() {
+        return mFirebaseAuth.getCurrentUser();
     }
 
     public void loginToFirebase(AppCompatActivity activity) {
@@ -156,21 +190,27 @@ public class FirebaseAuthHelper {
                 RC_SIGN_IN);
     }
 
-    private void insertUser(FirebaseUser user) {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child(User.class.getSimpleName());
-        userRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+    public void insertUser(User user) {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()) {
-                    userRef.child(user.getUid()).setValue(new User(user));
-                }
-            }
+            public void run() {
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child(User.class.getSimpleName());
+                userRef.child(user.getID()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.exists()) {
+                            userRef.child(user.getID()).setValue(user);
+                        }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
+                    }
+                });
             }
         });
+
     }
 
     public void detachAuthStateListener() {

@@ -11,6 +11,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,12 +23,13 @@ import androidx.core.content.ContextCompat;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
-import com.example.ultramarket.helpers.Utils;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -37,12 +40,17 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
     @OnClick(R.id.user_location_use_curr_loc_btn)
     public void onGetLocationClicked(View view) {
-        if (Utils.user != null)
+        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null)
             checkForPermissions();
         else {
             Toast.makeText(this, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
         }
     }
+
+    @BindView(R.id.user_location_progress_bar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.user_location_use_curr_loc_btn)
+    Button mGetLocationBtn;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -66,6 +74,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_CODE);
         } else {
+            mGetLocationBtn.setEnabled(false);
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
@@ -81,9 +90,9 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         try {
             List<Address> addresses = geocoder.getFromLocation(latitude,
                     longitude, 1);
-            Utils.user.setCity(addresses.get(0).getLocality());
-            Utils.user.setRoad(addresses.get(0).getFeatureName());
-            Utils.user.setCountry(addresses.get(0).getCountryName());
+            mCity = addresses.get(0).getLocality();
+            mRoad = addresses.get(0).getFeatureName();
+            mCountry = addresses.get(0).getCountryName();
         } catch (IOException e) {
             showAlertDialog(getString(R.string.location), getString(R.string.failed_location_details_go_to_profile));
         }
@@ -110,22 +119,46 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        if (Utils.user != null) {
-            Utils.user.setLatitude(location.getLatitude());
-            Utils.user.setLongitude(location.getLongitude());
-            getLocationDetails(location.getLatitude(),location.getLongitude());
-            FirebaseAuthHelper.getsInstance().updateUserData(Utils.user,null);
+        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
+            mLatitude = location.getLatitude();
+            mLongitude = location.getLongitude();
+            getLocationDetails(location.getLatitude(), location.getLongitude());
+            updateLocationOfUser(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
             locationManager.removeUpdates(this);
-            Toast.makeText(this, getString(R.string.location_saved), Toast.LENGTH_SHORT).show();
-            finish();
         }
     }
+
+    private void updateLocationOfUser(String uid) {
+        com.example.ultramarket.database.Entities.Location location = new com.example.ultramarket.database.Entities.Location(
+                mCountry,
+                mCity,
+                mRoad,
+                String.valueOf(mLatitude),
+                String.valueOf(mLongitude)
+        );
+        FirebaseAuthHelper.getsInstance().updateLocation(location, FirebaseAuthHelper.getsInstance().getCurrUser().getUid(),
+                new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(LocationActivity.this, getString(R.string.location_saved), Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+    }
+
+    private double mLatitude;
+    private double mLongitude;
+    private String mCountry;
+    private String mCity;
+    private String mRoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location);
+        setContentView(R.layout.user_activity_location);
         ButterKnife.bind(this);
+        mProgressBar.setVisibility(View.GONE);
+        mGetLocationBtn.setEnabled(true);
 
     }
 

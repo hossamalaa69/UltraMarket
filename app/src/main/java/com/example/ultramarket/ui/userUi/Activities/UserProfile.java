@@ -62,6 +62,7 @@ public class UserProfile extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     @BindView(R.id.user_profile_progress_bar)
     ProgressBar mProgressBar;
+    private User currUser;
 
     @OnClick(R.id.location_view)
     public void onLocationEditClicked(View view) {
@@ -72,15 +73,15 @@ public class UserProfile extends AppCompatActivity {
     public void onPersonalInfoEditClicked(View view) {
         showPersonalInfoDialog();
     }
+
     @OnClick(R.id.user_profile_logout)
-    public void onLogOutPressed(View view){
+    public void onLogOutPressed(View view) {
         showProgressBar();
         FirebaseAuthHelper.getsInstance().logOut(this, new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Utils.user = null;
                 hideProgressBar();
-                startActivity(new Intent(UserProfile.this,HomeActivity.class));
+                startActivity(new Intent(UserProfile.this, HomeActivity.class));
             }
         });
     }
@@ -88,6 +89,7 @@ public class UserProfile extends AppCompatActivity {
     private void showProgressBar() {
         mProgressBar.setVisibility(View.VISIBLE);
     }
+
     private void hideProgressBar() {
         mProgressBar.setVisibility(View.GONE);
     }
@@ -105,11 +107,12 @@ public class UserProfile extends AppCompatActivity {
             actionBar.setLogo(R.mipmap.ic_launcher_foreground);
         }
         hideProgressBar();
-        FirebaseDatabase.getInstance().getReference().child(User.class.getSimpleName()).child(Utils.user.getID())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().
+                child(User.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Utils.user = snapshot.getValue(User.class);
+                        currUser = snapshot.getValue(User.class);
                         updateProfile();
                     }
 
@@ -148,8 +151,8 @@ public class UserProfile extends AppCompatActivity {
         String email = mEmail.getText().toString().trim();
         String phone = mPhone.getText().toString().trim();
         if (checkIsValidMail(email) && checkIsValidPhone(phone)) {
-            Utils.user.setEmail(email);
-            Utils.user.setPhone(phone);
+            currUser.setEmail(email);
+            currUser.setPhone(phone);
             updateUserFirebaseData();
             updateProfile();
         } else {
@@ -158,7 +161,7 @@ public class UserProfile extends AppCompatActivity {
     }
 
     private boolean checkIsValidPhone(String phone) {
-        return Patterns.PHONE.matcher(phone).matches()&&phone.length()>6&&phone.length()<14;
+        return Patterns.PHONE.matcher(phone).matches() && phone.length() > 6 && phone.length() < 14;
     }
 
     private boolean checkIsValidMail(String email) {
@@ -166,8 +169,8 @@ public class UserProfile extends AppCompatActivity {
     }
 
     private void updatePersonalDialog() {
-        mEmail.setText(Utils.user.getEmail());
-        mPhone.setText(Utils.user.getPhone());
+        mEmail.setText(currUser.getEmail());
+        mPhone.setText(currUser.getPhone());
 
     }
 
@@ -185,7 +188,7 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i > 0)
-                    Utils.user.setCountry(adapterView.getItemAtPosition(i).toString());
+                    currUser.getLocation().setCountry_name(adapterView.getItemAtPosition(i).toString());
                 else
                     Toast.makeText(UserProfile.this, "you should select your country", Toast.LENGTH_LONG).show();
             }
@@ -215,12 +218,12 @@ public class UserProfile extends AppCompatActivity {
     }
 
     private void updateLocationDialog() {
-        mFloor.setText(String.valueOf(Utils.user.getFloor()));
-        mCity.setText(Utils.user.getCity());
-        mRoad.setText(Utils.user.getRoad());
-        if (adapter.getPosition(Utils.user.getCountry() != null ? Utils.user.getCountry() : "") > -1)
+        mFloor.setText(String.valueOf(currUser.getFloor()));
+        mCity.setText(currUser.getLocation().getCity_name());
+        mRoad.setText(currUser.getLocation().getRoad_name());
+        if (adapter.getPosition(currUser.getLocation().getCountry_name() != null ? currUser.getLocation().getCountry_name() : "") > -1)
             mCountrySpinner.setSelection(
-                    adapter.getPosition(Utils.user.getCountry() != null ? Utils.user.getCountry() : ""));
+                    adapter.getPosition(currUser.getLocation().getCountry_name() != null ? currUser.getLocation().getCountry_name() : ""));
 
     }
 
@@ -232,7 +235,7 @@ public class UserProfile extends AppCompatActivity {
     };
 
     private void updateUserFirebaseData() {
-        FirebaseAuthHelper.getsInstance().updateUserData(Utils.user, onUpdateUserListener);
+        FirebaseAuthHelper.getsInstance().updateUserData(currUser, onUpdateUserListener);
     }
 
     private void updateLocationData() {
@@ -243,24 +246,24 @@ public class UserProfile extends AppCompatActivity {
             Toast.makeText(this, R.string.fields_cant_be_empty, Toast.LENGTH_SHORT).show();
             return;
         }
-        Utils.user.setRoad(road);
-        Utils.user.setCity(city);
-        Utils.user.setFloor(floor);
-        FirebaseAuthHelper.getsInstance().updateUserData(Utils.user, onUpdateUserListener);
+        currUser.getLocation().setRoad_name(road);
+        currUser.getLocation().setCity_name(city);
+        currUser.setFloor(floor);
+        FirebaseAuthHelper.getsInstance().updateUserData(currUser, onUpdateUserListener);
         updateProfile();
     }
 
 
     private void updateProfile() {
-        if (Utils.user != null) {
-            mUserCity.setText(getString(R.string.city, Utils.user.getCity()));
-            mUserFloor.setText(getString(R.string.floor, String.valueOf(Utils.user.getFloor())));
-            mUserEmail.setText(getString(R.string.email_container, Utils.user.getEmail()));
-            mUserPhone.setText(getString(R.string.phone_container, Utils.user.getPhone()));
-            mUserRoad.setText(getString(R.string.road, Utils.user.getRoad()));
-            mUserName.setText(Utils.user.getName());
-            mUserCountry.setText(getString(R.string.country, Utils.user.getCountry()));
-            Picasso.get().load(Utils.user.getImageUrl()).into(mUserImg);
+        if (currUser != null) {
+            mUserCity.setText(getString(R.string.city, currUser.getLocation().getCity_name()));
+            mUserFloor.setText(getString(R.string.floor, String.valueOf(currUser.getFloor())));
+            mUserEmail.setText(getString(R.string.email_container, currUser.getEmail()));
+            mUserPhone.setText(getString(R.string.phone_container, currUser.getPhone()));
+            mUserRoad.setText(getString(R.string.road, currUser.getLocation().getRoad_name()));
+            mUserName.setText(currUser.getName());
+            mUserCountry.setText(getString(R.string.country,currUser.getLocation().getCountry_name()));
+            Picasso.get().load(currUser.getImageUrl()).into(mUserImg);
         }
     }
 }

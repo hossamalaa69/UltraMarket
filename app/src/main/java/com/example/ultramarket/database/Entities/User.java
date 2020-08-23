@@ -20,17 +20,13 @@ public class User {
 
     private String name;
 
-    private double longitude;
-
-    private double latitude;
-
     private String building;
-
-    private int floor;
 
     private String phone;
 
     private String imageUrl;
+    @Ignore
+    private Location location;
 
     private int rate;
 
@@ -44,25 +40,37 @@ public class User {
     @Ignore
     @Exclude
     private int imageID;
-    private String city;
-    private String road;
-    private String country;
-
+    private int floor;
     public User(String ID, String email, String name,
-                double longitude, double latitude, String building,
+                String building,
                 int floor, String phone, String imageUrl, int rate) {
 
         this.ID = ID;
         this.email = email;
         this.name = name;
-        this.longitude = longitude;
-        this.latitude = latitude;
         this.building = building;
         this.floor = floor;
         this.phone = phone;
         this.imageUrl = imageUrl;
         this.rate = rate;
         this.isExpanded = false;
+    }
+
+    @Ignore
+    public User(@NotNull String ID, String email, String name, String building,
+                String phone, String imageUrl, Location location, int rate, boolean isExpanded, int numOrders, int imageID, int floor) {
+        this.ID = ID;
+        this.email = email;
+        this.name = name;
+        this.building = building;
+        this.phone = phone;
+        this.imageUrl = imageUrl;
+        this.location = location;
+        this.rate = rate;
+        this.isExpanded = isExpanded;
+        this.numOrders = numOrders;
+        this.imageID = imageID;
+        this.floor = floor;
     }
 
     @Ignore
@@ -81,6 +89,16 @@ public class User {
     }
 
     @Ignore
+    public Location getLocation() {
+        return location;
+    }
+
+    @Ignore
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    @Ignore
     public  User(FirebaseUser user) {
         ID = user.getUid();
         imageUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null;
@@ -88,6 +106,7 @@ public class User {
         name = user.getDisplayName();
         phone = user.getPhoneNumber();
     }
+
 
     public String getID() {
         return ID;
@@ -113,34 +132,6 @@ public class User {
         this.name = name;
     }
 
-    public void setRoad(String road) {
-        this.road = road;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
     public String getBuilding() {
         return building;
     }
@@ -161,9 +152,6 @@ public class User {
         return phone;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
 
     public void setPhone(String phone) {
         this.phone = phone;
@@ -216,13 +204,5 @@ public class User {
     @Ignore
     public void setImageID(int imageID) {
         this.imageID = imageID;
-    }
-
-    public String getCity() {
-        return this.city;
-    }
-
-    public String getRoad() {
-     return this.road;
     }
 }

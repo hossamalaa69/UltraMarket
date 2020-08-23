@@ -8,10 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.ultramarket.R;
-import com.example.ultramarket.database.AppDatabase;
 import com.example.ultramarket.database.DAOs.ProdDao;
 import com.example.ultramarket.database.Entities.Product;
-import com.example.ultramarket.helpers.AppExecutors;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

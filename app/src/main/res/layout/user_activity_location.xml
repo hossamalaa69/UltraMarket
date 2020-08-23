@@ -24,7 +24,10 @@
         android:background="@android:color/transparent"
         android:contentDescription="@string/logo_image"
         android:src="@drawable/logo" />
-
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_location_progress_bar"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

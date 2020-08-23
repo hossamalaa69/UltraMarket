@@ -114,4 +114,6 @@
     <string name="uploaded_success">Uploaded Successfully</string>
     <string name="enter_full_data">Enter full data</string>
     <string name="brand_added">Brand added</string>
+    <string name="already_signed_in">You are already signed in with email : %1$s</string>
+    <string name="not_logged_in">Not logged in</string>
 </resources>

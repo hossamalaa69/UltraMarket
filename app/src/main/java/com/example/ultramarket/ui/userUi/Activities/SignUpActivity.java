@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,15 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.User;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
-import com.example.ultramarket.helpers.Utils;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
+import com.example.ultramarket.ui.adminLayer.AdminHomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHelper.FirebaseAuthCallBacks {
 
     @BindView(R.id.user_sign_up_confirm_password)
     EditText mConfirmPass;
@@ -33,46 +32,58 @@ public class SignUpActivity extends AppCompatActivity {
     EditText mUserName;
     @BindView(R.id.user_sign_up_country)
     EditText mCountry;
+    @BindView(R.id.user_sign_up_progress_bar)
+    ProgressBar mProgressBar;
+    private static boolean isNewEmail = true;
 
     @OnClick(R.id.user_sign_up_create_email_btn)
     public void onCreateEmailClicked(View View) {
         // TODO create Email
         if (isValidInputs()) {
+            isNewEmail = true;
+            mProgressBar.setVisibility(android.view.View.VISIBLE);
             User user = getUserDataFromUi();
             String password = mPass.getText().toString().trim();
-            FirebaseAuthHelper.getsInstance().createUserWithEmailAndPassword(user, password, new FirebaseAuthHelper.FirebaseAuthCallBacks() {
-                @Override
-                public void onLoginStateChanges(User user) {
-
-                }
-
-                @Override
-                public void onCheckAdminResult(boolean isAdmin) {
-
-                }
-
-                @Override
-                public void onLoggedOutStateChanges() {
-
-                }
-
-                @Override
-                public void onSignedInSuccessfully(User user) {
-                    Utils.user = user;
-                    startActivity(new Intent(SignUpActivity.this,HomeActivity.class));
-                }
-            });
+            FirebaseAuthHelper.getsInstance().createUserWithEmailAndPassword(user, password, this);
         } else {
-            Toast.makeText(this,R.string.invalid_data,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.invalid_data, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onLoginStateChanges(User user) {
+        User insertedUser;
+        if (isNewEmail)
+            insertedUser = getUserDataFromUi();
+        else
+            insertedUser = user;
+        insertedUser.setID(user.getID());
+        FirebaseAuthHelper.getsInstance().insertUser(insertedUser);
+        FirebaseAuthHelper.getsInstance().isAdmin(insertedUser.getID(), SignUpActivity.this);
+    }
+
+    @Override
+    public void onCheckAdminResult(boolean isAdmin) {
+        mProgressBar.setVisibility(View.GONE);
+        if (isAdmin) {
+            startActivity(new Intent(SignUpActivity.this, AdminHomeActivity.class));
+
+        } else {
+            startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
+        }
+    }
+
+    @Override
+    public void onLoggedOutStateChanges() {
+
     }
 
     private User getUserDataFromUi() {
         User user = new User();
-        user.setPhone(mPhone.getText().toString());
-        user.setEmail(mEmail.getText().toString());
-        user.setName(mUserName.getText().toString());
-        user.setCountry(mCountry.getText().toString());
+        user.setPhone(mPhone.getText().toString().trim());
+        user.setEmail(mEmail.getText().toString().trim());
+        user.setName(mUserName.getText().toString().trim());
+        user.getLocation().setCountry_name(mCountry.getText().toString().trim());
         return user;
     }
 
@@ -93,17 +104,32 @@ public class SignUpActivity extends AppCompatActivity {
     @OnClick(R.id.user_sign_up_create_sign_in_btn)
     public void onSignInClicked(View view) {
         signInWithEmailOrGoogle();
-        finish();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.user_activity_sign_up);
         ButterKnife.bind(this);
+        mProgressBar.setVisibility(View.GONE);
+        isNewEmail = true;
+
     }
 
     private void signInWithEmailOrGoogle() {
+        isNewEmail = false;
         FirebaseAuthHelper.getsInstance().loginToFirebase(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseAuthHelper.getsInstance().attachAuthStateListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FirebaseAuthHelper.getsInstance().detachAuthStateListener();
     }
 }

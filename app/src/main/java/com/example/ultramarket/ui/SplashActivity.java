@@ -15,7 +15,6 @@ import com.example.ultramarket.NetworkConnection.NetworkReceiver;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.User;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
-import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.adminLayer.AdminHomeActivity;
 import com.example.ultramarket.ui.userUi.Activities.HomeActivity;
 
@@ -25,32 +24,24 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
     private AlertDialog mAlertDialog;
     public static boolean isBackPressed = false;
 
+
     @Override
     public void onLoginStateChanges(User user) {
-        Utils.user = user;
         FirebaseAuthHelper.getsInstance().isAdmin(user.getID(), this);
-    }
-
-    @Override
-    public void onSignedInSuccessfully(User user) {
-
     }
 
     @Override
     public void onCheckAdminResult(boolean isAdmin) {
         if (isAdmin) {
             startActivity(new Intent(this, AdminHomeActivity.class));
-            Toast.makeText(this, "Admin ".concat(Utils.user.getEmail()), Toast.LENGTH_SHORT).show();
         } else {
             startActivity(new Intent(this, HomeActivity.class));
-            Toast.makeText(this, "logged in\n".concat(Utils.user.getEmail()), Toast.LENGTH_SHORT).show();
         }
         finish();
     }
 
     @Override
     public void onLoggedOutStateChanges() {
-        Utils.user = null;
         startActivity(new Intent(this, HomeActivity.class));
         finish();
     }
@@ -119,12 +110,18 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
     @Override
     protected void onResume() {
         super.onResume();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FirebaseAuthHelper.getsInstance().detachAuthStateListener();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         //this.unregisterReceiver(br);
-        FirebaseAuthHelper.getsInstance().detachAuthStateListener();
     }
 }
