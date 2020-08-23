@@ -61,9 +61,15 @@ public class AdminHomeActivity extends AppCompatActivity {
 
     private void sendToTarget(int position){
 
-        if(position == 2){
-            Intent i = new Intent(this, CustomersActivity.class);
-            startActivity(i);
+        switch (position) {
+            case 1:
+                Intent i = new Intent(this, WarehouseActivity.class);
+                startActivity(i);
+                break;
+            case 2:
+                Intent intent = new Intent(this, CustomersActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -90,7 +96,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         descriptions.add(getString(R.string.dashboard));
 
         images.add(R.drawable.ic_products);
-        descriptions.add(getString(R.string.products));
+        descriptions.add(getString(R.string.warehouse));
 
         images.add(R.drawable.ic_customers);
         descriptions.add(getString(R.string.customers));

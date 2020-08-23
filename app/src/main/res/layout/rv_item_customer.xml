@@ -36,7 +36,7 @@
                 android:src="@drawable/logo"
                 android:layout_centerVertical="true"
                 app:civ_border_width="1dp"
-                app:civ_border_color="@color/purple1" />
+                app:civ_border_color="@color/White" />
 
                 <TextView
                 android:id="@+id/user_name"

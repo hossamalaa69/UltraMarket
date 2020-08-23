@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.CustomersAdapter;
@@ -25,6 +27,7 @@ public class CustomersActivity extends AppCompatActivity {
 
     CustomersViewModel customersViewModel;
 
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class CustomersActivity extends AppCompatActivity {
     }
 
     private void setupRecycler(){
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar_customers);
         userList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
         customersAdapter = new CustomersAdapter(this, userList);
@@ -48,7 +52,10 @@ public class CustomersActivity extends AppCompatActivity {
     private void setupLiveData() {
         customersViewModel  = new ViewModelProvider(this).get(CustomersViewModel.class);
         customersViewModel.loadAllCustomers();
-        customersViewModel.loadAllCustomers().observe(this, users -> customersAdapter.setUserList(users));
+        customersViewModel.loadAllCustomers().observe(this, (List<User> users) -> {
+            customersAdapter.setUserList(users);
+            progressBar.setVisibility(View.GONE);
+        });
     }
 
     private void insertDummyData(){

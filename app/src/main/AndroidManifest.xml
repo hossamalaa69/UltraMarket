@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.userUi.Activities.SignUpActivity"></activity>
+        <activity android:name=".ui.adminLayer.WarehouseActivity" android:label="Warehouse"></activity>
+        <activity android:name=".ui.userUi.Activities.SignUpActivity" />
         <activity
             android:name=".ui.userUi.Activities.UserProfile"
             android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
@@ -30,15 +31,17 @@
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".ui.adminLayer.AdminHomeActivity"
+            android:label="Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity
-            android:name=".ui.adminLayer.AdminHomeActivity"
-            android:label="Home" />
     </application>
 
 </manifest>
