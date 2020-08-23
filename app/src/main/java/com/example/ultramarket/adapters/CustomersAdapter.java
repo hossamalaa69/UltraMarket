@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,7 +22,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.MovieVH> {
+public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.UserVH> {
 
     private static final String TAG = "CustomersAdapter";
     List<User> userList;
@@ -36,13 +35,13 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Movi
 
     @NonNull
     @Override
-    public MovieVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UserVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_item_customer, parent, false);
-        return new MovieVH(view);
+        return new UserVH(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieVH holder, int position) {
+    public void onBindViewHolder(@NonNull UserVH holder, int position) {
 
         User user = userList.get(position);
         holder.nameTextView.setText(user.getName());
@@ -80,7 +79,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Movi
         return userList.size();
     }
 
-    class MovieVH extends RecyclerView.ViewHolder {
+    class UserVH extends RecyclerView.ViewHolder {
 
         private static final String TAG = "CustomerVH";
 
@@ -91,7 +90,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Movi
 
         RelativeLayout mainView;
 
-        public MovieVH(@NonNull final View itemView) {
+        public UserVH(@NonNull final View itemView) {
             super(itemView);
 
             nameTextView = (TextView) itemView.findViewById(R.id.user_name);

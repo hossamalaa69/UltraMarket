@@ -1,7 +1,6 @@
 package com.example.ultramarket.ui.adminLayer;
 
 import android.app.Application;
-import android.content.Context;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -9,7 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.ultramarket.R;
-import com.example.ultramarket.database.Entities.Product;
+import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,27 +19,24 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomersViewModel extends AndroidViewModel {
+public class BrandsManagementViewModel extends AndroidViewModel {
 
-    private MutableLiveData<List<User>> listMutableLiveData = new MutableLiveData<>();
+    MutableLiveData<List<Brand>> brandListMutableLiveData = new MutableLiveData<>();
 
-    public CustomersViewModel(@NonNull Application application) {
+    public BrandsManagementViewModel(@NonNull Application application) {
         super(application);
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(User.class.getSimpleName());
-        List<User> userList = new ArrayList<>();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(Brand.class.getSimpleName());
+        List<Brand> brandList = new ArrayList<>();
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userList.clear();
+                brandList.clear();
                 for (DataSnapshot snap : snapshot.getChildren()) {
-                    User user = snap.getValue(User.class);
-                    if(user.getEmail().equals(application.getString(R.string.admin_email)))
-                        continue;
-                    user.setNumOrders(3);
-                    userList.add(user);
+                    Brand brand = snap.getValue(Brand.class);
+                    brandList.add(brand);
                 }
-                listMutableLiveData.setValue(userList);
+                brandListMutableLiveData.setValue(brandList);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -49,7 +45,7 @@ public class CustomersViewModel extends AndroidViewModel {
         });
     }
 
-    public MutableLiveData<List<User>> loadAllCustomers(){
-        return listMutableLiveData;
+    public MutableLiveData<List<Brand>> loadAllBrands(){
+        return brandListMutableLiveData;
     }
 }

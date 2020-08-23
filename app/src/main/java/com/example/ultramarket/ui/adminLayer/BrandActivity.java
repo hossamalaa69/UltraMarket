@@ -32,7 +32,6 @@ public class BrandActivity extends AppCompatActivity {
     private final static int GET_FROM_GALLERY = 1000;
     private final static int READ_MEDIA_PERMISSION_CODE = 1001;
 
-    private FirebaseStorage mFirebaseStorage;
     private StorageReference mStorageReference;
 
     private DatabaseReference brandDbReference;
@@ -71,8 +70,7 @@ public class BrandActivity extends AppCompatActivity {
 
     private void uploadToFirebase() {
 
-        mFirebaseStorage = FirebaseStorage.getInstance();
-        mStorageReference = mFirebaseStorage.getReference().child("Brands");
+        mStorageReference = FirebaseStorage.getInstance().getReference().child("Brands");
 
         final StorageReference photoRef = mStorageReference.child(selectedImage.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(selectedImage);

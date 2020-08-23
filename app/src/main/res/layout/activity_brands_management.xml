@@ -12,7 +12,8 @@
         android:id="@+id/brands_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"/>
+        android:layout_margin="5dp"/>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_add"
@@ -20,12 +21,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_gravity="end|bottom"
-        android:backgroundTint="@color/pink2"
+        android:backgroundTint="@color/colorGreen"
         android:src="@drawable/ic_add_white"
         app:borderWidth="0dp"
         android:onClick="addBrand"
         android:layout_margin="22dp"/>
+
+    <ProgressBar
+        android:id="@+id/brands_progress"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+        />
 
 </RelativeLayout>
