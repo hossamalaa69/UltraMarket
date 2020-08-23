@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.adminLayer.WarehouseActivity" android:label="Warehouse"></activity>
+        <activity android:name=".ui.adminLayer.BrandActivity" android:label="Brand"></activity>
+        <activity android:name=".ui.adminLayer.BrandsManagementActivity" />
+        <activity
+            android:name=".ui.adminLayer.WarehouseActivity"
+            android:label="Warehouse" />
         <activity android:name=".ui.userUi.Activities.SignUpActivity" />
         <activity
             android:name=".ui.userUi.Activities.UserProfile"
@@ -30,8 +36,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.adminLayer.AdminHomeActivity"
             android:label="Home">
@@ -40,7 +45,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 

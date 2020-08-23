@@ -8,19 +8,16 @@ import android.view.View;
 
 import com.example.ultramarket.R;
 
-public class WarehouseActivity extends AppCompatActivity {
+public class BrandsManagementActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_warehouse);
+        setContentView(R.layout.activity_brands_management);
     }
 
-    public void openBrands(View view) {
-        Intent i = new Intent(this, BrandsManagementActivity.class);
+    public void addBrand(View view) {
+        Intent i = new Intent(this, BrandActivity.class);
         startActivity(i);
-    }
-
-    public void openCategories(View view) {
     }
 }

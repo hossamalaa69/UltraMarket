@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_purple_background"
+    tools:context=".ui.adminLayer.BrandsManagementActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/brands_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end|bottom"
+        android:backgroundTint="@color/pink2"
+        android:src="@drawable/ic_add_white"
+        app:borderWidth="0dp"
+        android:onClick="addBrand"
+        android:layout_margin="22dp"/>
+
+</RelativeLayout>

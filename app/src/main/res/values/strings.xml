@@ -69,7 +69,7 @@
     <string name="choose_manually">Choose manually</string>
     <string name="allow_location_perimission">you should allow app to know your location</string>
     <string name="location_access_message">to add locatoin you need to allow locatioin access</string>
-    <string name="permission_denied">permission denied</string>
+    <string name="permission_denied">permission denied …!</string>
     <string name="permission_confirmed">Permission Confirmed</string>
     <string name="you_must_signin_first">you must sign in first</string>
     <string name="location_saved">location saved</string>
@@ -107,4 +107,11 @@
     <string name="country_optional">Country (optional)</string>
     <string name="invalid_data">Invalid inputs</string>
     <string name="warehouse">Warehouse</string>
+    <string name="add_brand">Add Brand</string>
+    <string name="name">Name</string>
+    <string name="allow_permission">We should have the permission to be allowed to upload your image</string>
+    <string name="failed_upload">Failed Uploading</string>
+    <string name="uploaded_success">Uploaded Successfully</string>
+    <string name="enter_full_data">Enter full data</string>
+    <string name="brand_added">Brand added</string>
 </resources>
