@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -19,15 +18,9 @@ import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.adminLayer.AdminHomeActivity;
 import com.example.ultramarket.ui.userUi.Activities.HomeActivity;
-import com.firebase.ui.auth.AuthUI;
-
-import java.util.Arrays;
-import java.util.List;
-
-import gr.net.maroulis.library.EasySplashScreen;
 
 public class SplashActivity extends AppCompatActivity implements NetworkReceiver.ConnectionReceiver,
-        FirebaseAuthHelper.FirebaseAuthCallBacks{
+        FirebaseAuthHelper.FirebaseAuthCallBacks {
     BroadcastReceiver br;
     private AlertDialog mAlertDialog;
     public static boolean isBackPressed = false;
@@ -35,39 +28,45 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
     @Override
     public void onLoginStateChanges(User user) {
         Utils.user = user;
-        FirebaseAuthHelper.getsInstance().isAdmin(user.getID(),this);
+        FirebaseAuthHelper.getsInstance().isAdmin(user.getID(), this);
+    }
+
+    @Override
+    public void onSignedInSuccessfully(User user) {
+
     }
 
     @Override
     public void onCheckAdminResult(boolean isAdmin) {
-        if(isAdmin){
+        if (isAdmin) {
             startActivity(new Intent(this, AdminHomeActivity.class));
             Toast.makeText(this, "Admin ".concat(Utils.user.getEmail()), Toast.LENGTH_SHORT).show();
-
-        }else{
+        } else {
             startActivity(new Intent(this, HomeActivity.class));
             Toast.makeText(this, "logged in\n".concat(Utils.user.getEmail()), Toast.LENGTH_SHORT).show();
         }
+        finish();
     }
 
     @Override
     public void onLoggedOutStateChanges() {
         Utils.user = null;
         startActivity(new Intent(this, HomeActivity.class));
+        finish();
     }
+
     @Override
     public void onConnectionReceived(boolean isConnected) {
         //TODO add listener for connectivity changes
-        int  toastMsg = R.string.back_online;
-        if(mAlertDialog!=null && isConnected){
+        int toastMsg = R.string.back_online;
+        if (mAlertDialog != null && isConnected) {
             mAlertDialog.dismiss();
             mAlertDialog = null;
             attachAuthListener();
-        }
-        else if (!isConnected){
+        } else if (!isConnected) {
             toastMsg = R.string.you_are_offline;
         }
-        Toast.makeText(SplashActivity.this, toastMsg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(SplashActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
     }
 
     private void attachAuthListener() {
@@ -120,9 +119,6 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
     @Override
     protected void onResume() {
         super.onResume();
-        if(isBackPressed){
-            finish();
-        }
     }
 
     @Override

@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
+        android:padding="5dp"
         tools:context=".ui.userUi.Activities.UserProfile">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -19,7 +20,7 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/splash_logo_margin"
             android:background="@drawable/cirucler_background"
-            android:padding="7dp"
+            android:padding="3dp"
             android:src="@drawable/logo" />
 
         <TextView
@@ -29,6 +30,7 @@
             android:layout_below="@id/user_profile_img"
             android:layout_marginTop="@dimen/profile_title_margin"
             android:gravity="center"
+            android:padding="10dp"
             android:textColor="@android:color/black"
             android:textSize="@dimen/profile_user_name_size"
             tools:text="kahled ali" />
@@ -47,7 +49,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/line1"
-            android:drawablePadding="5dp"
             android:text="@string/location"
             app:drawableEndCompat="@drawable/edit_location_24"
             app:drawableTint="@color/colorPrimary" />
@@ -58,8 +59,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/location_view"
-            android:drawablePadding="5dp"
-
             android:textColor="@color/dark_gray"
             app:drawableStartCompat="@drawable/country"
             app:drawableTint="@color/purple2" />
@@ -68,7 +67,6 @@
             android:id="@+id/user_profile_city"
             style="@style/SideTitle"
             android:layout_width="match_parent"
-            android:drawablePadding="5dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_profile_country"
             android:textColor="@color/dark_gray"
@@ -82,8 +80,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/user_profile_city"
             android:textColor="@color/dark_gray"
-            android:drawablePadding="5dp"
-
             app:drawableStartCompat="@drawable/road"
             app:drawableTint="@color/purple2" />
 
@@ -91,7 +87,6 @@
             android:id="@+id/user_profile_floor"
             style="@style/SideTitle"
             android:layout_width="match_parent"
-            android:drawablePadding="5dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_profile_road"
             android:textColor="@color/dark_gray"
@@ -112,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/line2"
-            android:drawablePadding="5dp"
+
             android:text="@string/personal_info"
             app:drawableEndCompat="@drawable/ic_baseline_edit_24" />
 
@@ -122,7 +117,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/personal_info"
-            android:drawablePadding="5dp"
             android:textColor="@color/dark_gray"
             app:drawableStartCompat="@drawable/email_24"
             app:drawableTint="@color/purple2" />
@@ -131,7 +125,6 @@
             android:id="@+id/user_profile_phone"
             style="@style/SideTitle"
             android:layout_width="match_parent"
-            android:drawablePadding="5dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_profile_email"
             android:textColor="@color/dark_gray"

@@ -7,8 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.User;
+import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class FirebaseAuthHelper {
     private FirebaseAuth mFirebaseAuth;
@@ -62,8 +67,33 @@ public class FirebaseAuthHelper {
         });
     }
 
-    public void logOut(Context context,OnSuccessListener<Void> listener) {
+    public void logOut(Context context, OnSuccessListener<Void> listener) {
         AuthUI.getInstance().signOut(context).addOnSuccessListener(listener);
+    }
+
+    public void createUserWithEmailAndPassword(User user, String password,FirebaseAuthCallBacks firebaseAuthCallBacks) {
+        mFirebaseAuth
+                .createUserWithEmailAndPassword(user.getEmail(), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    signInUserWithEmailAndPassword(user,password,firebaseAuthCallBacks);
+                }
+            }
+        });
+
+    }
+
+    private void signInUserWithEmailAndPassword(User user, String password,FirebaseAuthCallBacks firebaseAuthCallBacks) {
+        mFirebaseAuth.signInWithEmailAndPassword(user.getEmail(),password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    insertUser(Objects.requireNonNull(mFirebaseAuth.getCurrentUser()));
+                    firebaseAuthCallBacks.onSignedInSuccessfully(user);
+                }
+            }
+        });
     }
 
     public interface FirebaseAuthCallBacks {
@@ -72,6 +102,8 @@ public class FirebaseAuthHelper {
         void onCheckAdminResult(boolean isAdmin);
 
         void onLoggedOutStateChanges();
+
+        void onSignedInSuccessfully(User user);
     }
 
     public FirebaseAuthHelper() {
@@ -102,14 +134,24 @@ public class FirebaseAuthHelper {
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build());
+                new AuthUI.IdpConfig.GoogleBuilder().build()
+        );
+
+        AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
+                .Builder(R.layout.login_layout) //your layout name
+                .setEmailButtonId(R.id.email_button)
+                .setGoogleButtonId(R.id.google_button)
+                .build();
+
         // Create and launch sign-in intent
+        AuthUI.SignInIntentBuilder builder = AuthUI.getInstance().createSignInIntentBuilder();
+
         activity.startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
+                builder.setAuthMethodPickerLayout(customLayout)
                         .setIsSmartLockEnabled(false)
                         .setLogo(R.drawable.logo)
                         .setAvailableProviders(providers)
+                        .setTheme(R.style.AppTheme)
                         .build(),
                 RC_SIGN_IN);
     }

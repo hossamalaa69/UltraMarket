@@ -93,4 +93,17 @@
     <string name="invalid_mail_or_phone">Invalid Email or Phone number</string>
     <string name="logout">Log Out</string>
     <string name="admin_email">admin@ultramarket.com</string>
+    <string name="don_t_have_acount_sign_up">don\'t have acount?\nsign up!</string>
+    <string name="google">GOOGLE</string>
+    <string name="sign_in_nenjoy_more_features_nmade_for_you">Enjoy More Features\nMade For You</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="create_your_email">Create Your Email</string>
+    <string name="user_name">User Name (required)</string>
+    <string name="confirm_password">Confirm password (required)</string>
+    <string name="email_required">Email (required)</string>
+    <string name="phone_required">Phone (required)</string>
+    <string name="password_required">Password (required)</string>
+    <string name="country_optional">Country (optional)</string>
+    <string name="invalid_data">Invalid inputs</string>
 </resources>

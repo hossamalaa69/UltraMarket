@@ -20,7 +20,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.user_adapters.ViewPagerAdapter;
-import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.framgnets.user_fragments.UserWishlistFrag;
 import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.SplashActivity;
@@ -74,7 +73,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onLoginClickListener() {
-        FirebaseAuthHelper.getsInstance().loginToFirebase(this);
+        startActivity(new Intent(HomeActivity.this, SignUpActivity.class));
     }
 
 
@@ -108,7 +107,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.user_drawer_track:
                 // go to track order
             case R.id.user_drawer_login:
-                FirebaseAuthHelper.getsInstance().loginToFirebase(this);
+                startActivity(new Intent(this, SignUpActivity.class));
             case R.id.user_drawer_contact_us:
                 // contactUs();
             case R.id.user_drawer_terms:

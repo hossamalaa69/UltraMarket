@@ -15,9 +15,10 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.userUi.Activities.SignUpActivity"></activity>
         <activity
             android:name=".ui.userUi.Activities.UserProfile"
-            android:parentActivityName=".ui.userUi.Activities.HomeActivity"/>
+            android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
         <activity android:name=".ui.userUi.Activities.LocationActivity" />
         <activity
             android:name=".ui.adminLayer.CustomersActivity"
