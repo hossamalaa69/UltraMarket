@@ -3,6 +3,7 @@ package com.example.ultramarket.ui.adminLayer;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.BrandsAdminAdapter;
@@ -35,6 +37,8 @@ public class BrandsManagementActivity extends AppCompatActivity {
         initRecycler();
 
         setupViewModel();
+
+        setupSwipe();
     }
 
     private void initRecycler(){
@@ -56,6 +60,27 @@ public class BrandsManagementActivity extends AppCompatActivity {
                 progressBar_brands.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void setupSwipe(){
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            // Called when a user swipes left or right on a ViewHolder
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                // Here is where you'll implement swipe to delete
+                  progressBar_brands.setVisibility(View.VISIBLE);
+                  int position = viewHolder.getAdapterPosition();
+                  List<Brand> brands = brandsAdminAdapter.getBrands();
+                  Toast.makeText(BrandsManagementActivity.this, ""+position, Toast.LENGTH_SHORT).show();
+                  brandsManagementViewModel.deleteBrand(brands.get(position));
+            }
+        }).attachToRecyclerView(recyclerView);
     }
 
     public void addBrand(View view) {

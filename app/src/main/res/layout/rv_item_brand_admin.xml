@@ -17,17 +17,17 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:background="@drawable/gradient_pink_background">
-        <de.hdodenhof.circleimageview.CircleImageView
+
+        <ImageView
             android:id="@+id/img_brand_rv"
             android:layout_margin="10dp"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:scaleType="fitXY"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_image_placeholder"
             android:background="@color/transparent"
-            android:backgroundTint="@color/transparent"
-            app:civ_border_width="0dp"
-            app:civ_border_color="@color/White" />
+            android:backgroundTint="@color/transparent" />
 
         <TextView
             android:id="@+id/brand_name_rv"

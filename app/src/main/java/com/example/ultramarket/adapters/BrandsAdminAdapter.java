@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,6 +60,10 @@ public class BrandsAdminAdapter extends RecyclerView.Adapter<BrandsAdminAdapter.
         notifyDataSetChanged();
     }
 
+    public List<Brand> getBrands(){
+        return brandList;
+    }
+
     public void clearData() {
         brandList.clear(); // clear list
         notifyDataSetChanged(); // let your adapter know about the changes and reload view.
@@ -74,13 +79,13 @@ public class BrandsAdminAdapter extends RecyclerView.Adapter<BrandsAdminAdapter.
         private static final String TAG = "BrandVH";
 
         TextView nameTextView;
-        CircleImageView brandImage;
+        ImageView brandImage;
 
         public BrandVH(@NonNull final View itemView) {
             super(itemView);
 
             nameTextView = (TextView) itemView.findViewById(R.id.brand_name_rv);
-            brandImage = (CircleImageView) itemView.findViewById(R.id.img_brand_rv);
+            brandImage = (ImageView) itemView.findViewById(R.id.img_brand_rv);
         }
     }
 }
