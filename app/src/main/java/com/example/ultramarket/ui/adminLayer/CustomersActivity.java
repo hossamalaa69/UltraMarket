@@ -37,12 +37,6 @@ public class CustomersActivity extends AppCompatActivity {
 
     }
 
-    private void setupLiveData() {
-        customersViewModel  = new ViewModelProvider(this).get(CustomersViewModel.class);
-        customersViewModel.loadAllCustomers();
-        customersViewModel.loadAllCustomers().observe(this, users -> customersAdapter.setUserList(users));
-    }
-
     private void setupRecycler(){
         userList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
@@ -51,6 +45,11 @@ public class CustomersActivity extends AppCompatActivity {
         recyclerView.setAdapter(customersAdapter);
     }
 
+    private void setupLiveData() {
+        customersViewModel  = new ViewModelProvider(this).get(CustomersViewModel.class);
+        customersViewModel.loadAllCustomers();
+        customersViewModel.loadAllCustomers().observe(this, users -> customersAdapter.setUserList(users));
+    }
 
     private void insertDummyData(){
         userList = new ArrayList<>();

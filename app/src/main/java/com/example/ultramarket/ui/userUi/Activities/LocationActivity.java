@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LocationActivity extends AppCompatActivity implements LocationListener, ActivityCompat.OnRequestPermissionsResultCallback {
+
     private static final int REQUEST_CODE = 1;
     private LocationManager locationManager;
 

@@ -11,7 +11,7 @@ public class Category {
 
     @NotNull
     @PrimaryKey
-    private long ID;
+    private String ID;
 
     private String name;
 
@@ -21,17 +21,17 @@ public class Category {
     public Category() {
     }
 
-    public Category(long ID, String name, String image) {
+    public Category(String ID, String name, String image) {
         this.ID = ID;
         this.name = name;
         this.image = image;
     }
 
-    public long getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(long ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 

@@ -1,5 +1,6 @@
 package com.example.ultramarket.framgnets.user_fragments;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -57,7 +58,7 @@ public class UserWishlistFrag extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         listener = (OnClickedListener) getContext();
-        mViewModel = ViewModelProviders.of(this).get(UserWishlistViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(UserWishlistViewModel.class);
         // TODO: Use the ViewModel
     }
 

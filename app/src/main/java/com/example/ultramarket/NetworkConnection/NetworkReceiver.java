@@ -10,7 +10,9 @@ import android.widget.Toast;
 import com.example.ultramarket.helpers.Utils;
 
 public class NetworkReceiver extends BroadcastReceiver {
+
     private ConnectionReceiver mCR;
+
     public interface ConnectionReceiver{
         void onConnectionReceived(boolean connected);
     }

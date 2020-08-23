@@ -1,5 +1,6 @@
 package com.example.ultramarket.framgnets.user_fragments;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -32,7 +33,7 @@ public class UserOrdersFrag extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(UserOrdersViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(UserOrdersViewModel.class);
         // TODO: Use the ViewModel
     }
 

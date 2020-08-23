@@ -24,7 +24,7 @@ public class Product implements Comparable<Product>{
 
     @NotNull
     @PrimaryKey
-    private long ID;
+    private String ID;
 
     private String name;
 
@@ -42,9 +42,9 @@ public class Product implements Comparable<Product>{
 
     private double percentage;
 
-    private long brand_ID;
+    private String brand_ID;
 
-    private long category_ID;
+    private String category_ID;
     private Date launch_date;
 
     public void setLaunch_date(Date launch_date) {
@@ -59,9 +59,9 @@ public class Product implements Comparable<Product>{
     public Product() {
     }
 
-    public Product(long ID, String name, String image, String unit,
+    public Product(String ID, String name, String image, String unit,
                    double price, int count, String description,
-                   boolean hasOffer, double percentage, long brand_ID, long category_ID, Date launch_date) {
+                   boolean hasOffer, double percentage, String brand_ID, String category_ID, Date launch_date) {
         this.ID = ID;
         this.name = name;
         this.image = image;
@@ -81,11 +81,11 @@ public class Product implements Comparable<Product>{
         return  this.getLaunch_date().compareTo(product.getLaunch_date());
     }
 
-    public long getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(long ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
@@ -153,19 +153,19 @@ public class Product implements Comparable<Product>{
         this.percentage = percentage;
     }
 
-    public long getBrand_ID() {
+    public String getBrand_ID() {
         return brand_ID;
     }
 
-    public void setBrand_ID(long brand_ID) {
+    public void setBrand_ID(String brand_ID) {
         this.brand_ID = brand_ID;
     }
 
-    public long getCategory_ID() {
+    public String getCategory_ID() {
         return category_ID;
     }
 
-    public void setCategory_ID(long category_ID) {
+    public void setCategory_ID(String category_ID) {
         this.category_ID = category_ID;
     }
 }

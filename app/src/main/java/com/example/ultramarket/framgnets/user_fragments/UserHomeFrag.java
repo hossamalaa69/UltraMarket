@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -123,7 +124,7 @@ public class UserHomeFrag extends Fragment {
     }
 
     private void setObservers() {
-        mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         mViewModel.getmCatList().observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
             @Override
             public void onChanged(List<Category> categories) {

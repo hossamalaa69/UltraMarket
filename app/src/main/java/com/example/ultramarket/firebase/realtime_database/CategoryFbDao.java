@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryFbDao implements CatDao {
+
     private static CatDao sInstance;
     private Context mContext;
 
