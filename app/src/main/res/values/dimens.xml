@@ -17,7 +17,7 @@
     <dimen name="user_product_item_price_padding">5dp</dimen>
     <dimen name="product_item_name_margin">5dp</dimen>
     <dimen name="product_item_price_margin">5dp</dimen>
-    <dimen name="user_product_item_margin_top">5dp</dimen>
+    <dimen name="user_product_item_margin_top">2dp</dimen>
     <dimen name="user_wishlist_login_paddding">20dp</dimen>
     <dimen name="user_icon_image_size">80dp</dimen>
     <dimen name="button_margin">10dp</dimen>

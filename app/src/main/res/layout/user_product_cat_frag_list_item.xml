@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:elevation="2dp"
-    android:layout_margin="@dimen/user_product_item_margin_top"
+    android:layout_margin="15dp"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/user_product_item_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="4"
         android:layout_marginLeft="@dimen/product_item_image_margin"
         android:layout_marginTop="@dimen/product_item_image_margin"
         android:layout_marginRight="@dimen/product_item_image_margin"
+        android:scaleType="centerCrop"
         android:contentDescription="@string/product_image"
         android:src="@drawable/logo" />
 
     <TextView
         android:id="@+id/user_product_item_name"
         android:layout_width="@dimen/product_item_image_size"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginLeft="@dimen/product_item_name_margin"
         android:layout_marginRight="@dimen/product_item_name_margin"
         android:background="@android:color/white"
@@ -30,36 +32,8 @@
         android:gravity="center"
         android:maxLines="1"
         android:padding="@dimen/product_item_image_padding"
+        android:layout_gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="@android:color/black"
         tools:text="Book" />
-
-    <LinearLayout
-        android:id="@+id/user_product_item_price_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/product_item_price_margin"
-        android:layout_marginRight="@dimen/product_item_price_margin"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/user_product_item_new_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/user_product_item_price_padding"
-            android:textColor="@android:color/holo_red_light"
-            android:textStyle="bold"
-            tools:text="167$" />
-
-        <TextView
-            android:id="@+id/user_product_item_old_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/user_product_item_price_padding"
-            android:textColor="@android:color/darker_gray"
-            android:textStyle=""
-            tools:text="167$" />
-    </LinearLayout>
-
 </LinearLayout>

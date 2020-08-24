@@ -42,6 +42,8 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
     ProgressBar mProgressBar;
     @BindView(R.id.user_sign_up_show_hide_pass)
     ImageButton mShowHidePass;
+    private static boolean isNewEmail = true;
+
 
     @OnClick(R.id.user_sign_up_show_hide_pass)
     public void showHidePass(View view) {
@@ -55,13 +57,8 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
             mShowHidePass.setImageResource(R.drawable.remove_red_eye_24);
             mPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             mShowHidePass.setSelected(true);
-
-
         }
-
     }
-
-    private static boolean isNewEmail = true;
 
     @OnClick(R.id.user_sign_up_create_email_btn)
     public void onCreateEmailClicked(View View) {

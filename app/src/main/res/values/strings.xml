@@ -118,4 +118,11 @@
     <string name="not_logged_in">Not logged in</string>
     <string name="upload_image">upload image</string>
     <string name="show_hide_password">show/hide password</string>
+    <string name="rate_app">Rate App</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="help_us_know_what_you_think">Help us know what you think</string>
+    <string name="let_us_know_n_how_we_are_doing">Let us know\n How we are doing?</string>
+    <string name="we_are_trying_to_provide_you_the_best_we_can_help_us_improve_for_you_your_feedback_is_important_to_us">We are trying to provide you the best we can. Help us improve for you. Your feedback is important to us</string>
+    <string name="rating">Rating</string>
+    <string name="thanks_for_feedback">Thanks For the Feedback</string>
 </resources>

@@ -142,6 +142,12 @@ public class FirebaseAuthHelper {
         });
     }
 
+    public void addRating(String uid, int rate, OnSuccessListener<Void> listener) {
+        FirebaseDatabase.getInstance().getReference()
+                .child(User.class.getSimpleName()).child(uid).child("rate")
+                .setValue(rate);
+    }
+
 
     public interface FirebaseAuthCallBacks {
         void onLoginStateChanges(User user);

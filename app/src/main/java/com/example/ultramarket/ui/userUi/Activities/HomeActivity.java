@@ -3,10 +3,13 @@ package com.example.ultramarket.ui.userUi.Activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +57,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     TabLayout tabLayout;
     @BindView(R.id.user_toolbar)
     Toolbar toolbar;
+    private Thread mRatingThread;
+    private AlertDialog mRateDialog;
+
+    private RatingBar mRatingBar;
+    private boolean isRating = true;
 
     @OnClick(R.id.user_toolbar_location)
     public void onLocationButtonClicked(View view) {
@@ -96,6 +104,70 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             });
                 }
             });
+        mRatingThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long oldTime = System.currentTimeMillis() / 1000;
+                while (isRating) {
+                    if (System.currentTimeMillis() / 1000 - oldTime > 60) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showRateAlertDialog();
+                            }
+                        });
+                        oldTime = System.currentTimeMillis() / 1000;
+                    }
+                }
+            }
+        });
+        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
+            FirebaseDatabase.getInstance().getReference()
+                    .child(User.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
+                    .child("rate").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int rate = snapshot.getValue(Integer.class);
+                    if (rate == 0) {
+                        mRatingThread.start();
+                    } else {
+                        isRating = false;
+                        if (mRateDialog != null && mRateDialog.isShowing())
+                            mRateDialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+    }
+
+    private void showRateAlertDialog() {
+        mRateDialog = new AlertDialog.Builder(this).create();
+        View view = LayoutInflater.from(this).inflate(R.layout.user_rate_layout, null, false);
+        mRatingBar = view.findViewById(R.id.user_rating_bar);
+        Button cancel = view.findViewById(R.id.user_rate_cancel);
+        cancel.setOnClickListener(view1 -> mRateDialog.dismiss());
+        mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                addRatingToFirebase((int) v);
+            }
+        });
+        mRateDialog.setView(view);
+        mRateDialog.show();
+    }
+
+    private void addRatingToFirebase(int rate) {
+        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
+            FirebaseAuthHelper.getsInstance()
+                    .addRating(FirebaseAuthHelper.getsInstance().getCurrUser().getUid(),
+                            rate, null);
+        }
+
     }
 
     private void updateNavViewHeader(User user) {
@@ -206,7 +278,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mUserName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this, UserProfile.class));
+                if (FirebaseAuthHelper.getsInstance().getCurrUser() != null)
+                    startActivity(new Intent(HomeActivity.this, UserProfile.class));
             }
         });
         mUserIcon = navView.getHeaderView(0).findViewById(R.id.user_drawer_header_icon);

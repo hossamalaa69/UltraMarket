@@ -1,6 +1,8 @@
 package com.example.ultramarket.adapters.user_adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,15 +61,19 @@ public class CategoryAdapterCatFrag extends RecyclerView.Adapter<CategoryAdapter
         ImageView catImage;
         @BindView(R.id.user_product_item_name)
         TextView catName;
-        @BindView(R.id.user_product_item_price_layout)
-        LinearLayout priceLayout;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            priceLayout.setVisibility(View.GONE);
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int height = displayMetrics.heightPixels;
+            int width =  displayMetrics.widthPixels;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(itemView.getLayoutParams());
+            params.width =  width / 2 - (width/10);
+            params.setMargins(20,20,20,20);
+            itemView.setLayoutParams(params);
         }
-
         public void bind(int position) {
             if (categoryList.get(position).getImage() != null)
                 Picasso.get().load(categoryList.get(position).getImage()).into(catImage);
