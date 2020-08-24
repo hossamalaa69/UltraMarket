@@ -26,7 +26,7 @@ public class User {
 
     private String imageUrl;
     @Ignore
-    private Location location;
+    private Location location = new Location();
 
     private int rate;
 
