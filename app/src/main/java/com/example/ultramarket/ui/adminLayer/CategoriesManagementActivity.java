@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,25 +16,25 @@ import android.widget.Toast;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.BrandsAdminAdapter;
-import com.example.ultramarket.adapters.CustomersAdapter;
-import com.example.ultramarket.adapters.StatsAdapter;
+import com.example.ultramarket.adapters.CategoriesAdminAdapter;
 import com.example.ultramarket.database.Entities.Brand;
+import com.example.ultramarket.database.Entities.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrandsManagementActivity extends AppCompatActivity {
+public class CategoriesManagementActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    BrandsAdminAdapter brandsAdminAdapter;
-    ProgressBar progressBar_brands;
+    CategoriesAdminAdapter categoriesAdminAdapter;
+    ProgressBar progressBar_categories;
 
-    BrandsManagementViewModel brandsManagementViewModel;
+    CategoriesManagementViewModel categoriesManagementViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_brands_management);
+        setContentView(R.layout.activity_categories_management);
 
         initRecycler();
 
@@ -44,15 +43,16 @@ public class BrandsManagementActivity extends AppCompatActivity {
         setupSwipe();
     }
 
+
     private void initRecycler(){
-        progressBar_brands = (ProgressBar) findViewById(R.id.brands_progress);
-        recyclerView = findViewById(R.id.brands_recycler);
-        brandsAdminAdapter = new BrandsAdminAdapter(this, new ArrayList<Brand>());
+        progressBar_categories = (ProgressBar) findViewById(R.id.categories_progress);
+        recyclerView = findViewById(R.id.categories_recycler);
+        categoriesAdminAdapter = new CategoriesAdminAdapter(this, new ArrayList<Category>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(brandsAdminAdapter);
+        recyclerView.setAdapter(categoriesAdminAdapter);
 
         //holds listener for clicking the notification item
-        brandsAdminAdapter.setOnItemClickListener(new BrandsAdminAdapter.OnItemClickListener() {
+        categoriesAdminAdapter.setOnItemClickListener(new CategoriesAdminAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 //gets index of item pressed, then send it to its target
@@ -63,24 +63,21 @@ public class BrandsManagementActivity extends AppCompatActivity {
 
     private void sendToUpdate(int position) {
         //Toast.makeText(this, ""+position, Toast.LENGTH_SHORT).show();
-        Brand brand = brandsAdminAdapter.getBrands().get(position);
-        Intent i = new Intent(this, BrandActivity.class);
-        i.putExtra("ID", brand.getID());
-        i.putExtra("imageUrl", brand.getImage());
-        i.putExtra("brand_name", brand.getName());
+        Category category = categoriesAdminAdapter.getCategories().get(position);
+        Intent i = new Intent(this, CategoryActivity.class);
+        i.putExtra("ID", category.getID());
+        i.putExtra("imageUrl", category.getImage());
+        i.putExtra("category_name", category.getName());
         startActivity(i);
     }
 
     private void setupViewModel(){
-        brandsManagementViewModel = new ViewModelProvider(this).get(BrandsManagementViewModel.class);
-        brandsManagementViewModel.loadAllBrands();
+        categoriesManagementViewModel = new ViewModelProvider(this).get(CategoriesManagementViewModel.class);
+        categoriesManagementViewModel.loadAllCategories();
 
-        brandsManagementViewModel.loadAllBrands().observe(this, new Observer<List<Brand>>() {
-            @Override
-            public void onChanged(List<Brand> brands) {
-                brandsAdminAdapter.setBrandList(brands);
-                progressBar_brands.setVisibility(View.GONE);
-            }
+        categoriesManagementViewModel.loadAllCategories().observe(this, (Observer<List<Category>>) categories -> {
+            categoriesAdminAdapter.setCategoryList(categories);
+            progressBar_categories.setVisibility(View.GONE);
         });
     }
 
@@ -95,31 +92,32 @@ public class BrandsManagementActivity extends AppCompatActivity {
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BrandsManagementActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CategoriesManagementActivity.this);
                 //Setting message manually and performing action on button click
-                builder.setMessage("Do you want to delete this brand ? \nAll products related to this brand will be deleted!")
+                builder.setMessage("Do you want to delete this category ? \nAll products related to this brand will be deleted!")
                         .setCancelable(false)
                         .setPositiveButton("Yes", (dialog, id) -> {
                             dialog.cancel();
-                            progressBar_brands.setVisibility(View.VISIBLE);
+                            progressBar_categories.setVisibility(View.VISIBLE);
                             int position = viewHolder.getAdapterPosition();
-                            List<Brand> brands = brandsAdminAdapter.getBrands();
-                            Toast.makeText(BrandsManagementActivity.this, ""+position, Toast.LENGTH_SHORT).show();
-                            brandsManagementViewModel.deleteBrand(brands.get(position));
+                            List<Category> categories = categoriesAdminAdapter.getCategories();
+                            Toast.makeText(CategoriesManagementActivity.this, ""+position, Toast.LENGTH_SHORT).show();
+                            categoriesManagementViewModel.deleteCategory(categories.get(position));
                         })
                         .setNegativeButton("No", (dialog, id) -> {
-                            brandsAdminAdapter.notifyDataSetChanged();
+                            categoriesAdminAdapter.notifyDataSetChanged();
                             dialog.cancel();
                         });
                 AlertDialog alert = builder.create();
-                alert.setTitle("Delete Brand!!!");
+                alert.setTitle("Delete Category!!!");
                 alert.show();
             }
         }).attachToRecyclerView(recyclerView);
     }
 
-    public void addBrand(View view) {
-        Intent i = new Intent(this, BrandActivity.class);
+
+    public void addCategory(View view) {
+        Intent i = new Intent(this, CategoryActivity.class);
         startActivity(i);
     }
 }

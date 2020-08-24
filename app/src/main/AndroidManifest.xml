@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo_ultra_market"
@@ -18,37 +17,56 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.adminLayer.BrandActivity" android:label="Brand"/>
-        <activity android:name=".ui.adminLayer.BrandsManagementActivity" android:label="Brands Management" />
+        <activity
+            android:name=".ui.adminLayer.CategoryActivity"
+            android:label="Category" />
+
+        <activity android:name=".ui.adminLayer.CategoriesManagementActivity"
+            android:label="Categories Management" />
+
+        <activity
+            android:name=".ui.adminLayer.BrandActivity"
+            android:label="Brand" />
+
+        <activity
+            android:name=".ui.adminLayer.BrandsManagementActivity"
+            android:label="Brands Management" />
+
         <activity
             android:name=".ui.adminLayer.WarehouseActivity"
             android:label="Warehouse" />
+
         <activity
             android:name=".ui.userUi.Activities.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".ui.userUi.Activities.UserProfile"
             android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
         <activity android:name=".ui.userUi.Activities.LocationActivity" />
+
         <activity
             android:name=".ui.adminLayer.CustomersActivity"
             android:label="Customers" />
+
         <activity
             android:name=".ui.userUi.Activities.HomeActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.adminLayer.AdminHomeActivity"
-            android:label="Home">
-        </activity>
+            android:label="Home" />
     </application>
 
 </manifest>

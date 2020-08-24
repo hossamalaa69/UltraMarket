@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_purple_background"
+    tools:context=".ui.adminLayer.CategoryActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/image_layout"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="230dp"
+        android:layout_height="230dp">
+        <ImageView
+            android:id="@+id/category_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_image_placeholder"
+            android:background="@color/transparent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_upload_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end|bottom"
+            android:backgroundTint="@color/colorGreen"
+            android:src="@drawable/ic_add_white"
+            android:onClick="uploadFromGallery"
+            app:borderWidth="0dp"/>
+
+        <ProgressBar
+            android:id="@+id/upload_image_progress"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_layout"
+        android:layout_marginTop="30dp"
+        android:layout_margin="15dp"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/name_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_name"
+            android:layout_centerVertical="true" />
+        <EditText
+            android:id="@+id/category_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/name_icon"
+            android:textSize="18sp"
+            android:maxLength="20"
+            android:textColor="@color/White"
+            android:hint="@string/name"/>
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end|bottom"
+        android:backgroundTint="@color/pink2"
+        android:src="@drawable/ic_done"
+        app:borderWidth="0dp"
+        android:onClick="saveCategory"
+        android:layout_margin="22dp"/>
+
+</RelativeLayout>
