@@ -2,10 +2,12 @@ package com.example.ultramarket.ui.userUi.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -38,6 +40,27 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
     Spinner mCountrySpinner;
     @BindView(R.id.user_sign_up_progress_bar)
     ProgressBar mProgressBar;
+    @BindView(R.id.user_sign_up_show_hide_pass)
+    ImageButton mShowHidePass;
+
+    @OnClick(R.id.user_sign_up_show_hide_pass)
+    public void showHidePass(View view) {
+        if (mShowHidePass.isSelected()) {
+            //show pass and set selectedd
+            mShowHidePass.setImageResource(R.drawable.visibility_off_24);
+            mPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            mShowHidePass.setSelected(false);
+        } else {
+            // hide pass and set on selected
+            mShowHidePass.setImageResource(R.drawable.remove_red_eye_24);
+            mPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            mShowHidePass.setSelected(true);
+
+
+        }
+
+    }
+
     private static boolean isNewEmail = true;
 
     @OnClick(R.id.user_sign_up_create_email_btn)
@@ -121,6 +144,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_dropdown_item_1line, Utils.availableCountries);
         mCountrySpinner.setAdapter(adapter);
+        mShowHidePass.setSelected(false);
     }
 
     private void signInWithEmailOrGoogle() {

@@ -117,4 +117,5 @@
     <string name="already_signed_in">You are already signed in with email : %1$s</string>
     <string name="not_logged_in">Not logged in</string>
     <string name="upload_image">upload image</string>
+    <string name="show_hide_password">show/hide password</string>
 </resources>

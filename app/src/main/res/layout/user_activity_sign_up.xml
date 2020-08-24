@@ -63,15 +63,31 @@
                 android:inputType="phone"
                 android:textColor="@color/purple1" />
 
-            <EditText
-                android:id="@+id/user_sign_up_password"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:autofillHints="@string/password_required"
-                android:hint="@string/password_required"
-                android:inputType="textPassword"
-                android:textColor="@color/purple1" />
+                android:layout_margin="15dp">
+
+                <EditText
+                    android:id="@+id/user_sign_up_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="@string/password_required"
+                    android:hint="@string/password_required"
+                    android:inputType="textPassword"
+                    android:textColor="@color/purple1" />
+
+                <ImageButton
+                    android:id="@+id/user_sign_up_show_hide_pass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:background="@color/transparent"
+                    android:src="@drawable/visibility_off_24"
+                    android:contentDescription="@string/show_hide_password" />
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/user_sign_up_confirm_password"
@@ -85,10 +101,10 @@
 
             <Spinner
                 android:id="@+id/user_sign_up_country"
+                style="@android:style/Widget.Spinner.DropDown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                style="@android:style/Widget.Spinner.DropDown"
                 android:textColor="@color/purple1" />
 
             <Button
