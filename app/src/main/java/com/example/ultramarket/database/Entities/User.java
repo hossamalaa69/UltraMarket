@@ -41,6 +41,7 @@ public class User {
     @Exclude
     private int imageID;
     private int floor;
+
     public User(String ID, String email, String name,
                 String building,
                 int floor, String phone, String imageUrl, int rate) {
@@ -99,7 +100,7 @@ public class User {
     }
 
     @Ignore
-    public  User(FirebaseUser user) {
+    public User(FirebaseUser user) {
         ID = user.getUid();
         imageUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null;
         email = user.getEmail();

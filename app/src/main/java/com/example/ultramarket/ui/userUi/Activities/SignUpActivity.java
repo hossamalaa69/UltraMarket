@@ -3,8 +3,11 @@ package com.example.ultramarket.ui.userUi.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.User;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.adminLayer.AdminHomeActivity;
 
 import butterknife.BindView;
@@ -31,7 +35,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
     @BindView(R.id.user_sign_up_user_name)
     EditText mUserName;
     @BindView(R.id.user_sign_up_country)
-    EditText mCountry;
+    Spinner mCountrySpinner;
     @BindView(R.id.user_sign_up_progress_bar)
     ProgressBar mProgressBar;
     private static boolean isNewEmail = true;
@@ -83,7 +87,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
         user.setPhone(mPhone.getText().toString().trim());
         user.setEmail(mEmail.getText().toString().trim());
         user.setName(mUserName.getText().toString().trim());
-        user.getLocation().setCountry_name(mCountry.getText().toString().trim());
+        user.getLocation().setCountry_name(mCountrySpinner.getSelectedItem().toString().trim());
         return user;
     }
 
@@ -97,7 +101,8 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
                 && mPass.getText().toString().length() > 7
                 && mPass.getText().toString().length() < 16
                 && mConfirmPass.getText().toString().matches(mPass.getText().toString())
-                && mConfirmPass.getText().toString().matches(mPass.getText().toString());
+                && mConfirmPass.getText().toString().matches(mPass.getText().toString())
+                && mCountrySpinner.getSelectedItemPosition() > 0;
 
     }
 
@@ -113,7 +118,9 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
         ButterKnife.bind(this);
         mProgressBar.setVisibility(View.GONE);
         isNewEmail = true;
-
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_dropdown_item_1line, Utils.availableCountries);
+        mCountrySpinner.setAdapter(adapter);
     }
 
     private void signInWithEmailOrGoogle() {

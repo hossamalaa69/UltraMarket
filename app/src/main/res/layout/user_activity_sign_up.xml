@@ -83,14 +83,12 @@
                 android:inputType="textPassword"
                 android:textColor="@color/purple1" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/user_sign_up_country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:autofillHints="@string/country_optional"
-                android:hint="@string/country_optional"
-                android:inputType="text|textCapWords"
+                style="@android:style/Widget.Spinner.DropDown"
                 android:textColor="@color/purple1" />
 
             <Button

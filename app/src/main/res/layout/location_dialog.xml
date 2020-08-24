@@ -21,13 +21,12 @@
 
         <Spinner
             android:id="@+id/user_location_dialog_country_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize"
             style="@android:style/Widget.Spinner.DropDown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dialog_view_margin"
             android:autofillHints="Country"
-            android:background="@color/colorPrimary"
-            android:spinnerMode="dropdown" />
+            />
 
         <EditText
             android:id="@+id/user_location_dialog_city"
