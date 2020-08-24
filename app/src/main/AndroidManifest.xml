@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.adminLayer.BrandActivity" android:label="Brand"/>
-        <activity android:name=".ui.adminLayer.BrandsManagementActivity" />
+        <activity android:name=".ui.adminLayer.BrandsManagementActivity" android:label="Brands Management" />
         <activity
             android:name=".ui.adminLayer.WarehouseActivity"
             android:label="Warehouse" />
