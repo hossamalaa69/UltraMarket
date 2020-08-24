@@ -2,6 +2,7 @@ package com.example.ultramarket.ui.userUi.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,8 +24,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.User;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.firebase.firebase_storage.FirebaseStorageHelper;
 import com.example.ultramarket.helpers.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -37,6 +42,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfile extends AppCompatActivity {
 
+    private static final int PICK_IMAGE = 1;
     @BindView(R.id.user_profile_user_name)
     TextView mUserName;
     @BindView(R.id.user_profile_country)
@@ -62,6 +68,8 @@ public class UserProfile extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     @BindView(R.id.user_profile_progress_bar)
     ProgressBar mProgressBar;
+    @BindView(R.id.user_profile_iamge_progress_bar)
+    ProgressBar mImageProgressBar;
     private User currUser;
 
     @OnClick(R.id.location_view)
@@ -86,18 +94,19 @@ public class UserProfile extends AppCompatActivity {
         });
     }
 
-    private void showProgressBar() {
-        mProgressBar.setVisibility(View.VISIBLE);
+    @OnClick(R.id.user_profile_upload_img)
+    public void onUploadImageClicked(View view) {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/jpg");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
 
-    private void hideProgressBar() {
-        mProgressBar.setVisibility(View.GONE);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.user_activity_user_profile);
         ButterKnife.bind(this);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -107,6 +116,7 @@ public class UserProfile extends AppCompatActivity {
             actionBar.setLogo(R.mipmap.ic_launcher_foreground);
         }
         hideProgressBar();
+        mImageProgressBar.setVisibility(View.GONE);
         FirebaseDatabase.getInstance().getReference().
                 child(User.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
                 .addValueEventListener(new ValueEventListener() {
@@ -121,6 +131,45 @@ public class UserProfile extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == PICK_IMAGE) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    Uri selectedImage = data.getData();
+                    mImageProgressBar.setVisibility(View.VISIBLE);
+                    uploadImageToFirebaseStorage(selectedImage);
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void uploadImageToFirebaseStorage(Uri imageUri) {
+        FirebaseStorageHelper.getsInstance().uploadImage(imageUri, new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                Uri downloadUri = task.getResult();
+                if (downloadUri != null)
+                    FirebaseAuthHelper.getsInstance().addUserImageUri(downloadUri.toString(), new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Picasso.get().load(downloadUri).into(mUserImg);
+                            mImageProgressBar.setVisibility(View.GONE);
+                        }
+                    });
+            }
+        });
+    }
+
+    private void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private void showPersonalInfoDialog() {
@@ -262,7 +311,7 @@ public class UserProfile extends AppCompatActivity {
             mUserPhone.setText(getString(R.string.phone_container, currUser.getPhone()));
             mUserRoad.setText(getString(R.string.road, currUser.getLocation().getRoad_name()));
             mUserName.setText(currUser.getName());
-            mUserCountry.setText(getString(R.string.country,currUser.getLocation().getCountry_name()));
+            mUserCountry.setText(getString(R.string.country, currUser.getLocation().getCountry_name()));
             Picasso.get().load(currUser.getImageUrl()).into(mUserImg);
         }
     }

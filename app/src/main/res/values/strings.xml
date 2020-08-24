@@ -116,4 +116,5 @@
     <string name="brand_added">Brand added</string>
     <string name="already_signed_in">You are already signed in with email : %1$s</string>
     <string name="not_logged_in">Not logged in</string>
+    <string name="upload_image">upload image</string>
 </resources>

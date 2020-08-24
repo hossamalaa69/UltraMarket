@@ -22,6 +22,24 @@
             android:background="@drawable/cirucler_background"
             android:padding="3dp"
             android:src="@drawable/logo" />
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_profile_iamge_progress_bar"
+            android:layout_alignEnd="@id/user_profile_img"
+            android:layout_alignBottom="@id/user_profile_img"
+            android:layout_alignStart="@id/user_profile_img"
+            android:layout_alignTop="@id/user_profile_img"/>
+
+        <ImageButton
+            android:id="@+id/user_profile_upload_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/user_profile_img"
+            android:layout_alignBottom="@id/user_profile_img"
+            android:contentDescription="@string/upload_image"
+            android:src="@drawable/photo_camera_24" />
+
 
         <TextView
             android:id="@+id/user_profile_user_name"

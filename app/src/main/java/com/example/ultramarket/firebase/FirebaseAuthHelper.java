@@ -131,6 +131,17 @@ public class FirebaseAuthHelper {
         });
     }
 
+    public void addUserImageUri(String imageUri, OnSuccessListener<Void> listener) {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseDatabase.getInstance().getReference().child(User.class.getSimpleName())
+                        .child(mFirebaseAuth.getCurrentUser().getUid())
+                        .child("imageUrl").setValue(imageUri).addOnSuccessListener(listener);
+            }
+        });
+    }
+
 
     public interface FirebaseAuthCallBacks {
         void onLoginStateChanges(User user);
