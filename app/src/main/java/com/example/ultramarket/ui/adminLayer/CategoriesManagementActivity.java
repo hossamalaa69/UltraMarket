@@ -15,9 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ultramarket.R;
-import com.example.ultramarket.adapters.BrandsAdminAdapter;
 import com.example.ultramarket.adapters.CategoriesAdminAdapter;
-import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Category;
 
 import java.util.ArrayList;
@@ -94,7 +92,7 @@ public class CategoriesManagementActivity extends AppCompatActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(CategoriesManagementActivity.this);
                 //Setting message manually and performing action on button click
-                builder.setMessage("Do you want to delete this category ? \nAll products related to this brand will be deleted!")
+                builder.setMessage("Do you want to delete this category ? \nAll products related to this category will be deleted!")
                         .setCancelable(false)
                         .setPositiveButton("Yes", (dialog, id) -> {
                             dialog.cancel();

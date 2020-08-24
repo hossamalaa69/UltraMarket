@@ -22,5 +22,7 @@ public class WarehouseActivity extends AppCompatActivity {
     }
 
     public void openCategories(View view) {
+        Intent i = new Intent(this, CategoriesManagementActivity.class);
+        startActivity(i);
     }
 }

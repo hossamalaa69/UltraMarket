@@ -25,7 +25,7 @@
             android:background="@color/transparent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_upload_img"
+            android:id="@+id/btn_upload_img_cat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -37,7 +37,7 @@
             app:borderWidth="0dp"/>
 
         <ProgressBar
-            android:id="@+id/upload_image_progress"
+            android:id="@+id/upload_image_progress_cat"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
@@ -75,7 +75,7 @@
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_save"
+        android:id="@+id/btn_save_cat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

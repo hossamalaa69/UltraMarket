@@ -88,8 +88,8 @@ public class BrandActivity extends AppCompatActivity {
         }
         //case update
         else if(oldID!=null && !name_brand.getText().toString().isEmpty()){
-            lockUI();
-            updateBrand(selectedImage != null);
+                lockUI();
+                updateBrand(selectedImage != null);
         }
         else{
             Toast.makeText(this, getString(R.string.enter_full_data), Toast.LENGTH_SHORT).show();
@@ -97,7 +97,7 @@ public class BrandActivity extends AppCompatActivity {
     }
 
     private void updateBrand(boolean hasNewImage) {
-        mStorageReference = FirebaseStorage.getInstance().getReference().child("Brands").child(oldID);
+        mStorageReference = FirebaseStorage.getInstance().getReference().child("Brands");
 
         if(hasNewImage){
             StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageUrl);
