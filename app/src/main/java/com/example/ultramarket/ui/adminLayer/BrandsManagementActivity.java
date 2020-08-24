@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.BrandsAdminAdapter;
 import com.example.ultramarket.adapters.CustomersAdapter;
+import com.example.ultramarket.adapters.StatsAdapter;
 import com.example.ultramarket.database.Entities.Brand;
 
 import java.util.ArrayList;
@@ -47,6 +48,25 @@ public class BrandsManagementActivity extends AppCompatActivity {
         brandsAdminAdapter = new BrandsAdminAdapter(this, new ArrayList<Brand>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(brandsAdminAdapter);
+
+        //holds listener for clicking the notification item
+        brandsAdminAdapter.setOnItemClickListener(new StatsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                //gets index of item pressed, then send it to its target
+                sendToUpdate(position);
+            }
+        });
+    }
+
+    private void sendToUpdate(int position) {
+        //Toast.makeText(this, ""+position, Toast.LENGTH_SHORT).show();
+        Brand brand = brandsAdminAdapter.getBrands().get(position);
+        Intent i = new Intent(this, BrandActivity.class);
+        i.putExtra("ID", brand.getID());
+        i.putExtra("imageUrl", brand.getImage());
+        i.putExtra("brand_name", brand.getName());
+        startActivity(i);
     }
 
     private void setupViewModel(){

@@ -15,10 +15,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Brand;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +40,11 @@ public class BrandActivity extends AppCompatActivity {
 
     private Uri selectedImage = null;
 
+    private String oldID = null;
+    private String oldName = null;
+    private String oldImageUrl = null;
+
+
     private ImageView img_brand;
     private ProgressBar progressBar;
     private EditText name_brand;
@@ -54,60 +61,130 @@ public class BrandActivity extends AppCompatActivity {
         progressBar= (ProgressBar) findViewById(R.id.upload_image_progress);
         saveButton = (FloatingActionButton) findViewById(R.id.btn_save);
         uploadImageButton = (FloatingActionButton) findViewById(R.id.btn_upload_img);
+
+        receiveBrand();
+    }
+
+    private void receiveBrand() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            oldID = extras.getString("ID");
+            oldImageUrl = extras.getString("imageUrl");
+            oldName = extras.getString("brand_name");
+
+            name_brand.setText(oldName);
+            Glide.with(this)
+                    .load(oldImageUrl)
+                    .placeholder(R.drawable.ic_image_placeholder)
+                    .into(img_brand);
+        }
     }
 
     public void saveBrand(View view) {
-        if(selectedImage != null && !name_brand.getText().toString().isEmpty()) {
-            progressBar.setVisibility(View.VISIBLE);
-            name_brand.setEnabled(false);
-            saveButton.setEnabled(false);
-            uploadImageButton.setEnabled(false);
-            uploadToFirebase();
-        }else{
+        //case insert
+        if(selectedImage != null && !name_brand.getText().toString().isEmpty() && oldID==null) {
+            lockUI();
+            insertBrand();
+        }
+        //case update
+        else if(oldID!=null && !name_brand.getText().toString().isEmpty()){
+            lockUI();
+            updateBrand(selectedImage != null);
+        }
+        else{
             Toast.makeText(this, getString(R.string.enter_full_data), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void uploadToFirebase() {
+    private void updateBrand(boolean hasNewImage) {
+        mStorageReference = FirebaseStorage.getInstance().getReference().child("Brands").child(oldID);
+
+        if(hasNewImage){
+            StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageUrl);
+            imageRef.delete().addOnSuccessListener(aVoid -> {
+                Toast.makeText(BrandActivity.this, "Old image deleted", Toast.LENGTH_SHORT).show();
+                final StorageReference photoRef = mStorageReference.child(selectedImage.getLastPathSegment());
+                UploadTask uploadTask = photoRef.putFile(selectedImage);
+                Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return photoRef.getDownloadUrl();
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        String imageUrl = downloadUri.toString();
+                        Toast.makeText(BrandActivity.this, R.string.uploaded_success, Toast.LENGTH_SHORT).show();
+                        brandDbReference = FirebaseDatabase.getInstance().getReference(Brand.class.getSimpleName());
+                        String id = oldID;
+                        Brand brand = new Brand(id, name_brand.getText().toString(), imageUrl);
+                        brandDbReference.child(id).setValue(brand);
+                        Toast.makeText(BrandActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(BrandActivity.this, "Failed update", Toast.LENGTH_SHORT).show();
+                    }
+                    openUI();
+                    finish();
+                    onBackPressed();
+                });
+            });
+        }else{
+            brandDbReference = FirebaseDatabase.getInstance().getReference(Brand.class.getSimpleName());
+            String id = oldID;
+            Brand brand = new Brand(id, name_brand.getText().toString(), oldImageUrl);
+            brandDbReference.child(id).setValue(brand);
+            Toast.makeText(BrandActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+
+            openUI();
+            finish();
+            onBackPressed();
+        }
+
+    }
+
+    private void insertBrand() {
 
         mStorageReference = FirebaseStorage.getInstance().getReference().child("Brands");
 
         final StorageReference photoRef = mStorageReference.child(selectedImage.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(selectedImage);
 
-        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
-                // Continue with the task to get the download URL
-                return photoRef.getDownloadUrl();
+        Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw task.getException();
             }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    Uri downloadUri = task.getResult();
-                    String imageUrl = downloadUri.toString();
-                    Toast.makeText(BrandActivity.this, R.string.uploaded_success, Toast.LENGTH_SHORT).show();
-                    brandDbReference = FirebaseDatabase.getInstance().getReference(Brand.class.getSimpleName());
-                    String id = brandDbReference.push().getKey();
-                    Brand brand = new Brand(id, name_brand.getText().toString(), imageUrl);
-                    brandDbReference.child(id).setValue(brand);
-                    Toast.makeText(BrandActivity.this, R.string.brand_added, Toast.LENGTH_SHORT).show();
-                } else {
-                    // Handle failures
-                    Toast.makeText(BrandActivity.this, R.string.failed_upload, Toast.LENGTH_SHORT).show();
-                }
-                progressBar.setVisibility(View.GONE);
-                name_brand.setEnabled(true);
-                saveButton.setEnabled(true);
-                uploadImageButton.setEnabled(true);
-                finish();
-                onBackPressed();
+            return photoRef.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Uri downloadUri = task.getResult();
+                String imageUrl = downloadUri.toString();
+                Toast.makeText(BrandActivity.this, R.string.uploaded_success, Toast.LENGTH_SHORT).show();
+                brandDbReference = FirebaseDatabase.getInstance().getReference(Brand.class.getSimpleName());
+                String id = brandDbReference.push().getKey();
+                Brand brand = new Brand(id, name_brand.getText().toString(), imageUrl);
+                brandDbReference.child(id).setValue(brand);
+                Toast.makeText(BrandActivity.this, R.string.brand_added, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(BrandActivity.this, R.string.failed_upload, Toast.LENGTH_SHORT).show();
             }
+            openUI();
+            finish();
+            onBackPressed();
         });
+    }
+
+    private void lockUI() {
+        progressBar.setVisibility(View.VISIBLE);
+        name_brand.setEnabled(false);
+        saveButton.setEnabled(false);
+        uploadImageButton.setEnabled(false);
+    }
+
+    private void openUI() {
+        progressBar.setVisibility(View.GONE);
+        name_brand.setEnabled(true);
+        saveButton.setEnabled(true);
+        uploadImageButton.setEnabled(true);
     }
 
     public void uploadFromGallery(View view) {
@@ -152,6 +229,4 @@ public class BrandActivity extends AppCompatActivity {
             img_brand.setImageURI(selectedImage);
         }
     }
-
-
 }

@@ -24,6 +24,24 @@ public class BrandsAdminAdapter extends RecyclerView.Adapter<BrandsAdminAdapter.
     List<Brand> brandList;
     Context context;
 
+    private StatsAdapter.OnItemClickListener mListener;
+
+    /**
+     * interface that handles clicking on items
+     */
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    /**
+     * handles item clicking
+     * @param listener object of listener
+     */
+    public void setOnItemClickListener(StatsAdapter.OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+
     public BrandsAdminAdapter(Context context, List<Brand> brandList) {
         this.context = context;
         this.brandList = brandList;
@@ -33,7 +51,7 @@ public class BrandsAdminAdapter extends RecyclerView.Adapter<BrandsAdminAdapter.
     @Override
     public BrandVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_item_brand_admin, parent, false);
-        return new BrandVH(view);
+        return new BrandVH(view, mListener);
     }
 
     @Override
@@ -81,11 +99,25 @@ public class BrandsAdminAdapter extends RecyclerView.Adapter<BrandsAdminAdapter.
         TextView nameTextView;
         ImageView brandImage;
 
-        public BrandVH(@NonNull final View itemView) {
+        public BrandVH(@NonNull final View itemView, final StatsAdapter.OnItemClickListener listener) {
             super(itemView);
 
             nameTextView = (TextView) itemView.findViewById(R.id.brand_name_rv);
             brandImage = (ImageView) itemView.findViewById(R.id.img_brand_rv);
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        //gets position of clicked item
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }
