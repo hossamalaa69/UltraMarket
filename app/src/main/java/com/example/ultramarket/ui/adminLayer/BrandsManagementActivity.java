@@ -1,5 +1,6 @@
 package com.example.ultramarket.ui.adminLayer;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -90,15 +92,28 @@ public class BrandsManagementActivity extends AppCompatActivity {
                 return false;
             }
 
-            // Called when a user swipes left or right on a ViewHolder
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                // Here is where you'll implement swipe to delete
-                  progressBar_brands.setVisibility(View.VISIBLE);
-                  int position = viewHolder.getAdapterPosition();
-                  List<Brand> brands = brandsAdminAdapter.getBrands();
-                  Toast.makeText(BrandsManagementActivity.this, ""+position, Toast.LENGTH_SHORT).show();
-                  brandsManagementViewModel.deleteBrand(brands.get(position));
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(BrandsManagementActivity.this);
+                //Setting message manually and performing action on button click
+                builder.setMessage("Do you want to delete this brand ? \nAll products related to this brand will be deleted!")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", (dialog, id) -> {
+                            dialog.cancel();
+                            progressBar_brands.setVisibility(View.VISIBLE);
+                            int position = viewHolder.getAdapterPosition();
+                            List<Brand> brands = brandsAdminAdapter.getBrands();
+                            Toast.makeText(BrandsManagementActivity.this, ""+position, Toast.LENGTH_SHORT).show();
+                            brandsManagementViewModel.deleteBrand(brands.get(position));
+                        })
+                        .setNegativeButton("No", (dialog, id) -> {
+                            brandsAdminAdapter.notifyDataSetChanged();
+                            dialog.cancel();
+                        });
+                AlertDialog alert = builder.create();
+                alert.setTitle("Delete Brand!!!");
+                alert.show();
             }
         }).attachToRecyclerView(recyclerView);
     }
