@@ -14,6 +14,7 @@
     <color name="White">#FFFFFF</color>
     <color name="semi_transparent">#20FFFFFF</color>
     <color name="part_transparent">#60FFFFFF</color>
+    <color name="pink2_transparent">#60F606A1</color>
     <color name="black">#000000</color>
     <color name="dark">#404040</color>
     <color name="dark_gray">#555555</color>

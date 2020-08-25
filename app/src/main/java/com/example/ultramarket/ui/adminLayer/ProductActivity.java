@@ -1,28 +1,71 @@
 package com.example.ultramarket.ui.adminLayer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.ultramarket.R;
+import com.example.ultramarket.adapters.user_adapters.BrandProdAdapter;
+import com.example.ultramarket.adapters.user_adapters.CategoryProdAdapter;
+import com.example.ultramarket.database.Entities.Brand;
+import com.example.ultramarket.database.Entities.Category;
+
+import java.util.ArrayList;
 
 public class ProductActivity extends AppCompatActivity  {
 
     private Spinner spinner_currency;
     private Spinner spinner_unit;
-
+    private RecyclerView brand_recycler;
+    private BrandProdAdapter brandProdAdapter;
+    private RecyclerView category_recycler;
+    private CategoryProdAdapter categoryProdAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
+        setupRecyclers();
         setupSpinners();
+    }
+
+    private void setupRecyclers() {
+        brand_recycler = (RecyclerView) findViewById(R.id.brand_prod_recycler);
+        brand_recycler.setLayoutManager(new LinearLayoutManager(this));
+        brand_recycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        ArrayList<Brand> brandList = new ArrayList<>();
+        brandList.add(new Brand("dsf", "Brand1", "fdgffdgdf"));
+        brandList.add(new Brand("dsf", "Brand2", "fdgffdgdf"));
+        brandList.add(new Brand("dsf", "Brand3", "fdgffdgdf"));
+        brandList.add(new Brand("dsf", "Brand4", "fdgffdgdf"));
+        brandList.add(new Brand("dsf", "Brand5", "fdgffdgdf"));
+        brandList.add(new Brand("dsf", "Brand6", "fdgffdgdf"));
+        brandList.add(new Brand("dsf", "Brand7", "fdgffdgdf"));
+        brandList.add(new Brand("dsf", "Brand8", "fdgffdgdf"));
+        brandProdAdapter = new BrandProdAdapter(this, brandList);
+        brand_recycler.setAdapter(brandProdAdapter);
+
+        category_recycler = (RecyclerView) findViewById(R.id.category_prod_recycler);
+        category_recycler.setLayoutManager(new LinearLayoutManager(this));
+        brand_recycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        ArrayList<Category> categoryList = new ArrayList<>();
+        categoryList.add(new Category("dsf", "Category1", "fdgffdgdf"));
+        categoryList.add(new Category("dsf", "Category2", "fdgffdgdf"));
+        categoryList.add(new Category("dsf", "Category3", "fdgffdgdf"));
+        categoryList.add(new Category("dsf", "Category4", "fdgffdgdf"));
+        categoryList.add(new Category("dsf", "Category5", "fdgffdgdf"));
+        categoryList.add(new Category("dsf", "Category6", "fdgffdgdf"));
+
+        categoryProdAdapter = new CategoryProdAdapter(this, categoryList);
+        category_recycler.setAdapter(categoryProdAdapter);
     }
 
     private void setupSpinners() {
