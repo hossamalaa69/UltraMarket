@@ -54,6 +54,7 @@
             android:textColor="@color/White"
             android:textSize="25sp"
             android:background="@drawable/btn_curved_pink"
+            android:onClick="openProducts"
             android:text="Products"/>
     </LinearLayout>
 

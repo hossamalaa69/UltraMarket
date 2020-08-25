@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_purple_background"
+    tools:context=".ui.adminLayer.ProductActivity">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/image_layout"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp">
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_image_placeholder"
+            android:background="@color/transparent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_upload_img_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end|bottom"
+            android:backgroundTint="@color/colorGreen"
+            android:src="@drawable/ic_add_white"
+            android:onClick="uploadFromGallery"
+            app:borderWidth="0dp"/>
+
+        <ProgressBar
+            android:id="@+id/upload_image_progress_product"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_layout"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/name_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_name"
+            android:layout_centerVertical="true" />
+        <EditText
+            android:id="@+id/product_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/name_icon"
+            android:textSize="15sp"
+            android:maxLength="20"
+            android:textColor="@color/White"
+            android:hint="@string/name"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/description_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_layout"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/desc_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_description"
+            android:layout_centerVertical="true" />
+        <EditText
+            android:id="@+id/product_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/desc_icon"
+            android:textSize="15sp"
+            android:maxLength="40"
+            android:textColor="@color/White"
+            android:hint="Description"/>
+    </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/edit_layout"
+            android:layout_below="@id/description_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/spinner1_layout"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/img_price"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_price"
+                    android:layout_centerVertical="true"/>
+
+                <EditText
+                    android:id="@+id/product_price"
+                    android:layout_marginStart="2dp"
+                    android:layout_toEndOf="@id/img_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Price"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/White"
+                    android:maxLength="7"
+                    android:textSize="18sp"
+                    android:inputType="numberDecimal" />
+                <Spinner
+                    android:id="@+id/currency_spinner"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/product_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@android:style/Widget.Holo.Spinner"
+                    android:prompt="@string/currency_prompt" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/img_unit"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_products"
+                    android:layout_centerVertical="true"/>
+                <TextView
+                    android:id="@+id/product_unit"
+                    android:layout_marginStart="4dp"
+                    android:layout_toEndOf="@id/img_unit"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unit"
+                    android:textSize="18sp" />
+                <Spinner
+                    android:id="@+id/unit_spinner"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/product_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@android:style/Widget.Holo.Spinner"
+                    android:prompt="@string/unit_prompt" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/txt_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_layout"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img_count"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_count"
+                    android:layout_centerVertical="true"/>
+                <EditText
+                    android:id="@+id/product_count"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_toEndOf="@id/img_count"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="2dp"
+                    android:textSize="18sp"
+                    android:maxLength="6"
+                    android:textColor="@color/White"
+                    android:inputType="number"
+                    android:hint="Count"/>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img_percent"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_offer"
+                    android:layout_centerVertical="true"/>
+                <EditText
+                    android:id="@+id/product_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/img_percent"
+                    android:layout_marginStart="2dp"
+                    android:textSize="18sp"
+                    android:maxLength="2"
+                    android:textColor="@color/White"
+                    android:inputType="number"
+                    android:hint="Discount(%)"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_below="@id/txt_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/category_recycler"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/brand_recycler"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end|bottom"
+        android:backgroundTint="@color/pink2"
+        android:src="@drawable/ic_done"
+        app:borderWidth="0dp"
+        android:onClick="saveProduct"
+        android:layout_margin="22dp"/>
+</RelativeLayout>

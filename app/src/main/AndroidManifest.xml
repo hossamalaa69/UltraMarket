@@ -17,43 +17,40 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.adminLayer.ProductActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:label="Product">
+        </activity>
+        <activity android:name=".ui.adminLayer.ProductsManagementActivity" />
         <activity
             android:name=".ui.adminLayer.CategoryActivity"
             android:label="Category" />
-
-        <activity android:name=".ui.adminLayer.CategoriesManagementActivity"
+        <activity
+            android:name=".ui.adminLayer.CategoriesManagementActivity"
             android:label="Categories Management" />
-
         <activity
             android:name=".ui.adminLayer.BrandActivity"
             android:label="Brand" />
-
         <activity
             android:name=".ui.adminLayer.BrandsManagementActivity"
             android:label="Brands Management" />
-
         <activity
             android:name=".ui.adminLayer.WarehouseActivity"
             android:label="Warehouse" />
-
         <activity
             android:name=".ui.userUi.Activities.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".ui.userUi.Activities.UserProfile"
             android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
         <activity android:name=".ui.userUi.Activities.LocationActivity" />
-
         <activity
             android:name=".ui.adminLayer.CustomersActivity"
             android:label="Customers" />
-
         <activity
             android:name=".ui.userUi.Activities.HomeActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -63,7 +60,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.adminLayer.AdminHomeActivity"
             android:label="Home" />

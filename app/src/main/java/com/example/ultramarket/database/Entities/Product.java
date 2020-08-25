@@ -45,6 +45,7 @@ public class Product implements Comparable<Product>{
     private String brand_ID;
 
     private String category_ID;
+
     private Date launch_date;
 
     public void setLaunch_date(Date launch_date) {

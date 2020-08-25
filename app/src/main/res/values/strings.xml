@@ -125,4 +125,18 @@
     <string name="we_are_trying_to_provide_you_the_best_we_can_help_us_improve_for_you_your_feedback_is_important_to_us">We are trying to provide you the best we can. Help us improve for you. Your feedback is important to us</string>
     <string name="rating">Rating</string>
     <string name="thanks_for_feedback">Thanks For the Feedback</string>
+
+    <string name="currency_prompt">Currency</string>
+    <string name="unit_prompt">Unit</string>
+    <string-array name="currency_array">
+        <item>LE</item>
+        <item>$</item>
+    </string-array>
+    <string-array name="units_array">
+        <item>item</item>
+        <item>Kg</item>
+        <item>g</item>
+        <item>L</item>
+        <item>ml</item>
+    </string-array>
 </resources>

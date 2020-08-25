@@ -9,8 +9,7 @@
     app:cardCornerRadius="8dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:layout_marginBottom="25dp"
-    android:layout_marginRight="25dp"
+    android:layout_margin="20dp"
     app:cardElevation="0dp"
     android:focusable="true">
         <RelativeLayout

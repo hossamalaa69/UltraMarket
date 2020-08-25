@@ -25,4 +25,9 @@ public class WarehouseActivity extends AppCompatActivity {
         Intent i = new Intent(this, CategoriesManagementActivity.class);
         startActivity(i);
     }
+
+    public void openProducts(View view) {
+        Intent i = new Intent(this, ProductsManagementActivity.class);
+        startActivity(i);
+    }
 }
