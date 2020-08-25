@@ -17,7 +17,10 @@ import com.example.ultramarket.adapters.user_adapters.CategoryProdAdapter;
 import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Category;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ProductActivity extends AppCompatActivity  {
 
@@ -91,6 +94,13 @@ public class ProductActivity extends AppCompatActivity  {
     public void saveProduct(View view) {
         Toast.makeText(this, "" + spinner_currency.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "" + spinner_unit.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+
+        Calendar calendar = Calendar.getInstance();
+        Date now = calendar.getTime();
+        SimpleDateFormat simpleDateFormat =
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String timestamp = simpleDateFormat.format(now);
+        Toast.makeText(this, timestamp, Toast.LENGTH_LONG).show();
 
     }
 

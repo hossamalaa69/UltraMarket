@@ -46,13 +46,13 @@ public class Product implements Comparable<Product>{
 
     private String category_ID;
 
-    private Date launch_date;
+    private String launch_date;
 
-    public void setLaunch_date(Date launch_date) {
+    public void setLaunch_date(String launch_date) {
         this.launch_date = launch_date;
     }
 
-    public Date getLaunch_date() {
+    public String getLaunch_date() {
         return launch_date;
     }
 
@@ -62,7 +62,7 @@ public class Product implements Comparable<Product>{
 
     public Product(String ID, String name, String image, String unit,
                    double price, int count, String description,
-                   boolean hasOffer, double percentage, String brand_ID, String category_ID, Date launch_date) {
+                   boolean hasOffer, double percentage, String brand_ID, String category_ID, String launch_date) {
         this.ID = ID;
         this.name = name;
         this.image = image;
