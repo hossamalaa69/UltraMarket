@@ -23,12 +23,16 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.BrandProdAdapter;
 import com.example.ultramarket.adapters.CategoryProdAdapter;
 import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Category;
 import com.example.ultramarket.database.Entities.Product;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +43,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class ProductActivity extends AppCompatActivity  {
@@ -69,9 +74,9 @@ public class ProductActivity extends AppCompatActivity  {
     private CategoriesManagementViewModel categoriesManagementViewModel;
 
     private StorageReference mStorageReference;
-
     private DatabaseReference productDbReference;
 
+    private HashMap<String, String> hashMap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,31 @@ public class ProductActivity extends AppCompatActivity  {
         setupRecyclers();
 
         setupViewModels();
+
+        receiveProduct();
+    }
+
+    private void receiveProduct() {
+        Intent intent = getIntent();
+        hashMap = (HashMap<String, String>)intent.getSerializableExtra("map");
+        if(hashMap != null){
+            Glide.with(this)
+                    .load(hashMap.get("imageUrl"))
+                    .placeholder(R.drawable.ic_products)
+                    .into(product_image);
+
+            product_name.setText(hashMap.get("Name"));
+            product_desc.setText(hashMap.get("Description"));
+            product_price.setText(hashMap.get("Price"));
+            product_count.setText(hashMap.get("Count"));
+            product_percent.setText(hashMap.get("discount_percentage"));
+
+            ArrayAdapter myAdap = (ArrayAdapter) spinner_currency.getAdapter();
+            spinner_currency.setSelection(myAdap.getPosition(hashMap.get("Currency")));
+            ArrayAdapter myAdap2 = (ArrayAdapter) spinner_unit.getAdapter();
+            spinner_unit.setSelection(myAdap2.getPosition(hashMap.get("Unit")));
+
+        }
     }
 
     private void setupViews() {
@@ -102,14 +132,32 @@ public class ProductActivity extends AppCompatActivity  {
         brandsManagementViewModel.loadAllBrands();
 
         brandsManagementViewModel.loadAllBrands().observe(this, (List<Brand> brands) -> {
-            brandProdAdapter.setBrands(brands);
+            if(hashMap != null){
+                for(int i=0;i<brands.size();i++){
+                    if(hashMap.get("brand_id").equals(brands.get(i).getID())){
+                        brandProdAdapter.setBrands(brands, i);
+                        break;
+                    }
+                }
+            }else {
+                brandProdAdapter.setBrands(brands, 0);
+            }
         });
 
         categoriesManagementViewModel = new ViewModelProvider(this).get(CategoriesManagementViewModel.class);
         categoriesManagementViewModel.loadAllCategories();
 
         categoriesManagementViewModel.loadAllCategories().observe(this, (Observer<List<Category>>) categories -> {
-            categoryProdAdapter.setCategories(categories);
+            if(hashMap != null){
+                for (int i=0;i<categories.size();i++){
+                    if(hashMap.get("category_id").equals(categories.get(i).getID())){
+                        categoryProdAdapter.setCategories(categories, i);
+                        break;
+                    }
+                }
+            }else{
+                categoryProdAdapter.setCategories(categories, 0);
+            }
         });
     }
 
@@ -210,18 +258,33 @@ public class ProductActivity extends AppCompatActivity  {
 
     public void saveProduct(View view) {
 
-        if(selectedImage != null && !product_name.getText().toString().isEmpty()
+
+        if(!product_name.getText().toString().isEmpty()
                 && !product_desc.getText().toString().isEmpty() && !product_price.getText().toString().isEmpty()
-                && !product_count.getText().toString().isEmpty() && !product_percent.getText().toString().isEmpty()){
+                && !product_count.getText().toString().isEmpty() && !product_percent.getText().toString().isEmpty()) {
 
-            ScrollView main_scroll_view = (ScrollView) findViewById(R.id.main_scroll_view);
-            main_scroll_view.fullScroll(ScrollView.FOCUS_UP);
-            openViewsUI(false);
-            insertProduct(selectedImage, product_name.getText().toString(), product_desc.getText().toString()
-                    , Double.parseDouble(product_price.getText().toString()), Integer.parseInt(product_count.getText().toString())
-                    , Integer.parseInt(product_percent.getText().toString()),spinner_currency.getSelectedItem().toString()
-                    , spinner_unit.getSelectedItem().toString());
+            //insertion case
+            if (selectedImage != null && hashMap == null) {
 
+                ScrollView main_scroll_view = (ScrollView) findViewById(R.id.main_scroll_view);
+                main_scroll_view.fullScroll(ScrollView.FOCUS_UP);
+                openViewsUI(false);
+                insertProduct(selectedImage, product_name.getText().toString(), product_desc.getText().toString()
+                        , Double.parseDouble(product_price.getText().toString()), Integer.parseInt(product_count.getText().toString())
+                        , Integer.parseInt(product_percent.getText().toString()), spinner_currency.getSelectedItem().toString()
+                        , spinner_unit.getSelectedItem().toString());
+
+            } else if(hashMap != null){
+                ScrollView main_scroll_view = (ScrollView) findViewById(R.id.main_scroll_view);
+                main_scroll_view.fullScroll(ScrollView.FOCUS_UP);
+                openViewsUI(false);
+                updateProduct((selectedImage!=null),product_name.getText().toString(), product_desc.getText().toString()
+                        , Double.parseDouble(product_price.getText().toString()), Integer.parseInt(product_count.getText().toString())
+                        , Integer.parseInt(product_percent.getText().toString()), spinner_currency.getSelectedItem().toString()
+                        , spinner_unit.getSelectedItem().toString());
+            }else{
+                Toast.makeText(this, "Please, enter all data", Toast.LENGTH_SHORT).show();
+            }
         }else{
             Toast.makeText(this, "Please, enter all data", Toast.LENGTH_SHORT).show();
         }
@@ -261,6 +324,60 @@ public class ProductActivity extends AppCompatActivity  {
             finish();
             onBackPressed();
         });
+    }
+
+    private void updateProduct(boolean isNewImage, String name, String description, double price,
+                               int count, int percentage, String currency, String unit){
+        String brand_id = brandProdAdapter.getSelected().getID();
+        String category_id = categoryProdAdapter.getSelected().getID();
+        String id = hashMap.get("ID");
+        productDbReference = FirebaseDatabase.getInstance().getReference(Product.class.getSimpleName());
+        mStorageReference = FirebaseStorage.getInstance().getReference().child("Products");
+
+        if(isNewImage){
+            String oldUrl = hashMap.get("imageUrl");
+            StorageReference oldImageRef = FirebaseStorage.getInstance().getReferenceFromUrl(oldUrl);
+            oldImageRef.delete().addOnSuccessListener(aVoid -> {
+                Toast.makeText(ProductActivity.this, R.string.old_image_deleted, Toast.LENGTH_SHORT).show();
+                final StorageReference photoRef = mStorageReference.child(selectedImage.getLastPathSegment());
+                UploadTask uploadTask = photoRef.putFile(selectedImage);
+                Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return photoRef.getDownloadUrl();
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        String imageUrl = downloadUri.toString();
+                        Toast.makeText(ProductActivity.this, R.string.uploaded_success, Toast.LENGTH_SHORT).show();
+                        Product product = new Product(id, name, imageUrl, unit, price, currency, count, description
+                                ,(percentage>0), percentage, brand_id, category_id, new Date().getTime());
+                        productDbReference.child(id).setValue(product).addOnSuccessListener(aVoid1 -> {
+                            Toast.makeText(ProductActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                            openViewsUI(true);
+                            finish();
+                            onBackPressed();
+                        });
+                    } else {
+                        Toast.makeText(ProductActivity.this, "Failed update", Toast.LENGTH_SHORT).show();
+                        openViewsUI(true);
+                        finish();
+                        onBackPressed();
+                    }
+                });
+            });
+
+        }else{
+            Product product = new Product(id, name, hashMap.get("imageUrl"), unit, price, currency, count, description
+                    ,(percentage>0), percentage, brand_id, category_id, new Date().getTime());
+            productDbReference.child(id).setValue(product).addOnSuccessListener(aVoid -> {
+                Toast.makeText(ProductActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                openViewsUI(true);
+                finish();
+                onBackPressed();
+            });
+        }
     }
 
     private void openViewsUI(boolean isInteractive) {

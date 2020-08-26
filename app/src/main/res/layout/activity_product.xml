@@ -273,7 +273,7 @@ tools:context=".ui.adminLayer.ProductActivity">
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="Products"
+                android:text="Brands"
                 android:gravity="center"
                 android:textSize="15sp"/>
         </LinearLayout>

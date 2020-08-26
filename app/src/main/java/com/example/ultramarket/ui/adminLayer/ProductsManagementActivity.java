@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Product;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ProductsManagementActivity extends AppCompatActivity {
@@ -79,9 +81,9 @@ public class ProductsManagementActivity extends AppCompatActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ProductsManagementActivity.this);
                 //Setting message manually and performing action on button click
-                builder.setMessage("Do you want really to delete this Product?")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", (dialog, id) -> {
+                builder.setMessage("Pick witch action to be applied on product!")
+                        .setCancelable(true)
+                        .setPositiveButton("Delete", (dialog, id) -> {
                             dialog.cancel();
                             progressBar_product.setVisibility(View.VISIBLE);
                             int position = viewHolder.getAdapterPosition();
@@ -89,15 +91,43 @@ public class ProductsManagementActivity extends AppCompatActivity {
                             Toast.makeText(ProductsManagementActivity.this, ""+position, Toast.LENGTH_SHORT).show();
                             productManagementViewModel.deleteProduct(products.get(position));
                         })
-                        .setNegativeButton("No", (dialog, id) -> {
-                            productAdminAdapter.notifyDataSetChanged();
+                        .setNegativeButton("Edit", (dialog, id) -> {
+                        //    productAdminAdapter.notifyDataSetChanged();
+                            updateProduct(productAdminAdapter.getProducts().get(viewHolder.getAdapterPosition()));
                             dialog.cancel();
                         });
                 AlertDialog alert = builder.create();
-                alert.setTitle("Delete Product!!!");
+                alert.setTitle("Product Options");
                 alert.show();
+                alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        productAdminAdapter.notifyDataSetChanged();
+                    }
+                });
             }
         }).attachToRecyclerView(recyclerView);
+    }
+
+    private void updateProduct(Product p) {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("ID", p.getID());
+        hashMap.put("Name", p.getName());
+        hashMap.put("imageUrl", p.getImage());
+        hashMap.put("Unit", p.getUnit());
+        hashMap.put("Price", "" + p.getPrice());
+        hashMap.put("Currency", p.getCurrency());
+        hashMap.put("Count", "" + p.getCount());
+        hashMap.put("Description", p.getDescription());
+        hashMap.put("discount_percentage", "" + p.getDiscount_percentage());
+        hashMap.put("brand_name", p.getBrand_name());
+        hashMap.put("category_name", p.getCategory_name());
+        hashMap.put("brand_id", p.getBrand_ID());
+        hashMap.put("category_id", p.getCategory_ID());
+
+        Intent intent = new Intent(ProductsManagementActivity.this, ProductActivity.class);
+        intent.putExtra("map", hashMap);
+        startActivity(intent);
     }
 
 

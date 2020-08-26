@@ -29,7 +29,8 @@ public class CategoryProdAdapter extends RecyclerView.Adapter<CategoryProdAdapte
         this.categories = categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(List<Category> categories, int initSelection) {
+        checkedPosition = initSelection;
         this.categories = new ArrayList<>();
         this.categories = categories;
         notifyDataSetChanged();

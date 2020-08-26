@@ -129,6 +129,7 @@
     <string name="currency_prompt">Currency</string>
     <string name="unit_prompt">Unit</string>
     <string name="product_added">Product Added</string>
+    <string name="old_image_deleted">Old image deleted</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

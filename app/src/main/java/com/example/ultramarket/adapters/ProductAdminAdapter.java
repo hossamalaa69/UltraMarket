@@ -44,7 +44,7 @@ public class ProductAdminAdapter extends RecyclerView.Adapter<ProductAdminAdapte
 
         holder.product_name_admin.setText(product.getName());
         holder.product_desc_admin.setText(product.getDescription());
-        holder.prod_price_admin.setText(product.getPrice() + " " + product.getCurrency() + ", per item");
+        holder.prod_price_admin.setText(product.getPrice() + " " + product.getCurrency() + ", per " + product.getUnit());
         holder.prod_discount_admin.setText("Discount " + product.getDiscount_percentage() + "%");
         holder.prod_quantity_admin.setText("" + product.getCount() + " Units");
         holder.prod_orders_admin.setText("" + product.getOrders_number());

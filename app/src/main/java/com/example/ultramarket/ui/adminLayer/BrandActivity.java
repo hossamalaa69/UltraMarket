@@ -229,4 +229,34 @@ public class BrandActivity extends AppCompatActivity {
             img_brand.setImageURI(selectedImage);
         }
     }
+
+    private void onComplete(Task<Uri> task) {
+        if (task.isSuccessful()) {
+            Uri downloadUri = task.getResult();
+            String imageUrl = downloadUri.toString();
+            Toast.makeText(BrandActivity.this, R.string.uploaded_success, Toast.LENGTH_SHORT).show();
+            brandDbReference = FirebaseDatabase.getInstance().getReference(Brand.class.getSimpleName());
+            String id = oldID;
+            Brand brand = new Brand(id, name_brand.getText().toString(), imageUrl);
+            brandDbReference.child(id).setValue(brand);
+            Toast.makeText(BrandActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(BrandActivity.this, "Failed update", Toast.LENGTH_SHORT).show();
+        }
+        openUI();
+        finish();
+        onBackPressed();
+    }
+
+    private void onSuccess(Void aVoid) {
+        Toast.makeText(BrandActivity.this, "Old image deleted", Toast.LENGTH_SHORT).show();
+        final StorageReference photoRef = mStorageReference.child(selectedImage.getLastPathSegment());
+        UploadTask uploadTask = photoRef.putFile(selectedImage);
+        Task<Uri> urlTask = uploadTask.continueWithTask((Task<UploadTask.TaskSnapshot> task) -> {
+            if (!task.isSuccessful()) {
+                throw task.getException();
+            }
+            return photoRef.getDownloadUrl();
+        }).addOnCompleteListener(this::onComplete);
+    }
 }

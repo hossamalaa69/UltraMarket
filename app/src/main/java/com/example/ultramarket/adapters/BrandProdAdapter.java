@@ -29,7 +29,8 @@ public class BrandProdAdapter extends RecyclerView.Adapter<BrandProdAdapter.Sing
         this.brands = brands;
     }
 
-    public void setBrands(List<Brand> brands) {
+    public void setBrands(List<Brand> brands, int initSelection) {
+        checkedPosition = initSelection;
         this.brands = new ArrayList<>();
         this.brands = brands;
         notifyDataSetChanged();

@@ -37,8 +37,6 @@ public class ProductManagementViewModel extends AndroidViewModel {
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     Product product = snap.getValue(Product.class);
                     product.setOrders_number(12);
-                    product.setBrand_name("BrandX");
-                    product.setCategory_name("CategoryY");
                     productList.add(product);
                 }
 
@@ -51,6 +49,7 @@ public class ProductManagementViewModel extends AndroidViewModel {
                             for(DataSnapshot snap : snapshot.getChildren()){
                                 if(productList.get(i).getBrand_ID().equals(snap.getKey())){
                                     productList.get(i).setBrand_name(snap.getValue(Brand.class).getName());
+                                    break;
                                 }
                             }
                         }
@@ -64,6 +63,7 @@ public class ProductManagementViewModel extends AndroidViewModel {
                                     for(DataSnapshot snap : snapshot.getChildren()){
                                         if(productList.get(i).getCategory_ID().equals(snap.getKey())){
                                             productList.get(i).setCategory_name(snap.getValue(Category.class).getName());
+                                            break;
                                         }
                                     }
                                 }
