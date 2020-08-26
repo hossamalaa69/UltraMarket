@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient_purple_background"
-    tools:context=".ui.adminLayer.ProductActivity">
 
 
-    <ScrollView
+<ScrollView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@drawable/gradient_purple_background"
+tools:context=".ui.adminLayer.ProductActivity">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
     <RelativeLayout
         android:id="@+id/image_layout"
         android:layout_marginTop="15dp"
@@ -222,7 +221,7 @@
                     android:maxLength="6"
                     android:textColor="@color/White"
                     android:inputType="number"
-                    android:hint="Count"/>
+                    android:hint="Quantity"/>
             </RelativeLayout>
 
 
@@ -251,10 +250,38 @@
             </RelativeLayout>
         </RelativeLayout>
 
+        <LinearLayout
+            android:id="@+id/recyclers_names"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@id/txt_layout">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Categories"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Products"
+                android:gravity="center"
+                android:textSize="15sp"/>
+        </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="10dp"
-        android:layout_below="@id/txt_layout"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@id/recyclers_names"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -271,23 +298,23 @@
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:layout_marginBottom="50dp"
             android:layout_height="match_parent"/>
+              </LinearLayout>
 
-    </LinearLayout>
-
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_save_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end|bottom"
+            android:backgroundTint="@color/pink2"
+            android:src="@drawable/ic_done"
+            app:borderWidth="0dp"
+            android:onClick="saveProduct"
+            android:layout_margin="22dp"/>
         </RelativeLayout>
 
-    </ScrollView>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="end|bottom"
-        android:backgroundTint="@color/pink2"
-        android:src="@drawable/ic_done"
-        app:borderWidth="0dp"
-        android:onClick="saveProduct"
-        android:layout_margin="22dp"/>
-</RelativeLayout>
+</ScrollView>
+

@@ -1,4 +1,4 @@
-package com.example.ultramarket.adapters.user_adapters;
+package com.example.ultramarket.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,21 +14,22 @@ import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Brand;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BrandProdAdapter extends RecyclerView.Adapter<BrandProdAdapter.SingleViewHolder> {
 
     private Context context;
-    private ArrayList<Brand> brands;
+    private List<Brand> brands;
     // if checkedPosition = -1, there is no default selection
     // if checkedPosition = 0, 1st item is selected by default
     private int checkedPosition = 0;
 
-    public BrandProdAdapter(Context context, ArrayList<Brand> brands) {
+    public BrandProdAdapter(Context context, List<Brand> brands) {
         this.context = context;
         this.brands = brands;
     }
 
-    public void setBrands(ArrayList<Brand> brands) {
+    public void setBrands(List<Brand> brands) {
         this.brands = new ArrayList<>();
         this.brands = brands;
         notifyDataSetChanged();

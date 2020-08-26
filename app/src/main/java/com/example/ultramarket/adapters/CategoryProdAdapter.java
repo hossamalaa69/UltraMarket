@@ -1,4 +1,4 @@
-package com.example.ultramarket.adapters.user_adapters;
+package com.example.ultramarket.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,25 +11,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
-import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Category;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CategoryProdAdapter extends RecyclerView.Adapter<CategoryProdAdapter.SingleViewHolder> {
 
     private Context context;
-    private ArrayList<Category> categories;
+    private List<Category> categories;
     // if checkedPosition = -1, there is no default selection
     // if checkedPosition = 0, 1st item is selected by default
     private int checkedPosition = 0;
 
-    public CategoryProdAdapter(Context context, ArrayList<Category> categories) {
+    public CategoryProdAdapter(Context context, List<Category> categories) {
         this.context = context;
         this.categories = categories;
     }
 
-    public void setCategories(ArrayList<Category> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = new ArrayList<>();
         this.categories = categories;
         notifyDataSetChanged();

@@ -88,7 +88,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
                 Picasso.get().load(productList.get(position).getImage()).into(prodImage);
             prodName.setText(productList.get(position).getName());
             prodWeight.setText(productList.get(position).getUnit());
-            double nPrice = productList.get(position).getPercentage() * productList.get(position).getPrice();
+            double nPrice = productList.get(position).getDiscount_percentage() * productList.get(position).getPrice();
             newPrice.setText(mContext.getString(R.string.price, nPrice));
             oldPrice.setText(mContext.getString(R.string.price, productList.get(position).getPrice()));
             prodSavedAmount.setText(mContext.getString(R.string.you_saved_money, nPrice));
