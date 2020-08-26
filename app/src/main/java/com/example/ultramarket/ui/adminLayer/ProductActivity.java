@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -213,6 +214,8 @@ public class ProductActivity extends AppCompatActivity  {
                 && !product_desc.getText().toString().isEmpty() && !product_price.getText().toString().isEmpty()
                 && !product_count.getText().toString().isEmpty() && !product_percent.getText().toString().isEmpty()){
 
+            ScrollView main_scroll_view = (ScrollView) findViewById(R.id.main_scroll_view);
+            main_scroll_view.fullScroll(ScrollView.FOCUS_UP);
             openViewsUI(false);
             insertProduct(selectedImage, product_name.getText().toString(), product_desc.getText().toString()
                     , Double.parseDouble(product_price.getText().toString()), Integer.parseInt(product_count.getText().toString())
