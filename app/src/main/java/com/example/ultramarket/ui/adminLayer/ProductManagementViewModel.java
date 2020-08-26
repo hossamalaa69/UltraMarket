@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.ultramarket.database.Entities.Brand;
+import com.example.ultramarket.database.Entities.Category;
 import com.example.ultramarket.database.Entities.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,20 +28,61 @@ public class ProductManagementViewModel extends AndroidViewModel {
     public ProductManagementViewModel(@NonNull Application application) {
         super(application);
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(Product.class.getSimpleName());
+        DatabaseReference productDbRef = FirebaseDatabase.getInstance().getReference().child(Product.class.getSimpleName());
         List<Product> productList = new ArrayList<>();
-        dbRef.addValueEventListener(new ValueEventListener() {
+        productDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 productList.clear();
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     Product product = snap.getValue(Product.class);
+                    product.setOrders_number(12);
                     product.setBrand_name("BrandX");
                     product.setCategory_name("CategoryY");
-                    product.setOrders_number(12);
                     productList.add(product);
                 }
-                productListMutableLiveData.setValue(productList);
+
+                DatabaseReference brandDbRef = FirebaseDatabase.getInstance().getReference()
+                        .child(Brand.class.getSimpleName());
+                brandDbRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(int i=0;i<productList.size();i++){
+                            for(DataSnapshot snap : snapshot.getChildren()){
+                                if(productList.get(i).getBrand_ID().equals(snap.getKey())){
+                                    productList.get(i).setBrand_name(snap.getValue(Brand.class).getName());
+                                }
+                            }
+                        }
+
+                        DatabaseReference categoryDbRef = FirebaseDatabase.getInstance().getReference()
+                                .child(Category.class.getSimpleName());
+                        categoryDbRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for(int i=0;i<productList.size();i++){
+                                    for(DataSnapshot snap : snapshot.getChildren()){
+                                        if(productList.get(i).getCategory_ID().equals(snap.getKey())){
+                                            productList.get(i).setCategory_name(snap.getValue(Category.class).getName());
+                                        }
+                                    }
+                                }
+
+                                productListMutableLiveData.setValue(productList);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(application.getApplicationContext(), "Categories Cancelled", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(application.getApplicationContext(), "Brands Cancelled", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
