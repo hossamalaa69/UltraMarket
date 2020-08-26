@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/main_scroll_view"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@drawable/gradient_purple_background"
-tools:context=".ui.adminLayer.ProductActivity">
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_purple_background"
+    tools:context=".ui.adminLayer.ProductActivity">
+    <ScrollView
+    android:id="@+id/main_scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="20dp">
+        android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/image_layout"
@@ -298,23 +301,25 @@ tools:context=".ui.adminLayer.ProductActivity">
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="90dp"
             android:layout_height="match_parent"/>
               </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_save_product"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end|bottom"
-            android:backgroundTint="@color/pink2"
-            android:src="@drawable/ic_done"
-            app:borderWidth="0dp"
-            android:onClick="saveProduct"
-            android:padding="30dp"/>
         </RelativeLayout>
 
 </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_save_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end|bottom"
+        android:backgroundTint="@color/pink2"
+        android:src="@drawable/ic_done"
+        app:borderWidth="0dp"
+        android:onClick="saveProduct"
+        android:layout_margin="20dp"/>
+
+</RelativeLayout>
