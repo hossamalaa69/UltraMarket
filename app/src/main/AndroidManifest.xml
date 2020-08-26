@@ -21,7 +21,7 @@
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:label="Product">
         </activity>
-        <activity android:name=".ui.adminLayer.ProductsManagementActivity" />
+        <activity android:name=".ui.adminLayer.ProductsManagementActivity" android:label="Products Management" />
         <activity
             android:name=".ui.adminLayer.CategoryActivity"
             android:label="Category" />

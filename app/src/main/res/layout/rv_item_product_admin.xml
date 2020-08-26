@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:layout_margin="5dp"
+    >
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        android:backgroundTint="@color/transparent"
+        app:cardElevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:backgroundTint="@color/transparent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/main_view_product"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="@color/purple1_transparent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/product_image_admin"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/logo"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/product_name_admin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/product_image_admin"
+                    android:layout_marginStart="18dp"
+                    android:text="Product Name"
+                    android:textColor="@color/White"
+                    android:textSize="18sp"
+                    android:maxLength="20"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"
+                    />
+
+                <ImageView
+                    android:id="@+id/drop_button_product_admin"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_expand"
+                    android:background="@color/transparent"
+                    />
+            </RelativeLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/expandableLayout_product"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:backgroundTint="@color/purple2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/main_view_product">
+
+                <RelativeLayout
+                    android:padding="10dp"
+                    android:paddingTop="8dp"
+                    android:id="@+id/expanded_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/gradient_purple_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginBottom="5dp"
+                    >
+
+                    <RelativeLayout
+                        android:id="@+id/desc_part"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/image_desc"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_description"
+                            />
+                        <TextView
+                            android:id="@+id/product_desc_admin"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/image_desc"
+                            android:textColor="@color/White"
+                            android:text="Description part is here"
+                            android:textSize="15sp"
+                            android:layout_marginStart="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/price_part"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@id/desc_part"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/image_price"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_price"
+                            />
+                        <TextView
+                            android:id="@+id/prod_price_admin"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/image_price"
+                            android:textColor="@color/White"
+                            android:text="12 LE per item"
+                            android:textSize="15sp"
+                            android:layout_marginStart="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/discount_part"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@id/price_part"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/image_discount"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_offer"
+                            />
+                        <TextView
+                            android:id="@+id/prod_discount_admin"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/image_discount"
+                            android:textColor="@color/White"
+                            android:text="Discount 15%"
+                            android:textSize="15sp"
+                            android:layout_marginStart="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/quantity_part"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@id/discount_part"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/image_quantity"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_count"
+                            />
+                        <TextView
+                            android:id="@+id/prod_quantity_admin"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/image_quantity"
+                            android:textColor="@color/White"
+                            android:text="20 Units"
+                            android:textSize="15sp"
+                            android:layout_marginStart="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/orders_part"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@id/quantity_part"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/image_orders"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_cart_white" />
+
+                        <TextView
+                            android:id="@+id/prod_orders_admin"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/image_orders"
+                            android:textColor="@color/White"
+                            android:text="7"
+                            android:textSize="15sp"
+                            android:layout_marginStart="20dp"/>
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/category_brand_part"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@id/orders_part"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/product_brand_admin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/White"
+                            android:text="NIKE"
+                            android:layout_marginBottom="10dp"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/product_category_admin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/product_brand_admin"
+                            android:textColor="@color/White"
+                            android:text="T-Shirts"
+                            android:textSize="18sp"/>
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

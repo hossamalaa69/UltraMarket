@@ -6,6 +6,8 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.database.Exclude;
+
 import org.jetbrains.annotations.NotNull;
 
 @Entity(tableName = "product", indices = {@Index(value = "category_ID"), @Index(value = "brand_ID")},
@@ -48,6 +50,12 @@ public class Product implements Comparable<Product>{
 
     private long launch_date;
 
+
+    private boolean isExpanded = false;
+    private String brand_name;
+    private String category_name;
+    private int orders_number;
+
     @Ignore
     public Product() {
     }
@@ -68,6 +76,7 @@ public class Product implements Comparable<Product>{
         this.brand_ID = brand_ID;
         this.category_ID = category_ID;
         this.launch_date = launch_date;
+        isExpanded = false;
     }
 
 
@@ -181,4 +190,46 @@ public class Product implements Comparable<Product>{
     public void setCurrency(String currency) {
         this.currency = currency;
     }
+
+
+    @Exclude
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    @Exclude
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
+    }
+
+    @Exclude
+    public String getBrand_name() {
+        return brand_name;
+    }
+
+    @Exclude
+    public void setBrand_name(String brand_name) {
+        this.brand_name = brand_name;
+    }
+
+    @Exclude
+    public String getCategory_name() {
+        return category_name;
+    }
+
+    @Exclude
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
+    }
+
+    @Exclude
+    public int getOrders_number() {
+        return orders_number;
+    }
+
+    @Exclude
+    public void setOrders_number(int orders_number) {
+        this.orders_number = orders_number;
+    }
+
 }
