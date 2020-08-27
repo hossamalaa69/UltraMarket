@@ -13,6 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -68,14 +69,13 @@ public class BrandsManagementViewModel extends AndroidViewModel {
 
     private void deleteAllProducts(String id) {
         DatabaseReference prodDbRef = FirebaseDatabase.getInstance().getReference().child(Product.class.getSimpleName());
-        prodDbRef.addValueEventListener(new ValueEventListener() {
+        Query query = prodDbRef.orderByChild("brand_ID").equalTo(id);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     Product product = snap.getValue(Product.class);
-                    if(product.getBrand_ID().equals(id)){
                         deleteProduct(product);
-                    }
                 }
             }
             @Override
