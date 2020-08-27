@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.ultramarket.database.Entities.Category;
+import com.example.ultramarket.database.Entities.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,9 +60,46 @@ public class CategoriesManagementViewModel extends AndroidViewModel {
             DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(Category.class.getSimpleName()).child(id);
             dbRef.removeValue((error, ref) -> Toast.makeText(getApplication().getApplicationContext(), "deleted successfully", Toast.LENGTH_SHORT).show());
 
+            deleteAllProducts(id);
+
         }).addOnFailureListener(exception -> {
             Toast.makeText(getApplication().getApplicationContext(), "Failed deletion", Toast.LENGTH_SHORT).show();
         });
     }
+
+    private void deleteAllProducts(String id) {
+        DatabaseReference prodDbRef = FirebaseDatabase.getInstance().getReference().child(Product.class.getSimpleName());
+        prodDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    Product product = snap.getValue(Product.class);
+                    if(product.getCategory_ID().equals(id)){
+                        deleteProduct(product);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void deleteProduct(Product product) {
+
+        String id = product.getID();
+        String imageUrl = product.getImage();
+
+        StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl);
+        imageRef.delete().addOnSuccessListener(aVoid -> {
+            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(Product.class.getSimpleName()).child(id);
+            dbRef.removeValue((error, ref) -> Toast.makeText(getApplication().getApplicationContext(), "Child Product deleted successfully", Toast.LENGTH_SHORT).show());
+
+        }).addOnFailureListener(exception -> {
+            //Toast.makeText(getApplication().getApplicationContext(), "Failed deletion Child Product", Toast.LENGTH_SHORT).show();
+        });
+    }
+
 }
 
