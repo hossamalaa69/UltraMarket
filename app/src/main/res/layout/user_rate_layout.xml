@@ -1,63 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:padding="10dp"
-        android:text="@string/rating"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="@color/White"
-        android:textStyle="bold" />
+        android:background="@android:color/white"
+        android:orientation="vertical">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:src="@drawable/logo" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="start"
+            android:padding="10dp"
+            android:text="@string/rating"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/White"
+            android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="@string/let_us_know_n_how_we_are_doing"
-        android:textColor="@android:color/black"
-        android:textSize="28sp" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:src="@drawable/logo" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/we_are_trying_to_provide_you_the_best_we_can_help_us_improve_for_you_your_feedback_is_important_to_us"
-        android:textSize="18sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/let_us_know_n_how_we_are_doing"
+            android:textColor="@android:color/black"
+            android:textSize="28sp" />
 
-    <RatingBar
-        android:id="@+id/user_rating_bar"
-        style="@style/RatingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:isIndicator="false"
-        android:numStars="5" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/we_are_trying_to_provide_you_the_best_we_can_help_us_improve_for_you_your_feedback_is_important_to_us"
+            android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/user_rate_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@android:color/transparent"
-        android:elevation="2dp"
-        android:text="@string/cancel"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold" />
-</LinearLayout>
+        <RatingBar
+            android:id="@+id/user_rating_bar"
+            style="@style/RatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:isIndicator="false"
+            android:numStars="5" />
+
+        <Button
+            android:id="@+id/user_rate_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:elevation="2dp"
+            android:text="@string/cancel"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

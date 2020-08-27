@@ -31,6 +31,7 @@
             android:layout_toEndOf="@id/user_offers_frag_item_image"
             android:ellipsize="end"
             android:maxLines="2"
+            android:gravity="start"
             android:paddingStart="@dimen/title_margin"
             android:paddingEnd="@dimen/title_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
@@ -52,6 +53,8 @@
             android:id="@+id/user_offers_item_saved_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="start"
+            app:autoSizeTextType="uniform"
             android:layout_below="@id/user_offers_item_price_layout"
             android:layout_toEndOf="@id/user_offers_frag_item_image"
             android:paddingStart="@dimen/title_margin"
@@ -90,8 +93,7 @@
             android:text="@string/add"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            app:drawableEndCompat="@drawable/add_24" />
-
-
+            app:drawableEndCompat="@drawable/add_24"
+            tools:ignore="MissingPrefix" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_drawer_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white">
 
     <ImageView
@@ -25,8 +26,10 @@
 
     <TextView
         android:id="@+id/user_drawer_header_user_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:autoSizeTextType="uniform"
+        android:gravity="start"
         android:layout_alignBottom="@id/user_drawer_header_icon"
         android:layout_toEndOf="@id/user_drawer_header_icon"
         android:background="@color/transparent"

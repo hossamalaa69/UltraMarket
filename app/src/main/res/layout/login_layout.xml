@@ -1,59 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_purple_background"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/login_logo"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/com_facebook_profilepictureview_preset_size_large"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/splash_logo_margin"
-        android:contentDescription="@string/logo_image"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logo_text" />
-
-    <TextView
-        android:id="@+id/sign_in_tv"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_logo"
+        android:background="@drawable/gradient_purple_background"
         android:gravity="center"
-        android:text="@string/sign_in"
-        android:textColor="@color/White"
-        android:textSize="44sp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/sign_in_tv"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/sign_in_nenjoy_more_features_nmade_for_you"
-        android:textColor="@color/colorAccent"
-        android:textSize="24sp" />
+        <ImageView
+            android:id="@+id/login_logo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/splash_logo_margin"
+            android:layout_weight="1"
+            android:contentDescription="@string/logo_image"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo_text" />
 
-    <Button
-        android:id="@+id/email_button"
-        style="@style/FirebaseUI.Button.AccountChooser.EmailButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/google_button"
-        android:layout_alignStart="@id/google_button"
-        android:layout_alignEnd="@id/google_button"
-        android:layout_centerHorizontal="true"
-        android:text="@string/fui_sign_in_with_email" />
+        <TextView
+            android:id="@+id/sign_in_tv"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_height="wrap_content"
+            app:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text="@string/sign_in"
+            android:textColor="@color/White"
+            android:textSize="44sp" />
 
-    <Button
-        android:id="@+id/google_button"
-        style="@style/FirebaseUI.Button.AccountChooser.GoogleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:text="@string/fui_sign_in_with_google" />
+        <TextView
+            android:id="@+id/enjoy"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:autoSizeTextType="uniform"
+            android:padding="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/sign_in_nenjoy_more_features_nmade_for_you"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/email_button"
+            style="@style/FirebaseUI.Button.AccountChooser.EmailButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="@string/fui_sign_in_with_email" />
+
+        <Button
+            android:id="@+id/google_button"
+            style="@style/FirebaseUI.Button.AccountChooser.GoogleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:text="@string/fui_sign_in_with_google" />
+
+    </LinearLayout>
+</ScrollView>

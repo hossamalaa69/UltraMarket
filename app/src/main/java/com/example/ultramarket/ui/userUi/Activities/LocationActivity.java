@@ -128,6 +128,11 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         }
     }
 
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
     private void updateLocationOfUser(String uid) {
         com.example.ultramarket.database.Entities.Location location = new com.example.ultramarket.database.Entities.Location(
                 mCountry,

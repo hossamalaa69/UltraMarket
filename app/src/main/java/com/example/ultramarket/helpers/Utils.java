@@ -5,15 +5,14 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.ultramarket.database.Entities.User;
 
 public class Utils {
     public static boolean LOCAL = false;
-    public static  User user = null;
+    public static User user = null;
 
-    public static String[] availableCountries = new String[]{"Available Countries","Egypt","Palestine","Libya"};
+    public static String[] availableCountries = new String[]{"Available Countries", "Egypt", "Palestine", "Libya"};
+
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager connMgr =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -29,5 +28,9 @@ public class Utils {
             }
         }
         return isMobileConn | isWifiConn;
+    }
+
+    public static double calcDiscount(double oldPrice, double percentage) {
+        return oldPrice - percentage / 100 * oldPrice;
     }
 }

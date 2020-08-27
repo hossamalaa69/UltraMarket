@@ -69,7 +69,8 @@
             android:layout_below="@id/line1"
             android:text="@string/location"
             app:drawableEndCompat="@drawable/edit_location_24"
-            app:drawableTint="@color/colorPrimary" />
+            app:drawableTint="@color/colorPrimary"
+            tools:ignore="MissingPrefix" />
 
         <TextView
             android:id="@+id/user_profile_country"
@@ -79,7 +80,8 @@
             android:layout_below="@id/location_view"
             android:textColor="@color/dark_gray"
             app:drawableStartCompat="@drawable/country"
-            app:drawableTint="@color/purple2" />
+            app:drawableTint="@color/purple2"
+            tools:ignore="MissingPrefix" />
 
         <TextView
             android:id="@+id/user_profile_city"
@@ -89,7 +91,8 @@
             android:layout_below="@id/user_profile_country"
             android:textColor="@color/dark_gray"
             app:drawableStartCompat="@drawable/city"
-            app:drawableTint="@color/purple2" />
+            app:drawableTint="@color/purple2"
+            tools:ignore="MissingPrefix" />
 
         <TextView
             android:id="@+id/user_profile_road"
@@ -99,7 +102,8 @@
             android:layout_below="@id/user_profile_city"
             android:textColor="@color/dark_gray"
             app:drawableStartCompat="@drawable/road"
-            app:drawableTint="@color/purple2" />
+            app:drawableTint="@color/purple2"
+            tools:ignore="MissingPrefix" />
 
         <TextView
             android:id="@+id/user_profile_floor"
@@ -109,7 +113,8 @@
             android:layout_below="@id/user_profile_road"
             android:textColor="@color/dark_gray"
             app:drawableStartCompat="@drawable/floor"
-            app:drawableTint="@color/purple2" />
+            app:drawableTint="@color/purple2"
+            tools:ignore="MissingPrefix" />
 
         <View
             android:id="@+id/line2"
@@ -125,9 +130,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/line2"
-
             android:text="@string/personal_info"
-            app:drawableEndCompat="@drawable/ic_baseline_edit_24" />
+            app:drawableEndCompat="@drawable/ic_baseline_edit_24"
+            tools:ignore="MissingPrefix" />
 
         <TextView
             android:id="@+id/user_profile_email"
@@ -137,7 +142,8 @@
             android:layout_below="@id/personal_info"
             android:textColor="@color/dark_gray"
             app:drawableStartCompat="@drawable/email_24"
-            app:drawableTint="@color/purple2" />
+            app:drawableTint="@color/purple2"
+            tools:ignore="MissingPrefix" />
 
         <TextView
             android:id="@+id/user_profile_phone"
@@ -146,7 +152,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/user_profile_email"
             android:textColor="@color/dark_gray"
-            app:drawableStartCompat="@drawable/ic_phone_purple" />
+            app:drawableStartCompat="@drawable/ic_phone_purple"
+            tools:ignore="MissingPrefix" />
 
         <Button
             android:id="@+id/user_profile_logout"

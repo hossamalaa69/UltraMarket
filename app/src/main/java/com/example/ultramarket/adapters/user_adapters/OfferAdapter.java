@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Product;
+import com.example.ultramarket.helpers.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -88,10 +89,14 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
                 Picasso.get().load(productList.get(position).getImage()).into(prodImage);
             prodName.setText(productList.get(position).getName());
             prodWeight.setText(productList.get(position).getUnit());
-            double nPrice = productList.get(position).getDiscount_percentage() * productList.get(position).getPrice();
-            newPrice.setText(mContext.getString(R.string.price, nPrice));
-            oldPrice.setText(mContext.getString(R.string.price, productList.get(position).getPrice()));
-            prodSavedAmount.setText(mContext.getString(R.string.you_saved_money, nPrice));
+            double nPrice = Utils.calcDiscount(productList.get(position).getPrice(),
+                    productList.get(position).getDiscount_percentage());
+            newPrice.setText(String.valueOf
+                    (nPrice).concat(productList.get(position).getCurrency()));
+            oldPrice.setText(String.valueOf
+                    (productList.get(position).getPrice()).concat(productList.get(position).getCurrency()));
+            prodSavedAmount.setText(String.valueOf(
+                    nPrice - productList.get(position).getPrice()).concat(productList.get(position).getCurrency()));
             oldPrice.setPaintFlags(oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }

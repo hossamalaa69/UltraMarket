@@ -1,6 +1,7 @@
 package com.example.ultramarket.adapters.user_adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Product;
+import com.example.ultramarket.helpers.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -25,9 +28,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private Context mContext;
     private List<Product> productList;
+    private OnItemClicked mOnItemClickedInstance;
 
-    public ProductAdapter(Context mContext, List<Product> productList) {
+    public interface OnItemClicked {
+        void onItemClicked(String prodId);
+    }
+
+    public ProductAdapter(Context mContext, List<Product> productList, Fragment listener) {
         this.mContext = mContext;
+        mOnItemClickedInstance = (OnItemClicked) listener;
         this.productList = productList;
     }
 
@@ -66,16 +75,45 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         TextView prodName;
         @BindView(R.id.user_product_item_price_layout)
         LinearLayout priceLayout;
+        @BindView(R.id.user_product_item_old_price)
+        TextView oldPrice;
+        @BindView(R.id.user_product_item_new_price)
+        TextView newPrice;
+
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            priceLayout.setVisibility(View.GONE);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickedInstance.onItemClicked(productList.get(getAdapterPosition()).getID());
+                }
+            });
+
+
         }
 
         public void bind(int position) {
             if (productList.get(position).getImage() != null)
                 Picasso.get().load(productList.get(position).getImage()).into(prodImage);
+            priceLayout.setVisibility(View.VISIBLE);
+            if (productList.get(position).isHasOffer()) {
+                double nPrice = Utils.calcDiscount(productList.get(position).getPrice(),
+                        productList.get(position).getDiscount_percentage());
+                newPrice.setText(String.valueOf
+                        (nPrice).concat(productList.get(position).getCurrency()));
+                oldPrice.setText(String.valueOf
+                        (productList.get(position).getPrice()).concat(productList.get(position).getCurrency()));
+                oldPrice.setPaintFlags(oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+            } else {
+                oldPrice.setText(String.valueOf
+                        (productList.get(position).getPrice()).concat(productList.get(position).getCurrency()));
+                newPrice.setVisibility(View.GONE);
+                oldPrice.setTextColor(mContext.getColor(android.R.color.black));
+                oldPrice.setPaintFlags(oldPrice.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+            }
             prodName.setText(productList.get(position).getName());
         }
     }

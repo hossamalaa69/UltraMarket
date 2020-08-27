@@ -39,7 +39,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/usr_rv_category"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/category_rv_height"
+            android:layout_height="150dp"
+            android:minHeight="150dp"
             android:padding="@dimen/rv_padding" />
 
         <Button

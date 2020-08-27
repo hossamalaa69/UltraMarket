@@ -49,7 +49,7 @@
     <string name="search">Search</string>
     <string name="facebook_application_id" translatable="false">com.example.ultramarket</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fbcom.example.ultramarket</string>
-    <string name="you_saved_money">You Saved %1$.2f $</string>
+    <string name="you_saved_money">You Saved %1$.2f</string>
     <string name="price">%1$.2f $</string>
     <string name="try_again">try again</string>
     <string name="show_more">Show More</string>
@@ -130,6 +130,9 @@
     <string name="unit_prompt">Unit</string>
     <string name="product_added">Product Added</string>
     <string name="old_image_deleted">Old image deleted</string>
+    <string name="quantity">quantity</string>
+    <string name="description">Description</string>
+    <string name="failed_to_load_product">OOPS, failed to load product</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

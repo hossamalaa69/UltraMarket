@@ -1,5 +1,6 @@
 package com.example.ultramarket.framgnets.user_fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +23,7 @@ import com.example.ultramarket.adapters.user_adapters.ProductAdapter;
 import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Category;
 import com.example.ultramarket.database.Entities.Product;
+import com.example.ultramarket.ui.userUi.Activities.ProductActivity;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UserHomeFrag extends Fragment {
+public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClicked {
     public static final CharSequence TITLE = "Home";
     public static boolean catRvExtended = false;
     @BindView(R.id.usr_rv_category)
@@ -62,7 +63,7 @@ public class UserHomeFrag extends Fragment {
     void extendCatRv(View view) {
         if (catRvExtended) {
             ViewGroup.LayoutParams params = rvCategories.getLayoutParams();
-            params.height = 300;
+            params.height = rvCategories.getMinimumHeight();
             showMoreBtn.setText(R.string.show_more);
             rvCategories.setLayoutParams(params);
         } else {
@@ -85,13 +86,13 @@ public class UserHomeFrag extends Fragment {
         rvCategories.setLayoutManager(catLayoutManager);
         rvCategories.setNestedScrollingEnabled(false);
         // product views
-        prodAdapter = new ProductAdapter(getContext(), null);
+        prodAdapter = new ProductAdapter(getContext(), null,this);
         rvLatestProd.setAdapter(prodAdapter);
         prodLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         rvLatestProd.setLayoutManager(prodLayoutManager);
         rvLatestProd.setHasFixedSize(true);
         //  featured product views
-        featuredProdAdapter = new ProductAdapter(getContext(), null);
+        featuredProdAdapter = new ProductAdapter(getContext(), null,this);
         rvFeaturedProd.setAdapter(featuredProdAdapter);
         featuredProdLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         rvFeaturedProd.setLayoutManager(featuredProdLayoutManager);
@@ -157,5 +158,10 @@ public class UserHomeFrag extends Fragment {
         });
     }
 
-
+    @Override
+    public void onItemClicked(String prodId) {
+        Intent intent = new Intent(getContext(), ProductActivity.class);
+        intent.putExtra("prod_id", prodId);
+        startActivity(intent);
+    }
 }

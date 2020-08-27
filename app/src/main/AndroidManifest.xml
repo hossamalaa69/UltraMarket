@@ -17,11 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.adminLayer.ProductActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:label="Product">
-        </activity>
-        <activity android:name=".ui.adminLayer.ProductsManagementActivity" android:label="Products Management" />
+        <activity android:name=".ui.userUi.Activities.ProductActivity"></activity>
+        <activity
+            android:name=".ui.adminLayer.ProductActivity"
+            android:label="Product"
+            android:windowSoftInputMode="stateVisible|adjustResize"></activity>
+        <activity
+            android:name=".ui.adminLayer.ProductsManagementActivity"
+            android:label="Products Management" />
         <activity
             android:name=".ui.adminLayer.CategoryActivity"
             android:label="Category" />
