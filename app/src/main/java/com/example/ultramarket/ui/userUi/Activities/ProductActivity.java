@@ -5,6 +5,8 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,11 +17,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ultramarket.R;
+import com.example.ultramarket.database.Entities.Cart;
 import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.Utils;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
@@ -30,6 +35,8 @@ import butterknife.OnClick;
 
 public class ProductActivity extends AppCompatActivity {
 
+    public static final int INCREASE = 1;
+    public static final int DECREASE = 2;
     @BindView(R.id.user_product_image)
     ImageView mProdImage;
     @BindView(R.id.user_product_name)
@@ -43,20 +50,87 @@ public class ProductActivity extends AppCompatActivity {
     @BindView(R.id.user_product__weight_unit)
     TextView mProdWeightUnit;
     @BindView(R.id.user_product__add_to_wishlist)
-    TextView mAddToWishlist;
+    Button mAddToWishlist;
+    @BindView(R.id.user_product_increase_to_wishlist)
+    ImageButton mIncreaseInWishList;
+    @BindView(R.id.user_product_decrease_from_wishlist)
+    ImageButton mmDecreaseInWishList;
     @BindView(R.id.user_product_description)
     TextView mProdDescription;
     @BindView(R.id.user_product_item_price_layout)
     LinearLayout mPriceLayout;
     private ActionBar actionBar;
+    private String prodId;
+
+    private void disableBtns() {
+        mmDecreaseInWishList.setEnabled(false);
+        mIncreaseInWishList.setEnabled(false);
+        mAddToWishlist.setEnabled(false);
+    }
+
+    private void enableBtns() {
+        mmDecreaseInWishList.setEnabled(true);
+        mIncreaseInWishList.setEnabled(true);
+        mAddToWishlist.setEnabled(true);
+    }
+
+    @OnClick(R.id.user_product_increase_to_wishlist)
+    public void onIncreaseInWishListClicked(View view) {
+        disableBtns();
+        OnAddItemToWishListClicked(null);
+    }
+
+    @OnClick(R.id.user_product_decrease_from_wishlist)
+    public void onDecreaseInWishListClicked(View view) {
+        disableBtns();
+        addProductToFirebase(prodId, DECREASE);
+    }
 
     @OnClick(R.id.user_product__add_to_wishlist)
     public void OnAddItemToWishListClicked(View view) {
+        disableBtns();
         if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
-            // TODO Add product to wishlist
+            addProductToFirebase(prodId, INCREASE);
+            mmDecreaseInWishList.setVisibility(View.VISIBLE);
         } else {
             Toast.makeText(ProductActivity.this, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void addProductToFirebase(String prodId, int operation) {
+        DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
+                .child(Cart.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
+        cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                OnSuccessListener<Void> listener = new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //update ui
+                        enableBtns();
+                        Toast.makeText(ProductActivity.this, R.string.done, Toast.LENGTH_SHORT).show();
+                    }
+                };
+                if (!snapshot.exists()) {
+                    cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
+                } else if (operation == INCREASE) {
+                    int num = snapshot.getValue(Integer.class);
+                    cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
+                    mAddToWishlist.setText(String.valueOf(num + 1));
+                } else if (operation == DECREASE) {
+                    int num = snapshot.getValue(Integer.class);
+                    cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
+                    mAddToWishlist.setText(String.valueOf(num > 1 ? num - 1 : 0));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
 
@@ -65,12 +139,13 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity_product);
         ButterKnife.bind(this);
+        mmDecreaseInWishList.setVisibility(View.GONE);
         actionBar = getSupportActionBar();
         if (actionBar != null)
             actionBar.setTitle("");
         Intent intent = getIntent();
         if (intent != null) {
-            String prodId = intent.getStringExtra("prod_id");
+            prodId = intent.getStringExtra("prod_id");
             if (prodId != null) {
                 loadProductData(prodId);
             }
@@ -115,7 +190,7 @@ public class ProductActivity extends AppCompatActivity {
             mProdOldPrice.setPaintFlags(mProdOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             mProdOldPrice.setText(String.valueOf(oldPrice).concat(product.getCurrency()));
             mProdNewPrice.setText(String.valueOf(newPrice).concat(product.getCurrency()));
-            mProdSavedMoney.setText(getString(R.string.you_saved_money,oldPrice - newPrice).concat(product.getCurrency()));
+            mProdSavedMoney.setText(getString(R.string.you_saved_money, oldPrice - newPrice).concat(product.getCurrency()));
 
         } else {
             mProdOldPrice.setVisibility(View.GONE);

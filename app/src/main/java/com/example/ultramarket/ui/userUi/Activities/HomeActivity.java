@@ -28,7 +28,7 @@ import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.user_adapters.ViewPagerAdapter;
 import com.example.ultramarket.database.Entities.User;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
-import com.example.ultramarket.framgnets.user_fragments.UserWishlistFrag;
+import com.example.ultramarket.framgnets.user_fragments.UserCartFrag;
 import com.example.ultramarket.helpers.AppExecutors;
 import com.example.ultramarket.ui.SplashActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,7 +46,7 @@ import butterknife.OnClick;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
 
-        UserWishlistFrag.OnClickedListener {
+        UserCartFrag.OnClickedListener {
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @BindView(R.id.user_nav_view)

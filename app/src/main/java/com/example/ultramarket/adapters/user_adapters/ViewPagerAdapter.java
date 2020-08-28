@@ -6,11 +6,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.ultramarket.framgnets.user_fragments.UserCartFrag;
 import com.example.ultramarket.framgnets.user_fragments.UserCatFrag;
 import com.example.ultramarket.framgnets.user_fragments.UserHomeFrag;
 import com.example.ultramarket.framgnets.user_fragments.UserOffersFrag;
 import com.example.ultramarket.framgnets.user_fragments.UserOrdersFrag;
-import com.example.ultramarket.framgnets.user_fragments.UserWishlistFrag;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     public static final int FRAGS_COUNT = 5;
@@ -27,9 +27,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return UserCatFrag.newInstance();
             case 2:
-                return UserWishlistFrag.newInstance();
-            case 3:
                 return UserOffersFrag.newInstance();
+            case 3:
+                return UserCartFrag.newInstance();
             case 4:
                 return UserOrdersFrag.newInstance();
             default:
@@ -46,9 +46,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return UserCatFrag.TITLE;
             case 2:
-                return UserWishlistFrag.TITLE;
-            case 3:
                 return UserOffersFrag.TITLE;
+            case 3:
+                return UserCartFrag.TITLE;
             case 4:
                 return UserOrdersFrag.TITLE;
             default:

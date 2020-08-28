@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".framgnets.user_fragments.UserWishlistFrag">
+    tools:context=".framgnets.user_fragments.UserCartFrag">
 
     <LinearLayout
         android:id="@+id/user_wishlist_frag_login_layout"
@@ -17,14 +17,14 @@
             android:layout_width="@dimen/user_icon_image_size"
             android:layout_height="80dp"
             android:contentDescription="@string/wishlist_icon"
-            android:src="@drawable/favorite_border_24" />
+            android:src="@drawable/ic_cart_purple" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/title_margin"
             android:gravity="center_horizontal"
-            android:text="@string/wishlist"
+            android:text="@string/your_cart"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:textColor="@android:color/black" />
 
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/title_margin"
             android:gravity="center_horizontal"
-            android:text="@string/please_login_to_add_items_to_wishlist"
+            android:text="@string/please_login_to_add_items_to_cart"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <FrameLayout
@@ -52,4 +52,17 @@
         </FrameLayout>
     </LinearLayout>
 
-</FrameLayout>
+    <include
+        android:id="@+id/user_cart_layout"
+        layout="@layout/user_cart_layout"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/user_cart_progress_bar"
+        style="@android:style/Widget.Material.ProgressBar.Large"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

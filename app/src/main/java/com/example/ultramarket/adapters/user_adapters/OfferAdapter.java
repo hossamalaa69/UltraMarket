@@ -6,26 +6,41 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
+import com.example.ultramarket.database.Entities.Cart;
 import com.example.ultramarket.database.Entities.Product;
+import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.userUi.Activities.ProductActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewHolder> {
 
+    private static final int INCREASE = 1;
+    private static final int DECREASE = 2;
     private Context mContext;
     private List<Product> productList;
 
@@ -72,7 +87,87 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
         TextView prodWeight;
         @BindView(R.id.user_offers_item_saved_amount)
         TextView prodSavedAmount;
+        @BindView(R.id.user_offers_add_to_wishlist)
+        Button prodAddBtn;
+        @BindView(R.id.user_offers_progress)
+        ProgressBar progressBar;
+        @BindView(R.id.user_offers_decrease_from_wishlist)
+        ImageButton prodDecreaseInCartBtn;
 
+        @OnClick(R.id.user_offers_add_to_wishlist)
+        public void prodAddBtn(View view) {
+            disableBtns();
+            if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
+                addProductToFirebase(productList.get(getAdapterPosition()).getID(), INCREASE);
+                prodDecreaseInCartBtn.setVisibility(View.VISIBLE);
+            } else {
+                Toast.makeText(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @OnClick(R.id.user_offers_increase_to_wishlist)
+        public void prodIncreaseInCart(View view) {
+            disableBtns();
+            prodAddBtn(null);
+        }
+
+        @OnClick(R.id.user_offers_decrease_from_wishlist)
+        public void prodDecreaseInCart(View view) {
+            disableBtns();
+            addProductToFirebase(productList.get(getAdapterPosition()).getID(), DECREASE);
+        }
+
+        private void disableBtns() {
+            prodDecreaseInCartBtn.setEnabled(false);
+            prodDecreaseInCartBtn.setEnabled(false);
+            progressBar.setVisibility(View.VISIBLE);
+            prodAddBtn.setVisibility(View.INVISIBLE);
+            prodAddBtn.setEnabled(false);
+        }
+
+        private void enableBtns() {
+            progressBar.setVisibility(View.GONE);
+            prodAddBtn.setVisibility(View.VISIBLE);
+            prodDecreaseInCartBtn.setEnabled(true);
+            prodDecreaseInCartBtn.setEnabled(true);
+            prodAddBtn.setEnabled(true);
+        }
+
+        private void addProductToFirebase(String prodId, int operation) {
+            DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
+                    .child(Cart.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
+            cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    OnSuccessListener<Void> listener = new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            //update ui
+                            enableBtns();
+                            Toast.makeText(mContext, R.string.done, Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    if (!snapshot.exists()) {
+                        cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
+                    } else if (operation == INCREASE) {
+                        int num = snapshot.getValue(Integer.class);
+                        cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
+                        prodAddBtn.setText(String.valueOf(num + 1));
+                    } else if (operation == DECREASE) {
+                        int num = snapshot.getValue(Integer.class);
+                        cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
+                        prodAddBtn.setText(String.valueOf(num > 1 ? num - 1 : 0));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
+        }
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);

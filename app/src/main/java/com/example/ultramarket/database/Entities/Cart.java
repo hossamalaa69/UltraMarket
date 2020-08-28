@@ -11,14 +11,14 @@ import java.util.Date;
 
 @Entity(tableName = "cart", indices = {@Index(value = "user_ID"), @Index(value = "product_ID")},
         foreignKeys = {@ForeignKey(entity = User.class,
-                        parentColumns = "ID",
-                        childColumns = "user_ID",
-                        onDelete = ForeignKey.CASCADE),
-                        @ForeignKey(entity = Product.class,
+                parentColumns = "ID",
+                childColumns = "user_ID",
+                onDelete = ForeignKey.CASCADE),
+                @ForeignKey(entity = Product.class,
                         parentColumns = "ID",
                         childColumns = "product_ID",
                         onDelete = ForeignKey.CASCADE)
-                      })
+        })
 public class Cart {
 
     @NotNull
@@ -34,6 +34,7 @@ public class Cart {
     private double price;
 
     private Date date;
+    private boolean isOrdered = false;
 
     public Cart(long ID, long user_ID, long product_ID, int count, double price, Date date) {
         this.ID = ID;
@@ -42,6 +43,14 @@ public class Cart {
         this.count = count;
         this.price = price;
         this.date = date;
+    }
+
+    public boolean isOrdered() {
+        return isOrdered;
+    }
+
+    public void setIsOrdered(boolean is_ordered) {
+        this.isOrdered = is_ordered;
     }
 
     public long getID() {

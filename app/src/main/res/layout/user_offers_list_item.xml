@@ -30,8 +30,8 @@
             android:layout_marginTop="@dimen/user_offers_item_image_margin"
             android:layout_toEndOf="@id/user_offers_frag_item_image"
             android:ellipsize="end"
-            android:maxLines="2"
             android:gravity="start"
+            android:maxLines="2"
             android:paddingStart="@dimen/title_margin"
             android:paddingEnd="@dimen/title_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
@@ -53,47 +53,81 @@
             android:id="@+id/user_offers_item_saved_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            app:autoSizeTextType="uniform"
             android:layout_below="@id/user_offers_item_price_layout"
             android:layout_toEndOf="@id/user_offers_frag_item_image"
+            android:gravity="start"
             android:paddingStart="@dimen/title_margin"
             android:paddingEnd="@dimen/title_margin"
             android:textColor="@color/dark_gray"
+            app:autoSizeTextType="uniform"
             tools:text="you save 2$" />
 
         <TextView
             android:id="@+id/user_offers_item__weight_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/user_offers_item__add_to_wishlist"
-            android:layout_alignBottom="@id/user_offers_item__add_to_wishlist"
+            android:layout_alignTop="@id/user_offers_decrease_from_wishlist"
+            android:layout_alignBottom="@id/user_offers_decrease_from_wishlist"
             android:layout_margin="5dp"
-            android:layout_toStartOf="@id/user_offers_item__add_to_wishlist"
+            android:layout_toStartOf="@id/user_offers_decrease_from_wishlist"
             android:layout_toEndOf="@id/user_offers_frag_item_image"
             android:background="@drawable/weight_background_shape"
             android:gravity="center"
             android:textColor="@android:color/black"
             tools:text="500 g" />
 
-        <TextView
-            android:id="@+id/user_offers_item__add_to_wishlist"
+        <Button
+            android:id="@+id/user_offers_add_to_wishlist"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_below="@id/user_offers_item_saved_amount"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toStartOf="@id/user_offers_increase_to_wishlist"
             android:background="@color/purple2"
-            android:drawablePadding="5dp"
+            android:drawablePadding="10dp"
             android:gravity="center"
             android:paddingStart="10dp"
             android:paddingTop="5dp"
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
             android:text="@string/add"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textStyle="bold"
-            app:drawableEndCompat="@drawable/add_24"
+            app:autoSizeTextType="uniform"
             tools:ignore="MissingPrefix" />
+
+        <ProgressBar
+            android:id="@+id/user_offers_progress"
+            style="@android:style/Widget.Material.ProgressBar.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@id/user_offers_item_saved_amount"
+            android:layout_toStartOf="@id/user_offers_increase_to_wishlist"
+            android:background="@color/purple2"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/user_offers_decrease_from_wishlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/user_offers_add_to_wishlist"
+            android:layout_alignBottom="@id/user_offers_add_to_wishlist"
+            android:layout_toStartOf="@id/user_offers_add_to_wishlist"
+            android:background="@color/dark_gray"
+            android:src="@drawable/ic_baseline_remove_24" />
+
+        <ImageButton
+            android:id="@+id/user_offers_increase_to_wishlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/user_offers_add_to_wishlist"
+            android:layout_alignBottom="@id/user_offers_add_to_wishlist"
+            android:layout_alignParentEnd="true"
+            android:background="@color/dark_gray"
+            android:src="@drawable/add_24" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

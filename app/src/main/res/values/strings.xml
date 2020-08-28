@@ -134,6 +134,13 @@
     <string name="description">Description</string>
     <string name="failed_to_load_product">OOPS, failed to load product</string>
     <string name="shop_by_categories">Shop By Categories</string>
+    <string name="product_added_to_cart">Product added to cart</string>
+    <string name="order_cart">Order Cart</string>
+    <string name="your_cart">Your Cart</string>
+    <string name="please_login_to_add_items_to_cart">Please login to add items to your cart</string>
+    <string name="remove">Remove</string>
+    <string name="done">Done</string>
+    <string name="count">Count: %1$d</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

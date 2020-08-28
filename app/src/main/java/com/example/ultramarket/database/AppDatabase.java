@@ -12,14 +12,12 @@ import com.example.ultramarket.database.DAOs.BrandDao;
 import com.example.ultramarket.database.DAOs.CatDao;
 import com.example.ultramarket.database.DAOs.ProdDao;
 import com.example.ultramarket.database.Entities.Brand;
-import com.example.ultramarket.database.Entities.Cart;
 import com.example.ultramarket.database.Entities.Category;
-import com.example.ultramarket.database.Entities.Order;
 import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.database.Entities.User;
 
-@Database(entities = {Brand.class, Cart.class, Category.class, Order.class, Product.class, User.class}
-            , version = 2, exportSchema = false)
+@Database(entities = {Brand.class,Category.class, Product.class, User.class}
+        , version = 2, exportSchema = false)
 
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
@@ -44,9 +42,11 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
-   //  abstract UltraDao Daos
+    //  abstract UltraDao Daos
     public abstract CatDao catDao();
+
     public abstract ProdDao prodDao();
+
     public abstract BrandDao brandDao();
 
 }

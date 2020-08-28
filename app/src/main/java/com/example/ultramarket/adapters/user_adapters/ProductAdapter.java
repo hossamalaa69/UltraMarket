@@ -90,8 +90,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     mOnItemClickedInstance.onItemClicked(productList.get(getAdapterPosition()).getID());
                 }
             });
-
-
+/*            ViewGroup.LayoutParams params = itemView.getLayoutParams();
+            params.width = params.height;
+            itemView.setLayoutParams(params);*/
         }
 
         public void bind(int position) {

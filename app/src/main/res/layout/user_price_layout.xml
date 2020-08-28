@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/user_product_item_price_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -11,25 +10,23 @@
 
     <TextView
         android:id="@+id/user_product_item_new_price"
-        android:layout_width="0dp"
-        app:autoSizeTextType="uniform"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_weight="1"
-        android:padding="@dimen/user_product_item_price_padding"
         android:gravity="start"
+        android:padding="@dimen/user_product_item_price_padding"
         android:textColor="@android:color/holo_red_light"
+        android:textSize="12sp"
         android:textStyle="bold"
-        tools:text="167$" />
+        tools:text="16778798$" />
 
     <TextView
         android:id="@+id/user_product_item_old_price"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_weight="1"
-        android:padding="@dimen/user_product_item_price_padding"
         android:gravity="start"
-        app:autoSizeTextType="uniform"
+        android:padding="@dimen/user_product_item_price_padding"
         android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
         android:textStyle=""
-        tools:text="167$" />
+        tools:text="1634547$" />
 </LinearLayout>

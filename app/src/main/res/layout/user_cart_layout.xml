@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_cart_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/user_cart_order_cart"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/user_cart_order_cart"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:background="@color/pink3"
+        android:drawablePadding="5dp"
+        android:padding="10dp"
+        android:text="@string/order_cart"
+        android:textAppearance="@style/titleStyle"
+        app:autoSizeTextType="uniform"
+        app:drawableEndCompat="@drawable/navigate_next_24"
+        tools:ignore="MissingPrefix" />
+
+</RelativeLayout>
