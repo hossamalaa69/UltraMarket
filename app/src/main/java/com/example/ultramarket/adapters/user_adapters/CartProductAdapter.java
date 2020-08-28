@@ -96,6 +96,17 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         notifyDataSetChanged();
     }
 
+    public void removeProduct(String prod_id) {
+        for (Map.Entry<Product, Integer> entry : productsMap.entrySet()) {
+            if (entry.getKey().getID().matches(prod_id)) {
+                productsMap.remove(entry.getKey());
+                notifyDataSetChanged();
+                return;
+            }
+        }
+
+    }
+
     public interface ProductCallBacks {
         void onRemoveProductClickedListener(String prod_id);
 
@@ -138,7 +149,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
         @OnClick(R.id.user_offers_add_to_wishlist)
         public void addToCart(View view) {
-            disableBtns();
             if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
                 addProductToFirebase(getProductAt(getAdapterPosition()).getID(), INCREASE);
             } else {
@@ -148,31 +158,34 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
         @OnClick(R.id.user_offers_increase_to_wishlist)
         public void increaseToCart(View view) {
-            disableBtns();
             addToCart(null);
         }
 
 
         @OnClick(R.id.user_offers_decrease_from_wishlist)
         public void decreaseToCart(View view) {
-            disableBtns();
             addProductToFirebase(getProductAt(getAdapterPosition()).getID(), DECREASE);
         }
 
         private void addProductToFirebase(String prodId, int operation) {
-            OnSuccessListener<Void> listener = new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    //update ui
-                    enableBtns();
-                    Toast.makeText(mContext, R.string.done, Toast.LENGTH_SHORT).show();
-                }
-            };
-            interfaceInstance.addProductToFirebaseListener(listener, prodId, operation);
+            if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
+                disableBtns();
+                OnSuccessListener<Void> listener = new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //update ui
+                        enableBtns();
+                        Toast.makeText(mContext, R.string.done, Toast.LENGTH_SHORT).show();
+                    }
+                };
+                interfaceInstance.addProductToFirebaseListener(listener, prodId, operation);
+            }else{
+                Toast.makeText(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+            }
         }
 
 
-        private Product getProductAt(int pos) {
+        public Product getProductAt(int pos) {
             int i = 0;
             for (Map.Entry<Product, Integer> entry : productsMap.entrySet()) {
                 if (i == pos) {
@@ -183,7 +196,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             return null;
         }
 
-        private int getValueAt(int pos) {
+        public int getValueAt(int pos) {
             int i = 0;
             for (Map.Entry<Product, Integer> entry : productsMap.entrySet()) {
                 if (i == pos) {

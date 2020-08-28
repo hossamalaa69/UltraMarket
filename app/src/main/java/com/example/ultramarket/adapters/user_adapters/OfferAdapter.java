@@ -96,24 +96,16 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
 
         @OnClick(R.id.user_offers_add_to_wishlist)
         public void prodAddBtn(View view) {
-            disableBtns();
-            if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
-                addProductToFirebase(productList.get(getAdapterPosition()).getID(), INCREASE);
-                prodDecreaseInCartBtn.setVisibility(View.VISIBLE);
-            } else {
-                Toast.makeText(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
-            }
+            addProductToFirebase(productList.get(getAdapterPosition()).getID(), INCREASE);
         }
 
         @OnClick(R.id.user_offers_increase_to_wishlist)
         public void prodIncreaseInCart(View view) {
-            disableBtns();
             prodAddBtn(null);
         }
 
         @OnClick(R.id.user_offers_decrease_from_wishlist)
         public void prodDecreaseInCart(View view) {
-            disableBtns();
             addProductToFirebase(productList.get(getAdapterPosition()).getID(), DECREASE);
         }
 
@@ -134,6 +126,11 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
         }
 
         private void addProductToFirebase(String prodId, int operation) {
+            if (FirebaseAuthHelper.getsInstance().getCurrUser() == null) {
+                Toast.makeText(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            disableBtns();
             DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
                     .child(Cart.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
             cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -144,6 +141,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
                         public void onSuccess(Void aVoid) {
                             //update ui
                             enableBtns();
+                            prodDecreaseInCartBtn.setVisibility(View.VISIBLE);
                             Toast.makeText(mContext, R.string.done, Toast.LENGTH_SHORT).show();
                         }
                     };

@@ -18,9 +18,9 @@
             android:icon="@drawable/category_24"
             android:title="@string/categories" />
         <item
-            android:id="@+id/user_drawer_wishlist"
+            android:id="@+id/user_drawer_cart"
             android:icon="@drawable/favorite_24"
-            android:title="@string/wishlist" />
+            android:title="@string/cart" />
         <item
             android:id="@+id/user_drawer_track"
             android:icon="@drawable/motorcycle_24"

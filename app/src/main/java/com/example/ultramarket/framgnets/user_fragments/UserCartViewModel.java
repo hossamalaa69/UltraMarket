@@ -1,5 +1,7 @@
 package com.example.ultramarket.framgnets.user_fragments;
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -9,6 +11,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +20,17 @@ public class UserCartViewModel extends ViewModel {
     private MutableLiveData<Map.Entry<String, Integer>> products = new MutableLiveData<>();
 
     public UserCartViewModel(String userId) {
+        loadData(userId);
+    }
+
+    private void loadData(String userId) {
         FirebaseDatabase.getInstance().getReference()
                 .child("Cart").child(userId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(!snapshot.exists()){
+
+                }
                 products.setValue(new Map.Entry<String, Integer>() {
                     @Override
                     public String getKey() {
@@ -72,24 +82,9 @@ public class UserCartViewModel extends ViewModel {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                int y =0 ;
             }
         });
-    /*addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Map<String, Integer> list = new HashMap<>();
-                for (DataSnapshot shot : snapshot.getChildren()) {
-                    list.put(shot.getKey(), shot.getValue(Integer.class));
-                }
-                products.setValue(list);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
     }
 
     public MutableLiveData<Map.Entry<String, Integer>> getProducts() {

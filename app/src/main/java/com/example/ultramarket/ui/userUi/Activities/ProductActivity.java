@@ -76,28 +76,24 @@ public class ProductActivity extends AppCompatActivity {
 
     @OnClick(R.id.user_product_increase_to_wishlist)
     public void onIncreaseInWishListClicked(View view) {
-        disableBtns();
         OnAddItemToWishListClicked(null);
     }
 
     @OnClick(R.id.user_product_decrease_from_wishlist)
     public void onDecreaseInWishListClicked(View view) {
-        disableBtns();
         addProductToFirebase(prodId, DECREASE);
     }
 
     @OnClick(R.id.user_product__add_to_wishlist)
     public void OnAddItemToWishListClicked(View view) {
-        disableBtns();
-        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
-            addProductToFirebase(prodId, INCREASE);
-            mmDecreaseInWishList.setVisibility(View.VISIBLE);
-        } else {
-            Toast.makeText(ProductActivity.this, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
-        }
+        addProductToFirebase(prodId, INCREASE);
     }
 
     private void addProductToFirebase(String prodId, int operation) {
+        if (FirebaseAuthHelper.getsInstance().getCurrUser() == null) {
+            Toast.makeText(ProductActivity.this, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+            return;
+        }
         DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
                 .child(Cart.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
         cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -108,6 +104,7 @@ public class ProductActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         //update ui
                         enableBtns();
+                        mmDecreaseInWishList.setVisibility(View.VISIBLE);
                         Toast.makeText(ProductActivity.this, R.string.done, Toast.LENGTH_SHORT).show();
                     }
                 };

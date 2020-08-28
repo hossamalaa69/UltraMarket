@@ -205,28 +205,40 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.user_drawer_offers:
                 viewPager.setCurrentItem(viewPager.getCurrentItem(), false);
-                viewPager.setCurrentItem(3); // offers fragment
+                viewPager.setCurrentItem(2); // offers fragment
                 drawerLayout.closeDrawer(GravityCompat.START);//close drawer
+                break;
             case R.id.user_drawer_category:
                 viewPager.setCurrentItem(viewPager.getCurrentItem(), false);
                 viewPager.setCurrentItem(1); // category fragment
                 drawerLayout.closeDrawer(GravityCompat.START);//close drawer
-            case R.id.user_drawer_wishlist:
-                viewPager.setCurrentItem(viewPager.getCurrentItem(), false);
-                viewPager.setCurrentItem(2); // category fragment
-                drawerLayout.closeDrawer(GravityCompat.START);//close drawer
+                break;
+            case R.id.user_drawer_cart:
+                openCartFrag();
+                break;
             case R.id.user_drawer_track:
                 // go to track order
+                break;
             case R.id.user_drawer_login:
                 startLogin();
+                break;
             case R.id.user_drawer_contact_us:
                 // contactUs();
+                break;
             case R.id.user_drawer_terms:
                 //  openTermsBottomNavigation();
+                break;
             case R.id.user_drawer_about_us:
                 //  openAboutUsBottomSheet();
+                break;
         }
         return false;
+    }
+
+    private void openCartFrag() {
+        viewPager.setCurrentItem(viewPager.getCurrentItem(), false);
+        viewPager.setCurrentItem(3); // category fragment
+        drawerLayout.closeDrawer(GravityCompat.START);//close drawer
     }
 
     private void startLogin() {
@@ -294,8 +306,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             drawerLayout.closeDrawer(GravityCompat.START);
         } else if (viewPager.getCurrentItem() == 0) {
             SplashActivity.isBackPressed = true;
-            super.onBackPressed();
         }
+        super.onBackPressed();
 
     }
 
@@ -321,6 +333,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.user_menu_cart:
+                openCartFrag();
                 break;
         }
         return super.onOptionsItemSelected(item);

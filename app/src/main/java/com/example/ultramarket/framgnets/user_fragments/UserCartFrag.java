@@ -71,7 +71,6 @@ public class UserCartFrag extends Fragment {
     }
 
     private void hideLoginLayout() {
-        //TODO hide login layout and show the other layout
         loginLayout.setVisibility(View.GONE);
         cartLayout.setVisibility(View.VISIBLE);
     }
@@ -85,20 +84,39 @@ public class UserCartFrag extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_cart_fragment, container, false);
         ButterKnife.bind(this, view);
+        return view;
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initLayoutViews();
+        initViewModel();
+
+    }
+
+    private void initLayoutViews() {
+        listener = (OnClickedListener) getContext();
         if (FirebaseAuthHelper.getsInstance().getCurrUser() == null) {
             loginLayout.setVisibility(View.VISIBLE);
             cartLayout.setVisibility(View.GONE);
         } else {
             loginLayout.setVisibility(View.GONE);
             cartLayout.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             adapter = new CartProductAdapter(getContext(), null, new CartProductAdapter.ProductCallBacks() {
                 @Override
                 public void onRemoveProductClickedListener(String prod_id) {
-                    //TODO remove from firebase
-                    Toast.makeText(getContext(), "delete product", Toast.LENGTH_SHORT).show();
+                    FirebaseDatabase.getInstance().getReference()
+                            .child(Cart.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
+                            .child(prod_id).removeValue(new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                            Toast.makeText(getContext(), "delete product", Toast.LENGTH_SHORT).show();
+                            adapter.removeProduct(prod_id);
+                        }
+                    });
                 }
 
                 @Override
@@ -135,25 +153,32 @@ public class UserCartFrag extends Fragment {
             recyclerView.setAdapter(adapter);
             recyclerView.setHasFixedSize(true);
         }
-        return view;
+
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        listener = (OnClickedListener) getContext();
-        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
-            UserCartViewModelFactory factory = new UserCartViewModelFactory(
-                    FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
-            UserCartViewModel viewModel = ViewModelProviders.of(this, factory).get(UserCartViewModel.class);
-            viewModel.getProducts().observe(getViewLifecycleOwner(), new Observer<Map.Entry<String, Integer>>() {
-                @Override
-                public void onChanged(Map.Entry<String, Integer> stringIntegerEntry) {
-                    loadItem(stringIntegerEntry.getKey(), stringIntegerEntry.getValue());
-                }
-            });
-
+    private void initViewModel() {
+        if(FirebaseAuthHelper.getsInstance().getCurrUser()==null){
+            showLoginLayout();
+            return;
         }
+        UserCartViewModelFactory factory = new UserCartViewModelFactory(
+                FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
+        UserCartViewModel viewModel = ViewModelProviders.of(this, factory).get(UserCartViewModel.class);
+        viewModel.getProducts().observe(getViewLifecycleOwner(), new Observer<Map.Entry<String, Integer>>() {
+            @Override
+            public void onChanged(Map.Entry<String, Integer> stringIntegerEntry) {
+                loadItem(stringIntegerEntry.getKey(), stringIntegerEntry.getValue());
+            }
+        });
+    }
+
+    private void showLoginLayout() {
+        loginLayout.setVisibility(View.VISIBLE);
+        cartLayout.setVisibility(View.GONE);
+    }
+
+    private void NoDataExists() {
+        progressBar.setVisibility(View.GONE);
     }
 
     private void loadItem(String key, Integer value) {
@@ -178,8 +203,6 @@ public class UserCartFrag extends Fragment {
 
                     }
                 });
-
-
             }
         });
     }
