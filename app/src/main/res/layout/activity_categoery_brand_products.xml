@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.userUi.Activities.CategoryBrandProductsActivity">
+
+    <TextView
+        android:id="@+id/user_cats_brands_products_name"
+        style="@style/SideTitle"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:padding="5dp"
+        app:autoSizeMaxTextSize="22sp"
+        app:autoSizeTextType="uniform"
+        tools:text="@string/name" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/user_cats_brands_products_name"
+        android:layout_margin="5dp"
+        android:background="@android:color/darker_gray" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_cats_brands_products_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/line"
+        android:padding="5dp" />
+</RelativeLayout>

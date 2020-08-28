@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 @Entity(tableName = "category")
 public class Category {
 
+    public static final int TYPE_ID = 1;
     @NotNull
     @PrimaryKey
     private String ID;

@@ -1,6 +1,7 @@
 package com.example.ultramarket.adapters.user_adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.helpers.Utils;
+import com.example.ultramarket.ui.userUi.Activities.ProductActivity;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -51,11 +52,6 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
         return productList.size();
     }
 
-    public void setProductList(ArrayList<Product> productList) {
-        this.productList = productList;
-        notifyDataSetChanged();
-    }
-
     public void setProdList(List<Product> products) {
         productList = products;
         notifyDataSetChanged();
@@ -81,6 +77,14 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext.getApplicationContext(), ProductActivity.class);
+                    intent.putExtra("prod_id", productList.get(getAdapterPosition()).getID());
+                    mContext.startActivity(intent);
+                }
+            });
             priceLayout.setVisibility(View.VISIBLE);
         }
 
@@ -89,15 +93,24 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
                 Picasso.get().load(productList.get(position).getImage()).into(prodImage);
             prodName.setText(productList.get(position).getName());
             prodWeight.setText(productList.get(position).getUnit());
-            double nPrice = Utils.calcDiscount(productList.get(position).getPrice(),
-                    productList.get(position).getDiscount_percentage());
-            newPrice.setText(String.valueOf
-                    (nPrice).concat(productList.get(position).getCurrency()));
-            oldPrice.setText(String.valueOf
-                    (productList.get(position).getPrice()).concat(productList.get(position).getCurrency()));
-            prodSavedAmount.setText(String.valueOf(
-                    nPrice - productList.get(position).getPrice()).concat(productList.get(position).getCurrency()));
-            oldPrice.setPaintFlags(oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            if (productList.get(position).isHasOffer()) {
+                oldPrice.setVisibility(View.VISIBLE);
+                prodSavedAmount.setVisibility(View.VISIBLE);
+                double nPrice = Utils.calcDiscount(productList.get(position).getPrice(),
+                        productList.get(position).getDiscount_percentage());
+                newPrice.setText(String.valueOf
+                        (nPrice).concat(productList.get(position).getCurrency()));
+                oldPrice.setText(String.valueOf
+                        (productList.get(position).getPrice()).concat(productList.get(position).getCurrency()));
+                prodSavedAmount.setText(mContext.getString(R.string.you_saved_money,
+                        productList.get(position).getPrice() - nPrice).concat(productList.get(position).getCurrency()));
+                oldPrice.setPaintFlags(oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                oldPrice.setVisibility(View.GONE);
+                prodSavedAmount.setVisibility(View.GONE);
+                newPrice.setText(String.valueOf(productList.get(position).getPrice()).concat(productList.get(position).getCurrency()));
+            }
+
         }
     }
 }

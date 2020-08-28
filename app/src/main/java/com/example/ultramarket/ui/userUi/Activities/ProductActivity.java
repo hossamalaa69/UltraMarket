@@ -115,7 +115,7 @@ public class ProductActivity extends AppCompatActivity {
             mProdOldPrice.setPaintFlags(mProdOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             mProdOldPrice.setText(String.valueOf(oldPrice).concat(product.getCurrency()));
             mProdNewPrice.setText(String.valueOf(newPrice).concat(product.getCurrency()));
-            mProdSavedMoney.setText(String.valueOf(oldPrice - newPrice).concat(product.getCurrency()));
+            mProdSavedMoney.setText(getString(R.string.you_saved_money,oldPrice - newPrice).concat(product.getCurrency()));
 
         } else {
             mProdOldPrice.setVisibility(View.GONE);

@@ -133,6 +133,7 @@
     <string name="quantity">quantity</string>
     <string name="description">Description</string>
     <string name="failed_to_load_product">OOPS, failed to load product</string>
+    <string name="shop_by_categories">Shop By Categories</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

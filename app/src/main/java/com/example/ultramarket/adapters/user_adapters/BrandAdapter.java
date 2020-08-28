@@ -1,6 +1,7 @@
 package com.example.ultramarket.adapters.user_adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Brand;
+import com.example.ultramarket.ui.userUi.Activities.CategoryBrandProductsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -64,6 +66,16 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
         public BrandViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, CategoryBrandProductsActivity.class);
+                    intent.putExtra("type", Brand.TYPE_ID);
+                    intent.putExtra("id", brandList.get(getAdapterPosition()).getID());
+                    intent.putExtra("name", brandList.get(getAdapterPosition()).getName());
+                    mContext.getApplicationContext().startActivity(intent);
+                }
+            });
             priceLayout.setVisibility(View.GONE);
         }
 
