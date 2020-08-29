@@ -30,10 +30,11 @@
 
     <ProgressBar
         android:id="@+id/brands_progress"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:indeterminateDrawable="@drawable/custom_progress_bar"
         android:visibility="visible"
         />
 

@@ -87,6 +87,7 @@ public class BrandsManagementViewModel extends AndroidViewModel {
 
     private void deleteProduct(Product product) {
 
+
         String id = product.getID();
         String imageUrl = product.getImage();
 

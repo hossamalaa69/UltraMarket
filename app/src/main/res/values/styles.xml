@@ -39,5 +39,14 @@
         <item name="colorControlActivated">@android:color/darker_gray</item>
     </style>
 
+    <style name="customProgressBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/custom_progress_bar</item>
+    </style>
+    <style name="customProgressBar2">
+        <item name="android:indeterminateOnly">true</item>
+        <item name="android:progressDrawable">@drawable/custom_progress_bar2</item>
+    </style>
+
 
 </resources>
