@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".framgnets.user_fragments.UserCartFrag">
 
     <LinearLayout
@@ -54,6 +55,9 @@
 
     <include
         android:id="@+id/user_cart_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/user_cart_details_layout"
         layout="@layout/user_cart_layout"
         android:visibility="gone" />
 
@@ -64,5 +68,37 @@
         android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
+    <LinearLayout
+        android:id="@+id/user_cart_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/user_cart_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/pink1"
+            android:padding="5dp"
+            app:autoSizeMaxTextSize="18dp"
+            app:autoSizeMinTextSize="14dp"
+            app:autoSizeTextType="uniform"
+            android:textColor="@android:color/white"
+            tools:text="Total Price: 123.1242$ \n Items: 5" />
+
+        <TextView
+            android:id="@+id/user_cart_order_cart"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/pink1"
+            android:drawablePadding="5dp"
+            android:padding="10dp"
+            android:text="@string/order_cart"
+            android:textAppearance="@style/titleStyle"
+            app:autoSizeTextType="uniform"
+            app:drawableEndCompat="@drawable/navigate_next_24"
+            tools:ignore="MissingPrefix" />
+    </LinearLayout>
 
 </RelativeLayout>

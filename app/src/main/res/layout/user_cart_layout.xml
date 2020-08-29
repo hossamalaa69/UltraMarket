@@ -11,22 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_above="@id/user_cart_order_cart"
         android:padding="10dp" />
-
-    <TextView
-        android:id="@+id/user_cart_order_cart"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
-        android:background="@color/pink3"
-        android:drawablePadding="5dp"
-        android:padding="10dp"
-        android:text="@string/order_cart"
-        android:textAppearance="@style/titleStyle"
-        app:autoSizeTextType="uniform"
-        app:drawableEndCompat="@drawable/navigate_next_24"
-        tools:ignore="MissingPrefix" />
 
 </RelativeLayout>

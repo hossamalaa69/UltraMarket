@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
-import com.example.ultramarket.database.Entities.Cart;
 import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.Utils;
@@ -132,7 +131,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
             }
             disableBtns();
             DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
-                    .child(Cart.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
+                    .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
             cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

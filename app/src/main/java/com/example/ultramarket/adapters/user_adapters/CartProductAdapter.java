@@ -22,7 +22,9 @@ import com.example.ultramarket.helpers.Utils;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -107,6 +109,50 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
     }
 
+    public double getTotalPrice() {
+        double price = 0;
+        for (Map.Entry<Product, Integer> entry : productsMap.entrySet()) {
+            if (entry.getKey().isHasOffer()) {
+                price += Utils.calcDiscount(entry.getKey().getPrice(), entry.getKey().getDiscount_percentage())*entry.getValue();
+            } else
+                price += entry.getKey().getPrice()*entry.getValue();
+        }
+        return price;
+    }
+
+    public int getTotalCount() {
+        int count = 0;
+        for (Map.Entry<Product, Integer> entry : productsMap.entrySet()) {
+            count += entry.getValue();
+        }
+        return count;
+    }
+
+    public String getProductsCurrency() {
+        for (Map.Entry<Product, Integer> entry :
+                productsMap.entrySet()) {
+            return entry.getKey().getCurrency();
+
+        }
+        return "$"; // default currency
+    }
+    ArrayList<String> productsNames;
+
+    public Map<String, Integer> getCartDetails() {
+        Map<String, Integer> products = new HashMap<>();
+        productsNames = new ArrayList<>();
+        for (Map.Entry<Product,Integer> entry :
+                productsMap.entrySet()) {
+            products.put(entry.getKey().getID(),entry.getValue());
+            productsNames.add(entry.getKey().getName());
+        }
+        return products;
+    }
+
+    public ArrayList<String> getCartProductNames() {
+        return productsNames;
+    }
+
     public interface ProductCallBacks {
         void onRemoveProductClickedListener(String prod_id);
 
@@ -179,7 +225,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                     }
                 };
                 interfaceInstance.addProductToFirebaseListener(listener, prodId, operation);
-            }else{
+            } else {
                 Toast.makeText(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
             }
         }

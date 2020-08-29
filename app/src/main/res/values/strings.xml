@@ -141,6 +141,15 @@
     <string name="remove">Remove</string>
     <string name="done">Done</string>
     <string name="count">Count: %1$d</string>
+    <string name="order_details">Total Price: %1$.2f %2$s\nTotal Products: %3$d</string>
+    <string name="confirm_order">Confirm Order</string>
+    <string name="save_this_for_receipant">Save this receipt for receiving order</string>
+    <string name="choose_receiving_time">Choose Receiving Time</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_order_details">Order ID: %1$s\nCustomer Name:%2$s\nTotal Price:%3$.2f\nProducts: %4$s\nReceiving Date:%5$s\nOrder Date: %6$s</string>
+    <string name="not_ordered_yet">Not Ordered Yet</string>
+    <string name="order_sent">Order Sent</string>
+    <string name="already_ordered">Already Ordered</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

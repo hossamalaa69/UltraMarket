@@ -1,10 +1,12 @@
 package com.example.ultramarket.framgnets.user_fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,10 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.user_adapters.CartProductAdapter;
-import com.example.ultramarket.database.Entities.Cart;
+import com.example.ultramarket.database.Entities.Order;
 import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.AppExecutors;
+import com.example.ultramarket.ui.userUi.Activities.OrderConfirmActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,10 +50,22 @@ public class UserCartFrag extends Fragment {
     RecyclerView recyclerView;
     @BindView(R.id.user_cart_progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.user_cart_details)
+    TextView orderDetails;
+    @BindView(R.id.user_cart_details_layout)
+    View orderDetailsLayout;
     private CartProductAdapter adapter;
+    private String cartDetails;
 
     @OnClick(R.id.user_cart_order_cart)
     public void orderCartClicked(View view) {
+        Order order = new Order(null, adapter.getCartDetails(), adapter.getTotalPrice(), 0,0);
+        Intent intent = new Intent(getContext(), OrderConfirmActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order", order);
+        intent.putExtra("bundle", bundle);
+        intent.putExtra("products",adapter.getCartProductNames());
+        startActivity(intent);
 
     }
 
@@ -73,6 +88,7 @@ public class UserCartFrag extends Fragment {
     private void hideLoginLayout() {
         loginLayout.setVisibility(View.GONE);
         cartLayout.setVisibility(View.VISIBLE);
+        orderDetailsLayout.setVisibility(View.VISIBLE);
     }
 
     public static UserCartFrag newInstance() {
@@ -109,12 +125,13 @@ public class UserCartFrag extends Fragment {
                 @Override
                 public void onRemoveProductClickedListener(String prod_id) {
                     FirebaseDatabase.getInstance().getReference()
-                            .child(Cart.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
+                            .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
                             .child(prod_id).removeValue(new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                             Toast.makeText(getContext(), "delete product", Toast.LENGTH_SHORT).show();
                             adapter.removeProduct(prod_id);
+                            updateOrderDetails();
                         }
                     });
                 }
@@ -125,7 +142,7 @@ public class UserCartFrag extends Fragment {
                         @Override
                         public void run() {
                             DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
-                                    .child(Cart.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
+                                    .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
                             cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -152,12 +169,21 @@ public class UserCartFrag extends Fragment {
             });
             recyclerView.setAdapter(adapter);
             recyclerView.setHasFixedSize(true);
+
+
         }
 
     }
 
+    private void updateOrderDetails() {
+        cartDetails = getString(R.string.order_details, adapter.getTotalPrice(),
+                adapter.getProductsCurrency(),
+                adapter.getTotalCount());
+        orderDetails.setText(cartDetails);
+    }
+
     private void initViewModel() {
-        if(FirebaseAuthHelper.getsInstance().getCurrUser()==null){
+        if (FirebaseAuthHelper.getsInstance().getCurrUser() == null) {
             showLoginLayout();
             return;
         }
@@ -175,12 +201,8 @@ public class UserCartFrag extends Fragment {
     private void showLoginLayout() {
         loginLayout.setVisibility(View.VISIBLE);
         cartLayout.setVisibility(View.GONE);
+        orderDetailsLayout.setVisibility(View.GONE);
     }
-
-    private void NoDataExists() {
-        progressBar.setVisibility(View.GONE);
-    }
-
     private void loadItem(String key, Integer value) {
         progressBar.setVisibility(View.GONE);
         cartLayout.setVisibility(View.VISIBLE);
@@ -196,6 +218,7 @@ public class UserCartFrag extends Fragment {
                             adapter.insertProduct(product, value);
                         } else if (product != null)
                             adapter.updateValue(product.getID(), value);
+                        updateOrderDetails();
                     }
 
                     @Override

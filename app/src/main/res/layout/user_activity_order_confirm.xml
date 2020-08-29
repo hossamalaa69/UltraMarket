@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/White"
+        android:orientation="vertical"
+        tools:context=".ui.userUi.Activities.OrderConfirmActivity">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="match_parent"
+            android:layout_height="176dp"
+            android:src="@drawable/logo" />
+
+        <TextView
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@string/save_this_for_receipant"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/user_order_confirm_order_details"
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="start"
+            android:padding="5dp"
+            android:textColor="@color/purple2"
+            android:textSize="16sp"
+            tools:text="order id: 435910392023094\nCustomer Name: khaled Ali\ntotal price: 1234$\nproducts: 5 pants, 3 shirts\nreceiving date:5th oct at 10:00 PM" />
+
+        <TextView
+            android:id="@+id/user_order_confirm_choose_date"
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/choose_receiving_time"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <Button
+            android:id="@+id/user_order_confirm_btn"
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:background="@color/colorPrimary"
+            android:enabled="false"
+            android:text="@string/confirm_order" />
+
+    </LinearLayout>
+</ScrollView>
