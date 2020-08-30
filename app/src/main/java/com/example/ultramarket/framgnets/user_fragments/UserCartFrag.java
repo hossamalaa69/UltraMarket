@@ -21,6 +21,7 @@ import com.example.ultramarket.database.Entities.Order;
 import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.AppExecutors;
+import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.userUi.Activities.OrderConfirmActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
@@ -72,8 +73,8 @@ public class UserCartFrag extends Fragment {
         void onLoginClickListener();
     }
 
- /*   private UserCartViewModel mViewModel;
-*/
+    /*   private UserCartViewModel mViewModel;
+     */
     @OnClick(R.id.user_wishlist_login_btn)
     public void onLoginClicked(View view) {
         listener.onLoginClickListener();
@@ -103,6 +104,49 @@ public class UserCartFrag extends Fragment {
         super.onActivityCreated(savedInstanceState);
         initLayoutViews();
         initViewModel();
+        addValueListener();
+    }
+
+    private void addValueListener() {
+        AppExecutors.getInstance()
+                .networkIO()
+                .execute(new Runnable() {
+                             @Override
+                             public void run() {
+                                 FirebaseDatabase.getInstance().getReference()
+                                         .child(Product.class.getSimpleName())
+                                         .addChildEventListener(new ChildEventListener() {
+                                                                    @Override
+                                                                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                                                        adapter.forceUpdateValue(snapshot.getValue(Product.class).getID(),
+                                                                                snapshot.getValue(Product.class).getCount());
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                                    }
+                                                                }
+                                         );
+
+                             }
+                         }
+                );
     }
 
     private void initLayoutViews() {
@@ -123,7 +167,7 @@ public class UserCartFrag extends Fragment {
                             .child(prod_id).removeValue(new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                            Toast.makeText(getContext(), "delete product", Toast.LENGTH_SHORT).show();
+                            Utils.createToast(getContext(), R.string.delete_product, Toast.LENGTH_SHORT);
                             adapter.removeProduct(prod_id);
                             updateOrderDetails();
                         }
@@ -131,7 +175,7 @@ public class UserCartFrag extends Fragment {
                 }
 
                 @Override
-                public void addProductToFirebaseListener(OnSuccessListener<Void> listener, String prodId, int operation) {
+                public void addProductToFirebaseListener(OnSuccessListener<Void> listener, String prodId, int operation, int count) {
                     AppExecutors.getInstance().networkIO().execute(new Runnable() {
                         @Override
                         public void run() {
@@ -140,16 +184,22 @@ public class UserCartFrag extends Fragment {
                             cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                                     if (!snapshot.exists()) {
                                         cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
-                                    } else if (operation == INCREASE) {
+                                    } else if (operation == INCREASE && snapshot.getValue(Integer.class) + 1 <= count) {
                                         int num = snapshot.getValue(Integer.class);
                                         cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
-                                    } else if (operation == DECREASE) {
+                                    } else if (operation == DECREASE && snapshot.getValue(Integer.class) - 1 > 0) {
                                         int num = snapshot.getValue(Integer.class);
                                         cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
+                                    } else {
+                                        listener.onSuccess(null);
+                                        Utils.createToast(getContext(), R.string.not_available, Toast.LENGTH_SHORT);
+
+                                        return;
                                     }
+                                    Utils.createToast(getContext(), R.string.done, Toast.LENGTH_SHORT);
+
                                 }
 
                                 @Override

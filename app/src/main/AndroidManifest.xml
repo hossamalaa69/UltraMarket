@@ -17,10 +17,19 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.userUi.Activities.TrackOrderActivity"></activity>
-        <activity android:name=".ui.userUi.Activities.OrderConfirmActivity" />
+        <activity android:name=".ui.userUi.Activities.SearchActivity"
+            android:parentActivityName=".ui.userUi.Activities.HomeActivity"/>
+        <activity android:name=".ui.userUi.Activities.NotificationActivity" />
+        <activity
+            android:name=".ui.userUi.Activities.AboutUsActivity"
+            android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
+        <activity android:name=".ui.userUi.Activities.TrackOrderActivity"
+            android:parentActivityName=".ui.userUi.Activities.HomeActivity"/>
+        <activity android:name=".ui.userUi.Activities.OrderConfirmActivity"
+            android:parentActivityName=".ui.userUi.Activities.HomeActivity"/>
         <activity android:name=".ui.userUi.Activities.CategoryBrandProductsActivity" />
-        <activity android:name=".ui.userUi.Activities.ProductActivity" />
+        <activity android:name=".ui.userUi.Activities.ProductActivity"
+            android:parentActivityName=".ui.userUi.Activities.HomeActivity"/>
         <activity
             android:name=".ui.adminLayer.ProductActivity"
             android:label="Product"

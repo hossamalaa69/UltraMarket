@@ -1,6 +1,7 @@
 package com.example.ultramarket.database.DAOs;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -21,8 +22,9 @@ public interface ProdDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertProduct(Product product);
 
-
     @Query("DELETE FROM product")
     void clearTable();
+
+
 
 }

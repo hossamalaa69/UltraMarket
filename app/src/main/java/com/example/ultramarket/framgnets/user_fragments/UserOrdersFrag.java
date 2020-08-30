@@ -9,8 +9,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +16,7 @@ import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.user_adapters.OrderAdapter;
 import com.example.ultramarket.database.Entities.Order;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.helpers.Utils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,7 +49,7 @@ public class UserOrdersFrag extends Fragment {
             showOrders();
             loadOrders();
         } else {
-            Toast.makeText(getContext(), R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+            Utils.createToast(getContext(), R.string.you_must_signin_first, Toast.LENGTH_SHORT);
         }
     }
 

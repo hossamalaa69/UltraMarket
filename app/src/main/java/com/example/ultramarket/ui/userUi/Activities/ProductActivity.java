@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,8 +59,11 @@ public class ProductActivity extends AppCompatActivity {
     TextView mProdDescription;
     @BindView(R.id.user_product_item_price_layout)
     LinearLayout mPriceLayout;
+    @BindView(R.id.user_product_progress)
+    ProgressBar mProgressBar;
     private ActionBar actionBar;
     private String prodId;
+    private Product mProduct;
 
     private void disableBtns() {
         mmDecreaseInWishList.setEnabled(false);
@@ -89,8 +93,9 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void addProductToFirebase(String prodId, int operation) {
+        showProgress();
         if (FirebaseAuthHelper.getsInstance().getCurrUser() == null) {
-            Toast.makeText(ProductActivity.this, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+            Utils.createToast(ProductActivity.this, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
             return;
         }
         DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
@@ -103,21 +108,27 @@ public class ProductActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         //update ui
                         enableBtns();
+                        hideProgress();
                         mmDecreaseInWishList.setVisibility(View.VISIBLE);
-                        Toast.makeText(ProductActivity.this, R.string.done, Toast.LENGTH_SHORT).show();
                     }
                 };
                 if (!snapshot.exists()) {
                     cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
-                } else if (operation == INCREASE) {
+                    mAddToWishlist.setText(String.valueOf( 1));
+                } else if (operation == INCREASE && snapshot.getValue(Integer.class) + 1 <= mProduct.getCount()) {
                     int num = snapshot.getValue(Integer.class);
                     cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
                     mAddToWishlist.setText(String.valueOf(num + 1));
-                } else if (operation == DECREASE) {
+                } else if (operation == DECREASE && snapshot.getValue(Integer.class) - 1 > 0) {
                     int num = snapshot.getValue(Integer.class);
                     cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
                     mAddToWishlist.setText(String.valueOf(num > 1 ? num - 1 : 0));
+                } else {
+                    listener.onSuccess(null);
+                    Utils.createToast(ProductActivity.this, R.string.not_available, Toast.LENGTH_SHORT);
+                    return;
                 }
+                Utils.createToast(ProductActivity.this, R.string.done, Toast.LENGTH_SHORT);
             }
 
             @Override
@@ -128,6 +139,14 @@ public class ProductActivity extends AppCompatActivity {
 
 
     }
+    private void showProgress(){
+        mProgressBar.setVisibility(View.VISIBLE);
+        mAddToWishlist.setVisibility(View.INVISIBLE);
+    }
+    private void hideProgress(){
+        mProgressBar.setVisibility(View.GONE);
+        mAddToWishlist.setVisibility(View.VISIBLE);
+    }
 
 
     @Override
@@ -136,6 +155,7 @@ public class ProductActivity extends AppCompatActivity {
         setContentView(R.layout.user_activity_product);
         ButterKnife.bind(this);
         mmDecreaseInWishList.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
         actionBar = getSupportActionBar();
         if (actionBar != null)
             actionBar.setTitle("");
@@ -156,6 +176,7 @@ public class ProductActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Product product = snapshot.getValue(Product.class);
                         if (product != null) {
+                            mProduct = product;
                             updateUI(product);
                         }
                     }

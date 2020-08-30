@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 import com.example.ultramarket.database.Entities.User;
 
@@ -32,5 +33,17 @@ public class Utils {
 
     public static double calcDiscount(double oldPrice, double percentage) {
         return oldPrice - percentage / 100 * oldPrice;
+    }
+
+    private static Toast toast;
+
+    public static void createToast(Context context, int message, int period) {
+        if (toast != null) {
+            toast.cancel();
+            toast = null;
+        }
+        toast = Toast.makeText(context, message, period);
+        toast.show();
+
     }
 }

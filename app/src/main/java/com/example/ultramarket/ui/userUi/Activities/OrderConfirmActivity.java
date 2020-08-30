@@ -11,16 +11,23 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Order;
+import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.helpers.AppExecutors;
+import com.example.ultramarket.helpers.Utils;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,8 +57,9 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
 
     @OnClick(R.id.user_order_confirm_btn)
     public void onConfirmOrderClicked(View view) {
+        confirmBtn.setEnabled(false);
         if (order.getID() != null) {
-            Toast.makeText(this, R.string.already_ordered, Toast.LENGTH_SHORT).show();
+            Utils.createToast(this, R.string.already_ordered, Toast.LENGTH_SHORT);
             return;
         }
         if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
@@ -63,13 +71,38 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
             orderRef.setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
+                    deleteFromProducts(order.getProducts());
                     updateOrderDetails();
-                    Toast.makeText(OrderConfirmActivity.this, R.string.order_sent, Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            Toast.makeText(this, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+            Utils.createToast(this, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
         }
+    }
+
+    private void deleteFromProducts(Map<String, Integer> products) {
+        for (Map.Entry<String, Integer> product : products.entrySet()) {
+            AppExecutors.getInstance().networkIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    DatabaseReference prodRef = FirebaseDatabase.getInstance().getReference()
+                            .child(Product.class.getSimpleName()).child(product.getKey()).child("count");
+                    prodRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            prodRef.setValue(snapshot.getValue(Integer.class) - product.getValue());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            });
+        }
+        confirmBtn.setEnabled(true);
+        Utils.createToast(OrderConfirmActivity.this, R.string.order_sent, Toast.LENGTH_SHORT);
     }
 
     private void updateOrderDetails() {

@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.helpers.Utils;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         if (FirebaseAuthHelper.getsInstance().getCurrUser() != null)
             checkForPermissions();
         else {
-            Toast.makeText(this, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+            Utils.createToast(this, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
         }
     }
 
@@ -58,10 +59,10 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         if (requestCode == REQUEST_CODE) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, R.string.permission_confirmed, Toast.LENGTH_SHORT).show();
+                Utils.createToast(this, R.string.permission_confirmed, Toast.LENGTH_SHORT);
                 checkForPermissions();
             } else {
-                Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
+                Utils.createToast(this, R.string.permission_denied, Toast.LENGTH_SHORT);
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -146,7 +147,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
                 new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(LocationActivity.this, getString(R.string.location_saved), Toast.LENGTH_SHORT).show();
+                        Utils.createToast(LocationActivity.this, R.string.location_saved, Toast.LENGTH_SHORT);
                         finish();
                     }
                 });
@@ -164,7 +165,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         setContentView(R.layout.user_activity_location);
         ButterKnife.bind(this);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar!=null){
+        if (actionBar != null) {
             actionBar.setTitle(R.string.location);
         }
         mProgressBar.setVisibility(View.GONE);

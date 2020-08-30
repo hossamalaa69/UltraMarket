@@ -15,6 +15,7 @@ import com.example.ultramarket.NetworkConnection.NetworkReceiver;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.User;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.adminLayer.AdminHomeActivity;
 import com.example.ultramarket.ui.userUi.Activities.HomeActivity;
 
@@ -57,7 +58,7 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
         } else if (!isConnected) {
             toastMsg = R.string.you_are_offline;
         }
-        Toast.makeText(SplashActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
+        Utils.createToast(SplashActivity.this, toastMsg, Toast.LENGTH_SHORT);
     }
 
     private void attachAuthListener() {

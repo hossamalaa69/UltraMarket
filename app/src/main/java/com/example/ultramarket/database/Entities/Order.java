@@ -23,13 +23,11 @@ import java.util.Map;
 public class Order implements Serializable {
 
     @Exclude
-    public static final int STATUS_RECEIVED = 1;
+    public static final int STATUS_CONFIRMED = 1;
     @Exclude
-    public static final int STATUS_CONFIRMED = 2;
+    public static final int STATUS_READY = 2;
     @Exclude
-    public static final int STATUS_READY = 3;
-    @Exclude
-    public static final int STATUS_ON_WAY = 4;
+    public static final int STATUS_ON_WAY = 3;
 
     @PrimaryKey
     private String ID;
@@ -37,7 +35,7 @@ public class Order implements Serializable {
     Map<String, Integer> products;
     private long receiving_date;
     private long order_date;
-    private int status;
+    private int status = STATUS_CONFIRMED;
 
     public Order() {
     }
@@ -47,7 +45,7 @@ public class Order implements Serializable {
     }
 
     public boolean setStatus(int status) {
-        if (status < STATUS_RECEIVED || status > STATUS_ON_WAY) return false;
+        if (status < STATUS_CONFIRMED || status > STATUS_ON_WAY) return false;
         this.status = status;
         return true;
     }

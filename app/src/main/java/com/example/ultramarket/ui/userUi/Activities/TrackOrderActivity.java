@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -17,6 +18,7 @@ import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Order;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.AppExecutors;
+import com.example.ultramarket.helpers.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,14 +33,10 @@ import butterknife.OnClick;
 
 public class TrackOrderActivity extends AppCompatActivity {
 
-    @BindView(R.id.user_track_order_activity_link1)
-    View receivedLink;
     @BindView(R.id.user_track_order_activity_link2)
     View confirmedLink;
     @BindView(R.id.user_track_order_activity_link3)
     View readyLink;
-    @BindView(R.id.user_track_order_activity_spot1)
-    View receivedSpot;
     @BindView(R.id.user_track_order_activity_spot2)
     View confirmedSpot;
     @BindView(R.id.user_track_order_activity_spot3)
@@ -57,7 +55,7 @@ public class TrackOrderActivity extends AppCompatActivity {
 
     @OnClick(R.id.user_track_order_activity_cancel_btn)
     public void onCancelBtnClicked(View view) {
-        if(status<Order.STATUS_ON_WAY) {
+        if (status < Order.STATUS_ON_WAY) {
             AppExecutors.getInstance().networkIO().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -66,15 +64,16 @@ public class TrackOrderActivity extends AppCompatActivity {
                             .child(orderIDStr).removeValue(new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                            Toast.makeText(TrackOrderActivity.this,R.string.order_canceled,Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(TrackOrderActivity.this,HomeActivity.class));
+                            Utils.createToast(TrackOrderActivity.this, R.string.order_canceled, Toast.LENGTH_SHORT);
+                            startActivity(new Intent(TrackOrderActivity.this, HomeActivity.class));
                             finish();
                         }
                     });
                 }
             });
+        } else {
+            Utils.createToast(this, R.string.order_is_on_way, Toast.LENGTH_SHORT);
         }
-        //TODO remove order
     }
 
     @Override
@@ -82,6 +81,11 @@ public class TrackOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity_track_order);
         ButterKnife.bind(this);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setTitle(R.string.track_order);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         Intent intent = getIntent();
         orderIDStr = intent.getStringExtra("order_id");
         loadOrder(orderIDStr);
@@ -119,19 +123,15 @@ public class TrackOrderActivity extends AppCompatActivity {
     }
 
     private void updateStatus(int status) {
-        if (status > Order.STATUS_RECEIVED) {
-            receivedLink.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
-            receivedSpot.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
-        }
-        if (status > Order.STATUS_CONFIRMED) {
+        if (status >= Order.STATUS_CONFIRMED) {
             confirmedLink.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
             confirmedSpot.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
         }
-        if (status > Order.STATUS_READY) {
+        if (status >= Order.STATUS_READY) {
             readyLink.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
-            readyLink.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
+            readySpot.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
         }
-        if (status > Order.STATUS_ON_WAY) {
+        if (status >= Order.STATUS_ON_WAY) {
             onWaySpot.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
         }
     }

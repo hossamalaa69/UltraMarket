@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.DAOs.ProdDao;
 import com.example.ultramarket.database.Entities.Product;
+import com.example.ultramarket.helpers.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,7 +53,7 @@ public class ProductFbDao implements ProdDao {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(mContext, mContext.getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                Utils.createToast(mContext, R.string.try_again, Toast.LENGTH_SHORT);
             }
         });
         return liveData;
@@ -78,7 +79,7 @@ public class ProductFbDao implements ProdDao {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(mContext, mContext.getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                Utils.createToast(mContext, R.string.try_again, Toast.LENGTH_SHORT);
             }
         });
         return liveData;

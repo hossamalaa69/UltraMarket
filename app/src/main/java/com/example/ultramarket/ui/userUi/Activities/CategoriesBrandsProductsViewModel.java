@@ -20,7 +20,6 @@ import java.util.List;
 
 public class CategoriesBrandsProductsViewModel extends ViewModel {
     private MutableLiveData<List<Product>> products = new MutableLiveData<>();
-
     public CategoriesBrandsProductsViewModel(int type, String id) {
         String childIdOfType;
         switch (type) {

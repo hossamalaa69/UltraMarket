@@ -18,13 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.helpers.AppExecutors;
 import com.example.ultramarket.helpers.Utils;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -92,10 +93,51 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     public void updateValue(String key, int value) {
         if (productsMap == null) return;
         for (Map.Entry<Product, Integer> entry : productsMap.entrySet()) {
-            if (entry.getKey().getID().matches(key))
+            if (entry.getKey().getID().matches(key)) {
                 productsMap.replace(entry.getKey(), value);
+                notifyDataSetChanged();
+            }
         }
-        notifyDataSetChanged();
+    }
+
+    public void forceUpdateValue(String key, int value) {
+        if (value == 0) {
+            removeProduct(key);
+            return;
+        }
+        if (productsMap == null) return;
+        int i = 0;
+        String idx = ",";
+        for (Map.Entry<Product, Integer> entry : productsMap.entrySet()) {
+            if (entry.getKey().getID().matches(key) && entry.getValue() > value) {
+                updateValueOnFirebase(entry.getKey().getID(), value);
+                productsMap.replace(entry.getKey(), value);
+                i++;
+                idx = idx.concat(i + ",");
+            }
+        }
+        if (i > 0) {
+            notifyDataSetChanged();
+            Toast.makeText(mContext, R.string.products_count_is_decreasing, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "products had less value than wanted" + idx, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateValueOnFirebase(String prodID, int value) {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseDatabase.getInstance().getReference()
+                        .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
+                        .child(prodID)
+                        .setValue(value).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                });
+            }
+        });
     }
 
     public void removeProduct(String prod_id) {
@@ -113,9 +155,9 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         double price = 0;
         for (Map.Entry<Product, Integer> entry : productsMap.entrySet()) {
             if (entry.getKey().isHasOffer()) {
-                price += Utils.calcDiscount(entry.getKey().getPrice(), entry.getKey().getDiscount_percentage())*entry.getValue();
+                price += Utils.calcDiscount(entry.getKey().getPrice(), entry.getKey().getDiscount_percentage()) * entry.getValue();
             } else
-                price += entry.getKey().getPrice()*entry.getValue();
+                price += entry.getKey().getPrice() * entry.getValue();
         }
         return price;
     }
@@ -136,14 +178,15 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         }
         return "$"; // default currency
     }
+
     ArrayList<String> productsNames;
 
     public Map<String, Integer> getCartDetails() {
         Map<String, Integer> products = new HashMap<>();
         productsNames = new ArrayList<>();
-        for (Map.Entry<Product,Integer> entry :
+        for (Map.Entry<Product, Integer> entry :
                 productsMap.entrySet()) {
-            products.put(entry.getKey().getID(),entry.getValue());
+            products.put(entry.getKey().getID(), entry.getValue());
             productsNames.add(entry.getKey().getName());
         }
         return products;
@@ -156,7 +199,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     public interface ProductCallBacks {
         void onRemoveProductClickedListener(String prod_id);
 
-        void addProductToFirebaseListener(OnSuccessListener<Void> listener, String prodId, int operation);
+        void addProductToFirebaseListener(OnSuccessListener<Void> listener, String prodId, int operation, int count);
     }
 
     public class Holder extends RecyclerView.ViewHolder {
@@ -177,7 +220,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         @BindView(R.id.user_offers_increase_to_wishlist)
         ImageButton increaseToCartBtn;
 
-        private void enableBtns() {
+        public void enableBtns() {
             mProgressBar.setVisibility(View.GONE);
             addToCart.setVisibility(View.VISIBLE);
             increaseToCartBtn.setEnabled(true);
@@ -185,7 +228,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             addToCart.setEnabled(true);
         }
 
-        private void disableBtns() {
+        public void disableBtns() {
             mProgressBar.setVisibility(View.VISIBLE);
             addToCart.setVisibility(View.INVISIBLE);
             increaseToCartBtn.setEnabled(false);
@@ -198,7 +241,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
                 addProductToFirebase(getProductAt(getAdapterPosition()).getID(), INCREASE);
             } else {
-                Toast.makeText(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+                Utils.createToast(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
             }
         }
 
@@ -221,12 +264,11 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                     public void onSuccess(Void aVoid) {
                         //update ui
                         enableBtns();
-                        Toast.makeText(mContext, R.string.done, Toast.LENGTH_SHORT).show();
                     }
                 };
-                interfaceInstance.addProductToFirebaseListener(listener, prodId, operation);
+                interfaceInstance.addProductToFirebaseListener(listener, prodId, operation, getProductAt(getAdapterPosition()).getCount());
             } else {
-                Toast.makeText(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+                Utils.createToast(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
             }
         }
 
@@ -263,7 +305,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         @BindView(R.id.user_product_item_old_price)
         TextView mOldPrice;
         @BindView(R.id.user_cart_count)
-        TextView mCount;
+        public TextView mCount;
         @BindView(R.id.user_offers_progress)
         ProgressBar mProgressBar;
 

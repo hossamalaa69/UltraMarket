@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".framgnets.user_fragments.UserCartFrag">
 
     <LinearLayout
@@ -55,19 +55,20 @@
 
     <include
         android:id="@+id/user_cart_layout"
+        layout="@layout/user_cart_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/user_cart_details_layout"
-        layout="@layout/user_cart_layout"
         android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/user_cart_progress_bar"
         style="@android:style/Widget.Material.ProgressBar.Large"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/user_cart_details_layout"
         android:layout_width="match_parent"
@@ -81,10 +82,10 @@
             android:layout_height="wrap_content"
             android:background="@color/pink1"
             android:padding="5dp"
+            android:textColor="@android:color/white"
             app:autoSizeMaxTextSize="18dp"
             app:autoSizeMinTextSize="14dp"
             app:autoSizeTextType="uniform"
-            android:textColor="@android:color/white"
             tools:text="Total Price: 123.1242$ \n Items: 5" />
 
         <TextView

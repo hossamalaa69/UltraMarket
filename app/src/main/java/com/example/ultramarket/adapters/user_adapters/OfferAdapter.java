@@ -126,7 +126,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
 
         private void addProductToFirebase(String prodId, int operation) {
             if (FirebaseAuthHelper.getsInstance().getCurrUser() == null) {
-                Toast.makeText(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+               Utils.createToast(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
                 return;
             }
             disableBtns();
@@ -141,20 +141,25 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
                             //update ui
                             enableBtns();
                             prodDecreaseInCartBtn.setVisibility(View.VISIBLE);
-                            Toast.makeText(mContext, R.string.done, Toast.LENGTH_SHORT).show();
                         }
                     };
                     if (!snapshot.exists()) {
                         cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
-                    } else if (operation == INCREASE) {
+                        prodAddBtn.setText(String.valueOf( 1));
+                    } else if (operation == INCREASE && snapshot.getValue(Integer.class) + 1 <= productList.get(getAdapterPosition()).getCount()) {
                         int num = snapshot.getValue(Integer.class);
                         cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
                         prodAddBtn.setText(String.valueOf(num + 1));
-                    } else if (operation == DECREASE) {
+                    } else if (operation == DECREASE && snapshot.getValue(Integer.class) - 1 > 0) {
                         int num = snapshot.getValue(Integer.class);
                         cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
                         prodAddBtn.setText(String.valueOf(num > 1 ? num - 1 : 0));
+                    } else {
+                        listener.onSuccess(null);
+                        Utils.createToast(mContext, R.string.not_available, Toast.LENGTH_SHORT);
+                        return;
                     }
+                    Utils.createToast(mContext, R.string.done, Toast.LENGTH_SHORT);
                 }
 
                 @Override

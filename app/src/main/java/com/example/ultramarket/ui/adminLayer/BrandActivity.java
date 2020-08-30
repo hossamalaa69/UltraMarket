@@ -92,7 +92,7 @@ public class BrandActivity extends AppCompatActivity {
                 updateBrand(selectedImage != null);
         }
         else{
-            Toast.makeText(this, getString(R.string.enter_full_data), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.enter_full_data), Toast.LENGTH_SHORT);
         }
     }
 

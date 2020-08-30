@@ -70,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
             String password = mPass.getText().toString().trim();
             FirebaseAuthHelper.getsInstance().createUserWithEmailAndPassword(user, password, this);
         } else {
-            Toast.makeText(this, R.string.invalid_data, Toast.LENGTH_SHORT).show();
+            Utils.createToast(this, R.string.invalid_data, Toast.LENGTH_SHORT);
         }
     }
 

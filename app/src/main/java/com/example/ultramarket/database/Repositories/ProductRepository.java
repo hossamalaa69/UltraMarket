@@ -14,7 +14,7 @@ import com.example.ultramarket.helpers.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductRepository {
+public class ProductRepository implements ProdDao {
     private LiveData<List<Product>> mProdList;
     private ProdDao prodDao;
     private LiveData<List<Product>> mFeaturedProdList;
@@ -68,6 +68,15 @@ public class ProductRepository {
         return mFeaturedProdList;
     }
 
+    @Override
+    public LiveData<List<Product>> loadFeaturedProducts() {
+        return null;
+    }
 
-    //----------------------------------------------------------------------------------------------
+    @Override
+    public void clearTable() {
+
+    }
+
+//----------------------------------------------------------------------------------------------
 }

@@ -2,6 +2,7 @@ package com.example.ultramarket.ui.userUi.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +31,7 @@ import com.example.ultramarket.database.Entities.User;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.framgnets.user_fragments.UserCartFrag;
 import com.example.ultramarket.helpers.AppExecutors;
+import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.SplashActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
@@ -68,7 +70,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
             startActivity(new Intent(this, LocationActivity.class));
         } else {
-            Toast.makeText(this, R.string.you_must_signin_first, Toast.LENGTH_SHORT).show();
+            Utils.createToast(this, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
         }
 
     }
@@ -217,23 +219,39 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 openCartFrag();
                 break;
             case R.id.user_drawer_track:
-                // go to track order
+                viewPager.setCurrentItem(viewPager.getCurrentItem(), false);
+                viewPager.setCurrentItem(4); // category fragment
+                drawerLayout.closeDrawer(GravityCompat.START);//close drawer
                 break;
             case R.id.user_drawer_login:
                 startLogin();
                 break;
             case R.id.user_drawer_contact_us:
-                // contactUs();
+                contactUs();
                 break;
             case R.id.user_drawer_terms:
-                //  openTermsBottomNavigation();
+                startActivity(new Intent(this, AboutUsActivity.class).putExtra("type", "terms"));
                 break;
             case R.id.user_drawer_about_us:
-                //  openAboutUsBottomSheet();
+                startActivity(new Intent(this, AboutUsActivity.class).putExtra("type", "about_us"));
                 break;
         }
         return false;
     }
+
+    private void contactUs() {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:contact@ultramarket.com"));
+        intent.putExtra(Intent.EXTRA_EMAIL, FirebaseAuthHelper.getsInstance().getCurrUser().getEmail());
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Contact Us");
+        intent.putExtra(Intent.EXTRA_TEXT, FirebaseAuthHelper.getsInstance().getCurrUser().getDisplayName());
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Utils.createToast(this, R.string.no_app_send_messages, Toast.LENGTH_SHORT);
+        }
+    }
+
 
     private void openCartFrag() {
         viewPager.setCurrentItem(viewPager.getCurrentItem(), false);
@@ -335,7 +353,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.user_menu_cart:
                 openCartFrag();
                 break;
+            case R.id.user_menu_notification:
+                openNotificationActivity();
+                break;
+            case R.id.user_menu_search:
+                openSearchActivity();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openSearchActivity() {
+        startActivity(new Intent(this, SearchActivity.class));
+    }
+
+    private void openNotificationActivity() {
+        startActivity(new Intent(this, NotificationActivity.class));
     }
 }

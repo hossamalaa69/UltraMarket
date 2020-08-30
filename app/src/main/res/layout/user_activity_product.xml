@@ -116,6 +116,22 @@
                     app:autoSizeTextType="uniform"
                     tools:ignore="MissingPrefix" />
 
+                <ProgressBar
+                    android:id="@+id/user_product_progress"
+                    style="@android:style/Widget.Material.ProgressBar.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignStart="@id/user_product__add_to_wishlist"
+                    android:layout_alignTop="@id/user_product__add_to_wishlist"
+                    android:layout_alignEnd="@id/user_product__add_to_wishlist"
+                    android:layout_alignBottom="@id/user_product__add_to_wishlist"
+                    android:background="@color/purple2"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="5dp"
+                    android:visibility="gone" />
+
                 <ImageButton
                     android:id="@+id/user_product_increase_to_wishlist"
                     android:layout_width="wrap_content"

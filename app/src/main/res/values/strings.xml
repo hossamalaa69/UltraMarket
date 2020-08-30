@@ -162,6 +162,15 @@
     <string name="order_id_is">Order ID: %1$s</string>
     <string name="order_canceled">Order Canceled</string>
     <string name="total_price">Total Price: %1$.2f</string>
+    <string name="no_app_send_messages">device doesn\'t support emails</string>
+    <string name="about_us_messaage">\"we -UltraMarket- are a delivary market we have all kind of products you want and with good price you cant order any time you want and receive whenever you want \"</string>
+    <string name="terms_messaage">terms</string>
+    <string name="not_available">Not Available</string>
+    <string name="delete_product">Delete Product</string>
+    <string name="select_country">you should select your country</string>
+    <string name="brand_saved">brand saved</string>
+    <string name="order_is_on_way">Order already on way</string>
+    <string name="products_count_is_decreasing">You are losing products you want\n try to order soon</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

@@ -189,7 +189,7 @@ public class UserProfile extends AppCompatActivity {
                 getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(UserProfile.this, R.string.data_ignored, Toast.LENGTH_SHORT).show();
+                        Utils.createToast(UserProfile.this, R.string.data_ignored, Toast.LENGTH_SHORT);
                     }
                 });
         updatePersonalDialog();
@@ -205,7 +205,7 @@ public class UserProfile extends AppCompatActivity {
             updateUserFirebaseData();
             updateProfile();
         } else {
-            Toast.makeText(this, R.string.invalid_mail_or_phone, Toast.LENGTH_SHORT).show();
+            Utils.createToast(this, R.string.invalid_mail_or_phone, Toast.LENGTH_SHORT);
         }
     }
 
@@ -239,7 +239,7 @@ public class UserProfile extends AppCompatActivity {
                 if (i > 0)
                     currUser.getLocation().setCountry_name(adapterView.getItemAtPosition(i).toString());
                 else
-                    Toast.makeText(UserProfile.this, "you should select your country", Toast.LENGTH_LONG).show();
+                    Utils.createToast(UserProfile.this, R.string.select_country, Toast.LENGTH_LONG);
             }
 
             @Override
@@ -259,7 +259,7 @@ public class UserProfile extends AppCompatActivity {
                 getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(UserProfile.this, R.string.data_ignored, Toast.LENGTH_SHORT).show();
+                        Utils.createToast(UserProfile.this, R.string.data_ignored, Toast.LENGTH_SHORT);
                     }
                 });
         updateLocationDialog();
@@ -279,7 +279,7 @@ public class UserProfile extends AppCompatActivity {
     private OnSuccessListener<Void> onUpdateUserListener = new OnSuccessListener<Void>() {
         @Override
         public void onSuccess(Void aVoid) {
-            Toast.makeText(UserProfile.this, R.string.data_saved, Toast.LENGTH_SHORT).show();
+            Utils.createToast(UserProfile.this, R.string.data_saved, Toast.LENGTH_SHORT);
         }
     };
 
@@ -292,7 +292,7 @@ public class UserProfile extends AppCompatActivity {
         String city = mCity.getText().toString().trim();
         int floor = Integer.parseInt(mFloor.getText().toString().trim());
         if (road.matches("") || city.matches("") || floor < 0) {
-            Toast.makeText(this, R.string.fields_cant_be_empty, Toast.LENGTH_SHORT).show();
+            Utils.createToast(this, R.string.fields_cant_be_empty, Toast.LENGTH_SHORT);
             return;
         }
         currUser.getLocation().setRoad_name(road);
