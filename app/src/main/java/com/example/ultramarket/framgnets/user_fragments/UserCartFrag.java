@@ -12,8 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,13 +23,12 @@ import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.AppExecutors;
 import com.example.ultramarket.ui.userUi.Activities.OrderConfirmActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,14 +56,13 @@ public class UserCartFrag extends Fragment {
 
     @OnClick(R.id.user_cart_order_cart)
     public void orderCartClicked(View view) {
-        Order order = new Order(null, adapter.getCartDetails(), adapter.getTotalPrice(), 0,0);
+        Order order = new Order(null, adapter.getCartDetails(), adapter.getTotalPrice(), 0, 0);
         Intent intent = new Intent(getContext(), OrderConfirmActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("order", order);
         intent.putExtra("bundle", bundle);
-        intent.putExtra("products",adapter.getCartProductNames());
+        intent.putExtra("products", adapter.getCartProductNames());
         startActivity(intent);
-
     }
 
 
@@ -76,13 +72,12 @@ public class UserCartFrag extends Fragment {
         void onLoginClickListener();
     }
 
-    private UserCartViewModel mViewModel;
-
+ /*   private UserCartViewModel mViewModel;
+*/
     @OnClick(R.id.user_wishlist_login_btn)
     public void onLoginClicked(View view) {
         listener.onLoginClickListener();
         hideLoginLayout();
-
     }
 
     private void hideLoginLayout() {
@@ -108,7 +103,6 @@ public class UserCartFrag extends Fragment {
         super.onActivityCreated(savedInstanceState);
         initLayoutViews();
         initViewModel();
-
     }
 
     private void initLayoutViews() {
@@ -160,7 +154,6 @@ public class UserCartFrag extends Fragment {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
-
                                 }
                             });
                         }
@@ -169,10 +162,7 @@ public class UserCartFrag extends Fragment {
             });
             recyclerView.setAdapter(adapter);
             recyclerView.setHasFixedSize(true);
-
-
         }
-
     }
 
     private void updateOrderDetails() {
@@ -182,20 +172,48 @@ public class UserCartFrag extends Fragment {
         orderDetails.setText(cartDetails);
     }
 
+    private void loadData(String userId) {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                FirebaseDatabase.getInstance().getReference()
+                        .child("Cart").child(userId).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        loadItem(snapshot.getKey(), snapshot.getValue(Integer.class));
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        loadItem(snapshot.getKey(), snapshot.getValue(Integer.class));
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        int y = 0;
+                    }
+                });
+            }
+        });
+    }
+
     private void initViewModel() {
         if (FirebaseAuthHelper.getsInstance().getCurrUser() == null) {
             showLoginLayout();
             return;
         }
-        UserCartViewModelFactory factory = new UserCartViewModelFactory(
-                FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
-        UserCartViewModel viewModel = ViewModelProviders.of(this, factory).get(UserCartViewModel.class);
-        viewModel.getProducts().observe(getViewLifecycleOwner(), new Observer<Map.Entry<String, Integer>>() {
-            @Override
-            public void onChanged(Map.Entry<String, Integer> stringIntegerEntry) {
-                loadItem(stringIntegerEntry.getKey(), stringIntegerEntry.getValue());
-            }
-        });
+        loadData(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
     }
 
     private void showLoginLayout() {
@@ -203,6 +221,7 @@ public class UserCartFrag extends Fragment {
         cartLayout.setVisibility(View.GONE);
         orderDetailsLayout.setVisibility(View.GONE);
     }
+
     private void loadItem(String key, Integer value) {
         progressBar.setVisibility(View.GONE);
         cartLayout.setVisibility(View.VISIBLE);

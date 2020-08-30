@@ -1,3 +1,4 @@
+/*
 package com.example.ultramarket.framgnets.user_fragments;
 
 import android.widget.Toast;
@@ -23,71 +24,8 @@ public class UserCartViewModel extends ViewModel {
         loadData(userId);
     }
 
-    private void loadData(String userId) {
-        FirebaseDatabase.getInstance().getReference()
-                .child("Cart").child(userId).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if(!snapshot.exists()){
-
-                }
-                products.setValue(new Map.Entry<String, Integer>() {
-                    @Override
-                    public String getKey() {
-                        return snapshot.getKey();
-                    }
-
-                    @Override
-                    public Integer getValue() {
-                        return snapshot.getValue(Integer.class);
-                    }
-
-                    @Override
-                    public Integer setValue(Integer integer) {
-                        return integer;
-                    }
-                });
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                products.setValue(new Map.Entry<String, Integer>() {
-                    @Override
-                    public String getKey() {
-                        return snapshot.getKey();
-                    }
-
-                    @Override
-                    public Integer getValue() {
-                        return snapshot.getValue(Integer.class);
-                    }
-
-                    @Override
-                    public Integer setValue(Integer integer) {
-                        return integer;
-                    }
-                });
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                int y =0 ;
-            }
-        });
-    }
 
     public MutableLiveData<Map.Entry<String, Integer>> getProducts() {
         return products;
     }
-}
+}*/

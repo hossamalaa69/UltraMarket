@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/user_orders_frag_login_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".framgnets.user_fragments.UserOrdersFrag">
+    android:layout_height="match_parent">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_orders_frag_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/user_orders_frag_login_layout"
+        android:id="@+id/user_orders_frag_track_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -52,6 +57,6 @@
                 android:text="@string/track_order"
                 android:textColor="@android:color/white" />
         </FrameLayout>
-    </LinearLayout>
 
-</FrameLayout>
+    </LinearLayout>
+</RelativeLayout>

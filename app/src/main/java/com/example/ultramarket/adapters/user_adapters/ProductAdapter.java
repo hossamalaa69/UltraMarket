@@ -100,6 +100,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 Picasso.get().load(productList.get(position).getImage()).into(prodImage);
             priceLayout.setVisibility(View.VISIBLE);
             if (productList.get(position).isHasOffer()) {
+                newPrice.setVisibility(View.VISIBLE);
+                oldPrice.setTextColor(mContext.getColor(android.R.color.darker_gray));
                 double nPrice = Utils.calcDiscount(productList.get(position).getPrice(),
                         productList.get(position).getDiscount_percentage());
                 newPrice.setText(String.valueOf

@@ -1,3 +1,4 @@
+/*
 package com.example.ultramarket.framgnets.user_fragments;
 
 import androidx.annotation.NonNull;
@@ -17,3 +18,4 @@ public class UserCartViewModelFactory extends ViewModelProvider.NewInstanceFacto
         this.userId = userId;
     }
 }
+*/

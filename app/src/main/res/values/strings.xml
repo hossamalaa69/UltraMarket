@@ -150,6 +150,7 @@
     <string name="not_ordered_yet">Not Ordered Yet</string>
     <string name="order_sent">Order Sent</string>
     <string name="already_ordered">Already Ordered</string>
+    <string name="count_items">%1$d Items</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_order_product_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/user_order_product_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            tools:text="Pants" />
+
+        <TextView
+            android:id="@+id/user_order_product_count"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|end"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            tools:text="1 item" />
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

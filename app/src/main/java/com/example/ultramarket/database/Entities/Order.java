@@ -29,6 +29,9 @@ public class Order implements Serializable {
     private long receiving_date;
     private long order_date;
 
+    public Order() {
+    }
+
     public Order(String ID, Map<String, Integer> products, double price, long order_date, long receiving_date) {
         this.ID = ID;
         this.price = price;

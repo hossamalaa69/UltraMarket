@@ -1,7 +1,23 @@
+/*
 package com.example.ultramarket.framgnets.user_fragments;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-public class UserOrdersViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
-}
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.ultramarket.database.Entities.Order;
+
+public class UserOrdersViewModel extends AndroidViewModel {
+    private MutableLiveData<Order> orders;
+
+    public UserOrdersViewModel(@NonNull Application application) {
+        super(application);
+        orders = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<Order> getOrders() {
+        return orders;
+    }
+}*/
