@@ -59,10 +59,10 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
                     .child(Order.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
                     .push();
             order.setID(orderRef.getKey());
+            order.setOrder_date(Calendar.getInstance().getTimeInMillis());
             orderRef.setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    order.setOrder_date(new Date().getTime());
                     updateOrderDetails();
                     Toast.makeText(OrderConfirmActivity.this, R.string.order_sent, Toast.LENGTH_SHORT).show();
                 }

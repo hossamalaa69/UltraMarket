@@ -151,6 +151,17 @@
     <string name="order_sent">Order Sent</string>
     <string name="already_ordered">Already Ordered</string>
     <string name="count_items">%1$d Items</string>
+    <string name="estimated_time">Estimated Time</string>
+    <string name="order_id">Order ID</string>
+    <string name="we_received_your_order">We Received Your Order</string>
+    <string name="your_order_is_confirmed">Your Order Is Confirmed</string>
+    <string name="your_order_is_ready">Your Order Is Ready</string>
+    <string name="your_product_is_on_way">Your Product Is On Way</string>
+    <string name="receiving_time">Receiving Time: %1$s</string>
+    <string name="order_time">Order TIme: %1$s</string>
+    <string name="order_id_is">Order ID: %1$s</string>
+    <string name="order_canceled">Order Canceled</string>
+    <string name="total_price">Total Price: %1$.2f</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

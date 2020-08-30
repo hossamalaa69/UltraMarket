@@ -5,7 +5,7 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import org.jetbrains.annotations.NotNull;
+import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -22,14 +22,34 @@ import java.util.Map;
         })
 public class Order implements Serializable {
 
+    @Exclude
+    public static final int STATUS_RECEIVED = 1;
+    @Exclude
+    public static final int STATUS_CONFIRMED = 2;
+    @Exclude
+    public static final int STATUS_READY = 3;
+    @Exclude
+    public static final int STATUS_ON_WAY = 4;
+
     @PrimaryKey
     private String ID;
     private double price;
     Map<String, Integer> products;
     private long receiving_date;
     private long order_date;
+    private int status;
 
     public Order() {
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public boolean setStatus(int status) {
+        if (status < STATUS_RECEIVED || status > STATUS_ON_WAY) return false;
+        this.status = status;
+        return true;
     }
 
     public Order(String ID, Map<String, Integer> products, double price, long order_date, long receiving_date) {

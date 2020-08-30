@@ -70,7 +70,7 @@ public class UserOrdersFrag extends Fragment {
 
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+                        adapter.removeOrder(snapshot.getValue(Order.class));
                     }
 
                     @Override

@@ -60,7 +60,7 @@
             <TextView
                 android:id="@+id/user_order_list_item_receive_time"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
                 android:background="@android:color/transparent"
                 android:padding="10dp"
                 android:text="Receiveing Time: 20:20:00"

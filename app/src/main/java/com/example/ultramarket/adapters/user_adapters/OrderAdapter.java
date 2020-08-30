@@ -1,7 +1,7 @@
 package com.example.ultramarket.adapters.user_adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Order;
+import com.example.ultramarket.ui.userUi.Activities.TrackOrderActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,6 +60,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
         return orderList.size();
     }
 
+    public void removeOrder(Order order) {
+        orderList.remove(order);
+        notifyDataSetChanged();
+    }
+
     public class Holder extends RecyclerView.ViewHolder {
         @BindView(R.id.user_order_list_item_rv)
         RecyclerView recyclerView;
@@ -78,13 +84,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
         public void onProductsClicked() {
             if (mShowProducts.isSelected()) {
                 hideProducts();
-                mShowProducts.setCompoundDrawables(
-                        null,null, ContextCompat.getDrawable(mContext,R.drawable.arrow_up_24),null);
+                mShowProducts.setCompoundDrawablesWithIntrinsicBounds(
+                        0, 0,  R.drawable.arrow_down_24, 0);
                 mShowProducts.setSelected(false);
             } else {
                 showProducts();
-                mShowProducts.setCompoundDrawables(
-                        null,null, ContextCompat.getDrawable(mContext,R.drawable.arrow_down_24),null);
+                mShowProducts.setCompoundDrawablesWithIntrinsicBounds(
+                        0, 0,  R.drawable.arrow_up_24, 0);
                 mShowProducts.setSelected(true);
             }
         }
@@ -104,17 +110,25 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
         public Holder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, TrackOrderActivity.class);
+                    intent.putExtra("order_id", orderList.get(getAdapterPosition()).getID());
+                    mContext.startActivity(intent);
+                }
+            });
         }
 
         public void bind(int pos) {
             recyclerView.setVisibility(View.GONE);
             mShowProducts.setSelected(false);
-            totalPrice.setText(mContext.getString(R.string.price, orderList.get(pos).getPrice()));
-            receiveTime.setText(new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
-                    .format(new Date(orderList.get(pos).getReceiving_date())));
-            orderTime.setText(new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
-                    .format(new Date(orderList.get(pos).getOrder_date())));
-            orderId.setText(orderList.get(pos).getID());
+            totalPrice.setText(mContext.getString(R.string.total_price, orderList.get(pos).getPrice()));
+            receiveTime.setText(mContext.getString(R.string.receiving_time, new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
+                    .format(new Date(orderList.get(pos).getReceiving_date()))));
+            orderTime.setText(mContext.getString(R.string.order_time, new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
+                    .format(new Date(orderList.get(pos).getOrder_date()))));
+            orderId.setText(mContext.getString(R.string.order_id_is, orderList.get(pos).getID()));
         }
     }
 }
