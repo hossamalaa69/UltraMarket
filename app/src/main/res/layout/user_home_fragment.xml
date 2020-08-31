@@ -46,6 +46,7 @@
         <Button
             android:id="@+id/user_home_show_more"
             style="@style/titleStyle"
+            android:textStyle="normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/title_margin"

@@ -195,7 +195,6 @@ public class UserCartFrag extends Fragment {
                                     } else {
                                         listener.onSuccess(null);
                                         Utils.createToast(getContext(), R.string.not_available, Toast.LENGTH_SHORT);
-
                                         return;
                                     }
                                     Utils.createToast(getContext(), R.string.done, Toast.LENGTH_SHORT);

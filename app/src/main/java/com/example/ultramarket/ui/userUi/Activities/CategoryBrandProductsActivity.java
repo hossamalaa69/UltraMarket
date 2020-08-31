@@ -1,8 +1,13 @@
 package com.example.ultramarket.ui.userUi.Activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.transition.Slide;
+import android.util.Pair;
+import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -17,14 +22,13 @@ import com.example.ultramarket.adapters.user_adapters.OfferAdapter;
 import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Category;
 import com.example.ultramarket.database.Entities.Product;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CategoryBrandProductsActivity extends AppCompatActivity {
+public class CategoryBrandProductsActivity extends AppCompatActivity implements OfferAdapter.ProductCallBacks {
 
     @BindView(R.id.user_cats_brands_products_rv)
     RecyclerView recyclerView;
@@ -34,9 +38,18 @@ public class CategoryBrandProductsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //add transition
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        Slide slide1 = new Slide();
+        slide1.setSlideEdge(Gravity.END);
+        getWindow().setEnterTransition(slide1);
+        Slide slide2 = new Slide();
+        slide2.setSlideEdge(Gravity.START);
+        getWindow().setSharedElementEnterTransition(slide2);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categoery_brand_products);
         ButterKnife.bind(this);
+        getWindow().setSharedElementsUseOverlay(true);
         ActionBar actionBar = getSupportActionBar();
         Intent intent = getIntent();
         if (intent != null) {
@@ -57,7 +70,7 @@ public class CategoryBrandProductsActivity extends AppCompatActivity {
                 }
             }
         }
-        adapter = new OfferAdapter(this, null);
+        adapter = new OfferAdapter(this, null, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -75,4 +88,11 @@ public class CategoryBrandProductsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onProductClickedListener(Intent intent, View shared1, View shared2) {
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
+                this,
+                Pair.create(shared1,"image"),
+                Pair.create(shared2,"saved_money")).toBundle());
+    }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -101,10 +102,26 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             recyclerView.setNestedScrollingEnabled(true);
             recyclerView.setVisibility(View.VISIBLE);
+            TranslateAnimation animate = new TranslateAnimation(
+                    0,
+                    0,
+                    recyclerView.getHeight(),
+                    0);
+            animate.setDuration(300);
+            animate.setFillAfter(true);
+            recyclerView.startAnimation(animate);
         }
 
         private void hideProducts() {
             recyclerView.setVisibility(View.GONE);
+            TranslateAnimation animate = new TranslateAnimation(
+                    0,
+                    0,
+                    recyclerView.getHeight(),
+                    0);
+            animate.setDuration(500);
+            animate.setFillAfter(true);
+            recyclerView.startAnimation(animate);
         }
 
         public Holder(@NonNull View itemView) {

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
@@ -27,9 +28,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Pr
 
     private Context mContext;
     private List<Category> categoryList;
+    private CategoryCallBacks interfaceInstance;
+    public interface CategoryCallBacks{
+        void onCategoryClickedListener(Intent intent, View sharedView);
+    }
 
-    public CategoriesAdapter(Context mContext, ArrayList<Category> categoryList) {
+    public CategoriesAdapter(Context mContext, ArrayList<Category> categoryList, Fragment listener) {
         this.mContext = mContext;
+        interfaceInstance = (CategoryCallBacks) listener;
         this.categoryList = categoryList;
     }
 
@@ -74,7 +80,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Pr
                     intent.putExtra("type", Category.TYPE_ID);
                     intent.putExtra("name", categoryList.get(getAdapterPosition()).getName());
                     intent.putExtra("id", categoryList.get(getAdapterPosition()).getID());
-                    mContext.getApplicationContext().startActivity(intent);
+                    interfaceInstance.onCategoryClickedListener(intent,catName);
                 }
             });
             priceLayout.setVisibility(View.GONE);

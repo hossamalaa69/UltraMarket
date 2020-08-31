@@ -17,6 +17,7 @@
             android:id="@+id/user_product_image"
             android:layout_width="@dimen/nav_header_height"
             android:layout_height="@dimen/nav_header_height"
+            android:transitionName="image"
             android:layout_gravity="center"
             android:background="@android:color/white"
             android:contentDescription="@string/product_image"
@@ -43,6 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:padding="10dp"
+            android:transitionName="saved_money"
             android:textColor="@android:color/holo_red_dark"
             app:autoSizeTextType="uniform"
             tools:text="@string/you_saved_money" />

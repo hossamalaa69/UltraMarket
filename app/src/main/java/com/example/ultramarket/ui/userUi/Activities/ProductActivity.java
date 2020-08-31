@@ -3,8 +3,11 @@ package com.example.ultramarket.ui.userUi.Activities;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -151,8 +154,12 @@ public class ProductActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //add transition
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        getWindow().setEnterTransition(new Slide());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity_product);
+        //bind views
         ButterKnife.bind(this);
         mmDecreaseInWishList.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.GONE);

@@ -1,5 +1,7 @@
 package com.example.ultramarket.framgnets.user_fragments;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,7 @@ import com.example.ultramarket.adapters.user_adapters.CategoryAdapterCatFrag;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UserCatFrag extends Fragment {
+public class UserCatFrag extends Fragment implements CategoryAdapterCatFrag.CategoryCallBacks {
 
     public static final CharSequence TITLE = "Categories";
     private CategoryAdapterCatFrag categoriesAdapter;
@@ -37,7 +39,7 @@ public class UserCatFrag extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_cat_fragment, container, false);
         ButterKnife.bind(this, view);
-        categoriesAdapter = new CategoryAdapterCatFrag(getContext(), null);
+        categoriesAdapter = new CategoryAdapterCatFrag(getContext(), null,this);
         catLayoutManager = new GridLayoutManager(getContext(), 2);
         rvCategories.setLayoutManager(catLayoutManager);
         rvCategories.setAdapter(categoriesAdapter);
@@ -56,5 +58,13 @@ public class UserCatFrag extends Fragment {
         mViewModel.loadAllCategories().observe(getViewLifecycleOwner(), categories -> categoriesAdapter.setCategoryList(categories));
 
     }
+    @Override
+    public void onCategoryClickedListener(Intent intent, View sharedView) {
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
+                getActivity(),
+                sharedView,
+                "name").toBundle());
+    }
+
 
 }

@@ -1,6 +1,8 @@
 package com.example.ultramarket.adapters.user_adapters;
 
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.helpers.Utils;
+import com.example.ultramarket.ui.userUi.Activities.ProductActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private OnItemClicked mOnItemClickedInstance;
 
     public interface OnItemClicked {
-        void onItemClicked(String prodId);
+        void onItemClicked(String prodId,View prodImage);
     }
 
     public ProductAdapter(Context mContext, List<Product> productList, Fragment listener) {
@@ -87,7 +90,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickedInstance.onItemClicked(productList.get(getAdapterPosition()).getID());
+
+                    mOnItemClickedInstance.onItemClicked(productList.get(getAdapterPosition()).getID(),prodImage);
                 }
             });
 /*            ViewGroup.LayoutParams params = itemView.getLayoutParams();

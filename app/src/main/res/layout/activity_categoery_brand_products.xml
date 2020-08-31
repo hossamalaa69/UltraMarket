@@ -14,6 +14,7 @@
         android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:gravity="center"
+        android:transitionName="name"
         android:padding="5dp"
         app:autoSizeMaxTextSize="22sp"
         app:autoSizeTextType="uniform"

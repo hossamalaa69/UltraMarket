@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.transition.Explode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,13 +34,16 @@ import com.example.ultramarket.framgnets.user_fragments.UserCartFrag;
 import com.example.ultramarket.helpers.AppExecutors;
 import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.SplashActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -83,6 +87,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity_home);
         ButterKnife.bind(this);
+        setMarketAds();
+        getWindow().setSharedElementEnterTransition(new Explode());
         setSupportActionBar(toolbar);
         setupViewPager();
         setUpDrawerLayout();
@@ -145,6 +151,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
         }
+    }
+
+    private void setMarketAds() {
+        FirebaseMessaging.getInstance().subscribeToTopic("offers")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Subscribed in notifications successfully";
+                        if (!task.isSuccessful()) {
+                            msg = "Failed Subscribtion in notifications";
+                        }
+                        Toast.makeText(HomeActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void showRateAlertDialog() {

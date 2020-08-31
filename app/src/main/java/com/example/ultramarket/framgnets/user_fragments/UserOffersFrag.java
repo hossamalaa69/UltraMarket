@@ -1,6 +1,9 @@
 package com.example.ultramarket.framgnets.user_fragments;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UserOffersFrag extends Fragment {
+public class UserOffersFrag extends Fragment implements OfferAdapter.ProductCallBacks {
     public static final CharSequence TITLE = "Offers";
     @BindView(R.id.usr_rv_offers)
     RecyclerView rvOffers;
@@ -40,7 +43,7 @@ public class UserOffersFrag extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_offers_fragment, container, false);
         ButterKnife.bind(this, view);
-        mOfferAdapter = new OfferAdapter(getContext(), null);
+        mOfferAdapter = new OfferAdapter(getContext(), null,this);
         mOffersLayoutManager = new LinearLayoutManager(getContext());
         rvOffers.setHasFixedSize(true);
         rvOffers.setLayoutManager(mOffersLayoutManager);
@@ -64,4 +67,11 @@ public class UserOffersFrag extends Fragment {
         });
     }
 
+    @Override
+    public void onProductClickedListener(Intent intent, View shared1, View shared2) {
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
+                getActivity(),
+                Pair.create(shared1,"image"),
+                Pair.create(shared2,"saved_money")).toBundle());
+    }
 }

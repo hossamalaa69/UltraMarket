@@ -1,5 +1,6 @@
 package com.example.ultramarket.framgnets.user_fragments;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClicked {
+public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClicked, BrandAdapter.BrandCallBacks, CategoriesAdapter.CategoryCallBacks {
     public static final CharSequence TITLE = "Home";
     public static boolean catRvExtended = false;
     @BindView(R.id.usr_rv_category)
@@ -80,25 +81,26 @@ public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClick
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_home_fragment, container, false);
         ButterKnife.bind(this, view);
-        catAdapter = new CategoriesAdapter(getContext(), null);
+        catAdapter = new CategoriesAdapter(getContext(), null,this);
         rvCategories.setAdapter(catAdapter);
+
         catLayoutManager = new GridLayoutManager(getContext(), 3);
         rvCategories.setLayoutManager(catLayoutManager);
         rvCategories.setNestedScrollingEnabled(false);
         // product views
-        prodAdapter = new ProductAdapter(getContext(), null,this);
+        prodAdapter = new ProductAdapter(getContext(), null, this);
         rvLatestProd.setAdapter(prodAdapter);
         prodLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         rvLatestProd.setLayoutManager(prodLayoutManager);
         rvLatestProd.setHasFixedSize(true);
         //  featured product views
-        featuredProdAdapter = new ProductAdapter(getContext(), null,this);
+        featuredProdAdapter = new ProductAdapter(getContext(), null, this);
         rvFeaturedProd.setAdapter(featuredProdAdapter);
         featuredProdLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         rvFeaturedProd.setLayoutManager(featuredProdLayoutManager);
         rvFeaturedProd.setHasFixedSize(true);
         //brand views
-        brandAdapter = new BrandAdapter(getContext(), null);
+        brandAdapter = new BrandAdapter(getContext(), null, this);
         rvBrands.setAdapter(brandAdapter);
         brandLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         rvBrands.setLayoutManager(brandLayoutManager);
@@ -159,9 +161,28 @@ public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClick
     }
 
     @Override
-    public void onItemClicked(String prodId) {
+    public void onItemClicked(String prodId, View prodImage) {
         Intent intent = new Intent(getContext(), ProductActivity.class);
         intent.putExtra("prod_id", prodId);
-        startActivity(intent);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
+                getActivity(),
+                prodImage,
+                "image").toBundle());
+    }
+
+    @Override
+    public void onBrandClickedListener(Intent intent, View sharedView) {
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
+                getActivity(),
+                sharedView,
+                "name").toBundle());
+    }
+
+    @Override
+    public void onCategoryClickedListener(Intent intent, View sharedView) {
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
+                getActivity(),
+                sharedView,
+                "name").toBundle());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.ultramarket.adapters.user_adapters;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
@@ -26,11 +28,17 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
 
     private Context mContext;
     private List<Brand> brandList;
+    private BrandCallBacks interfaceInstance;
+    public interface BrandCallBacks{
+        void onBrandClickedListener(Intent intent, View sharedView);
+    }
 
-    public BrandAdapter(Context mContext, List<Brand> brandList) {
+    public BrandAdapter(Context mContext, List<Brand> brandList, Fragment listener) {
         this.mContext = mContext;
+        interfaceInstance = (BrandCallBacks) listener;
         this.brandList = brandList;
     }
+
 
     @NonNull
     @Override
@@ -73,7 +81,8 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
                     intent.putExtra("type", Brand.TYPE_ID);
                     intent.putExtra("id", brandList.get(getAdapterPosition()).getID());
                     intent.putExtra("name", brandList.get(getAdapterPosition()).getName());
-                    mContext.getApplicationContext().startActivity(intent);
+                    interfaceInstance.onBrandClickedListener(intent,brandName);
+
                 }
             });
             priceLayout.setVisibility(View.GONE);
@@ -82,7 +91,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
         public void bind(int position) {
             if (brandList.get(position).getImage() != null)
                 Picasso.get().load(brandList.get(position).getImage()).into(brandImage);
-            brandName.setVisibility(View.GONE);
+            brandName.setText(brandList.get(position).getName());
         }
     }
 }

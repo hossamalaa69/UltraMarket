@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
@@ -42,9 +43,20 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
     private static final int DECREASE = 2;
     private Context mContext;
     private List<Product> productList;
+    private ProductCallBacks interfaceInstance;
 
-    public OfferAdapter(Context mContext, List<Product> productList) {
+    public interface ProductCallBacks {
+        void onProductClickedListener(Intent intent, View shared1, View shared2);
+    }
+
+    public OfferAdapter(Context mContext, List<Product> productList, Fragment listener) {
         this.mContext = mContext;
+        interfaceInstance = (ProductCallBacks) listener;
+        this.productList = productList;
+    }
+    public OfferAdapter(Context mContext, List<Product> productList, Context listener) {
+        this.mContext = mContext;
+        interfaceInstance = (ProductCallBacks) listener;
         this.productList = productList;
     }
 
@@ -126,7 +138,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
 
         private void addProductToFirebase(String prodId, int operation) {
             if (FirebaseAuthHelper.getsInstance().getCurrUser() == null) {
-               Utils.createToast(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
+                Utils.createToast(mContext, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
                 return;
             }
             disableBtns();
@@ -145,7 +157,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
                     };
                     if (!snapshot.exists()) {
                         cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
-                        prodAddBtn.setText(String.valueOf( 1));
+                        prodAddBtn.setText(String.valueOf(1));
                     } else if (operation == INCREASE && snapshot.getValue(Integer.class) + 1 <= productList.get(getAdapterPosition()).getCount()) {
                         int num = snapshot.getValue(Integer.class);
                         cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
@@ -179,7 +191,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext.getApplicationContext(), ProductActivity.class);
                     intent.putExtra("prod_id", productList.get(getAdapterPosition()).getID());
-                    mContext.startActivity(intent);
+                    interfaceInstance.onProductClickedListener(intent, prodImage, prodSavedAmount);
                 }
             });
             priceLayout.setVisibility(View.VISIBLE);

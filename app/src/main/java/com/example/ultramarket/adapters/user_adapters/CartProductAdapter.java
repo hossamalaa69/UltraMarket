@@ -101,15 +101,16 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     }
 
     public void forceUpdateValue(String key, int value) {
-        if (value == 0) {
-            removeProduct(key);
-            return;
-        }
         if (productsMap == null) return;
         int i = 0;
         String idx = ",";
         for (Map.Entry<Product, Integer> entry : productsMap.entrySet()) {
             if (entry.getKey().getID().matches(key) && entry.getValue() > value) {
+                if (value == 0) {
+                    interfaceInstance.onRemoveProductClickedListener(key);
+                    Toast.makeText(mContext, R.string.products_count_is_decreasing, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 updateValueOnFirebase(entry.getKey().getID(), value);
                 productsMap.replace(entry.getKey(), value);
                 i++;
