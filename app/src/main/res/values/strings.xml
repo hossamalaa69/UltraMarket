@@ -171,6 +171,10 @@
     <string name="brand_saved">brand saved</string>
     <string name="order_is_on_way">Order already on way</string>
     <string name="products_count_is_decreasing">You are losing products you want\n try to order soon</string>
+    <string name="notifiy_id">com.example.ultramarket</string>
+    <string name="notification_topic">offers</string>
+    <string name="notification_url">https://fcm.googleapis.com/fcm/send</string>
+    <string name="server_key">AAAAWi2_slI:APA91bEdNjnYpt-gOwXh1gm8qOL92jGEDMHYJnKUHy_tjnELXUje2-dncd2CBY9OryB8cAyOyuAI-ZYbA60aYNcZRU1NN8Za5TOtkIlChdBtpp9fSNEeKDJ-kBUsZb8afvV7MduLDfKm</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

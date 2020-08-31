@@ -1,5 +1,6 @@
 package com.example.ultramarket.ui.adminLayer;
 
+import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -7,15 +8,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.StatsAdapter;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.ui.SplashActivity;
+import com.example.ultramarket.ui.userUi.Activities.HomeActivity;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -23,9 +33,17 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
@@ -39,11 +57,14 @@ public class AdminHomeActivity extends AppCompatActivity {
 
     private ArrayList<String> descriptions;
 
+    private RequestQueue mRequestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
+
+        initMarketNotification();
 
         setupRecyclerView();
 
@@ -57,6 +78,7 @@ public class AdminHomeActivity extends AppCompatActivity {
                 sendToTarget(position);
             }
         });
+
     }
 
     private void sendToTarget(int position){
@@ -214,5 +236,62 @@ public class AdminHomeActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void initMarketNotification() {
+        FirebaseMessaging.getInstance().subscribeToTopic("offers")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Subscribed in notifications successfully";
+                        if (!task.isSuccessful()) {
+                            msg = "Failed Subscription in notifications";
+                        }
+                        Toast.makeText(AdminHomeActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void sendNotification(View view) {
+
+        mRequestQueue = Volley.newRequestQueue(this);
+        JSONObject mainObj = new JSONObject();
+
+        try {
+            mainObj.put("to", "/topics/offers");
+
+            JSONObject notifyObj = new JSONObject();
+            notifyObj.put("title", "Title Test");
+            notifyObj.put("body", "Bodddy Testttttt");
+            mainObj.put("notification", notifyObj);
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST
+                    , getString(R.string.notification_url), mainObj
+                    , new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Toast.makeText(AdminHomeActivity.this, "Sent Successfully", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(AdminHomeActivity.this, "Failed Sending", Toast.LENGTH_SHORT).show();
+                }
+            }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("content-type", "application/json");
+                    headers.put("authorization", "key="+getString(R.string.server_key));
+                    return headers;
+                }
+            };
+
+            mRequestQueue.add(jsonObjectRequest);
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }
