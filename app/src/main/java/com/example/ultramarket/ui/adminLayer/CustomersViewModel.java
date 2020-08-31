@@ -38,6 +38,9 @@ public class CustomersViewModel extends AndroidViewModel {
                     User user = snap.getValue(User.class);
                     if(user.getEmail().equals(application.getString(R.string.admin_email)))
                         continue;
+                    if(user.getPhone()==null || user.getPhone().isEmpty()){
+                        user.setPhone("Unknown");
+                    }
                     userList.add(user);
                 }
 
