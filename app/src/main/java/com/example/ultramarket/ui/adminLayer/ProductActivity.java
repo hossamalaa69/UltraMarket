@@ -36,6 +36,7 @@ import com.example.ultramarket.adapters.BrandProdAdapter;
 import com.example.ultramarket.adapters.CategoryProdAdapter;
 import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Category;
+import com.example.ultramarket.database.Entities.Notification;
 import com.example.ultramarket.database.Entities.Product;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -444,6 +445,12 @@ public class ProductActivity extends AppCompatActivity  {
                 @Override
                 public void onResponse(JSONObject response) {
                     Toast.makeText(ProductActivity.this, "Sent Successfully", Toast.LENGTH_SHORT).show();
+                    try {
+                        insertInHistory(notifyObj.getString("title"), notifyObj.getString("body")
+                                , imageUrl, prodId);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -465,5 +472,17 @@ public class ProductActivity extends AppCompatActivity  {
         }catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void insertInHistory(String title, String body, String imageUrl, String prodId) {
+        DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference(Notification.class.getSimpleName());
+        String id = notificationRef.push().getKey();
+        Notification notification = new Notification(id, title, body, imageUrl, prodId);
+        notificationRef.child(id).setValue(notification).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(ProductActivity.this, "Added to history", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
