@@ -36,11 +36,13 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,14 +59,14 @@ public class AdminHomeActivity extends AppCompatActivity {
 
     private ArrayList<String> descriptions;
 
-    private RequestQueue mRequestQueue;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
 
-        initMarketNotification();
+        unsubscribeFromNotifications();
+        
+        //initMarketNotification();
 
         setupRecyclerView();
 
@@ -252,46 +254,17 @@ public class AdminHomeActivity extends AppCompatActivity {
                 });
     }
 
-    public void sendNotification(View view) {
-
-        mRequestQueue = Volley.newRequestQueue(this);
-        JSONObject mainObj = new JSONObject();
-
-        try {
-            mainObj.put("to", "/topics/offers");
-
-            JSONObject notifyObj = new JSONObject();
-            notifyObj.put("title", "Title Test");
-            notifyObj.put("body", "Bodddy Testttttt");
-            mainObj.put("notification", notifyObj);
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST
-                    , getString(R.string.notification_url), mainObj
-                    , new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Toast.makeText(AdminHomeActivity.this, "Sent Successfully", Toast.LENGTH_SHORT).show();
+    private void unsubscribeFromNotifications() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FirebaseInstanceId.getInstance().deleteInstanceId();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(AdminHomeActivity.this, "Failed Sending", Toast.LENGTH_SHORT).show();
-                }
-            }){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<>();
-                    headers.put("content-type", "application/json");
-                    headers.put("authorization", "key="+getString(R.string.server_key));
-                    return headers;
-                }
-            };
-
-            mRequestQueue.add(jsonObjectRequest);
-
-        }catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+            }
+        }).start();
     }
+
 }

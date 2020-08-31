@@ -23,6 +23,13 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.BrandProdAdapter;
@@ -41,10 +48,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductActivity extends AppCompatActivity  {
 
@@ -77,6 +88,8 @@ public class ProductActivity extends AppCompatActivity  {
     private DatabaseReference productDbReference;
 
     private HashMap<String, String> hashMap = null;
+
+    private RequestQueue mRequestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -317,6 +330,10 @@ public class ProductActivity extends AppCompatActivity  {
 
                 productDbReference.child(id).setValue(product);
                 Toast.makeText(ProductActivity.this, R.string.product_added, Toast.LENGTH_SHORT).show();
+                if (percentage > 0){
+                    sendNotification(id, name, "" + percentage, imageUrl);
+                }
+
             } else {
                 Toast.makeText(ProductActivity.this, R.string.failed_upload, Toast.LENGTH_SHORT).show();
             }
@@ -353,6 +370,10 @@ public class ProductActivity extends AppCompatActivity  {
                         Toast.makeText(ProductActivity.this, R.string.uploaded_success, Toast.LENGTH_SHORT).show();
                         Product product = new Product(id, name, imageUrl, unit, price, currency, count, description
                                 ,(percentage>0), percentage, brand_id, category_id, new Date().getTime());
+                        if(percentage>0 && !((""+percentage).equals(hashMap.get("discount_percentage")))){
+                            sendNotification(id, name, "" + percentage, imageUrl);
+                        }
+
                         productDbReference.child(id).setValue(product).addOnSuccessListener(aVoid1 -> {
                             Toast.makeText(ProductActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
                             openViewsUI(true);
@@ -373,6 +394,9 @@ public class ProductActivity extends AppCompatActivity  {
                     ,(percentage>0), percentage, brand_id, category_id, new Date().getTime());
             productDbReference.child(id).setValue(product).addOnSuccessListener(aVoid -> {
                 Toast.makeText(ProductActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                if(percentage>0 && !((""+percentage).equals(hashMap.get("discount_percentage")))){
+                    sendNotification(id, name, "" + percentage, hashMap.get("imageUrl"));
+                }
                 openViewsUI(true);
                 finish();
                 onBackPressed();
@@ -395,4 +419,51 @@ public class ProductActivity extends AppCompatActivity  {
         product_percent.setEnabled(isInteractive);
     }
 
+
+    public void sendNotification(String prodId, String prodName, String prodDiscount, String imageUrl) {
+        mRequestQueue = Volley.newRequestQueue(this);
+        JSONObject mainObj = new JSONObject();
+
+        try {
+            mainObj.put("to", "/topics/offers");
+
+            JSONObject notifyObj = new JSONObject();
+            notifyObj.put("title", "CHECKOUT THIS OFFER NOW");
+            notifyObj.put("body", "Buy " + prodName + " now with " + prodDiscount + "% discount ");
+
+            JSONObject dataObj = new JSONObject();
+            dataObj.put("product_id", prodId);
+            dataObj.put("imageUrl", imageUrl);
+
+            mainObj.put("notification", notifyObj);
+            mainObj.put("data", dataObj);
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST
+                    , getString(R.string.notification_url), mainObj
+                    , new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Toast.makeText(ProductActivity.this, "Sent Successfully", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(ProductActivity.this, "Failed Sending", Toast.LENGTH_SHORT).show();
+                }
+            }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("content-type", "application/json");
+                    headers.put("authorization", "key="+getString(R.string.server_key));
+                    return headers;
+                }
+            };
+
+            mRequestQueue.add(jsonObjectRequest);
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

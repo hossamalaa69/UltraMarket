@@ -8,15 +8,22 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.ultramarket.R;
+import com.example.ultramarket.ui.userUi.Activities.ProductActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -33,12 +40,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         //sends data to be retrieved
-/*        Map<String, String> map = remoteMessage.getData();
-        String data = map.get("data");
+        Map<String, String> map = remoteMessage.getData();
 
- */
+        String product_id = map.get("product_id");
+        String product_Image = map.get("imageUrl");
 
-        showNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
+        loadImageUrlThenShowNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody()
+                , product_id, product_Image);
+
     }
 
     /**
@@ -51,7 +60,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("newToken",s);
     }
 
-    private void showNotification(String title, String body){
+    private void showNotification(String title, String body, String prodId, Bitmap imageProd){
 
         //create new notification manager to handle the channel
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -66,19 +75,54 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationChannel.setDescription("UltraMarket channel");
             notificationManager.createNotificationChannel(notificationChannel);
 
+            //holds the page to go to on pressed (Receive page)
+            Intent notificationIntent = new Intent(getApplicationContext(), ProductActivity.class);
+
+            //store required data (type and id) and send them to receiver page
+            Bundle bundle =new Bundle();
+            bundle.putString("prod_id",prodId);
+            notificationIntent.putExtras(bundle);
+
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            stackBuilder.addNextIntentWithParentStack(notificationIntent);
+            PendingIntent contentIntent = stackBuilder.getPendingIntent(0
+                    , PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+
             //sets notification properties to be shown
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,notifyChannelId);
             notificationBuilder.setAutoCancel(true)
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setWhen(System.currentTimeMillis())
-                    .setSmallIcon(R.mipmap.ic_launcher_round)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_logo_ultra_market))
+                    .setSmallIcon(R.drawable.ic_logo)
+                    .setLargeIcon(imageProd)
                     .setContentTitle(title)
                     .setContentText(body)
+                    .setContentIntent(contentIntent)
                     .setContentInfo("Info");
+
             notificationManager.notify(new Random().nextInt(),notificationBuilder.build());
+
         }
     }
+    // Load bitmap from image url on background thread and display image notification
+    private void loadImageUrlThenShowNotification(String title, String body, String prodId, String imageUrl) {
 
+        Glide.with(getApplicationContext())
+                .asBitmap()
+                .load(imageUrl)
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        showNotification(title, body, prodId, resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
+    }
 
 }
