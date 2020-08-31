@@ -477,7 +477,7 @@ public class ProductActivity extends AppCompatActivity  {
     private void insertInHistory(String title, String body, String imageUrl, String prodId) {
         DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference(Notification.class.getSimpleName());
         String id = notificationRef.push().getKey();
-        Notification notification = new Notification(id, title, body, imageUrl, prodId);
+        Notification notification = new Notification(id, title, body, imageUrl, prodId, new Date().getTime());
         notificationRef.child(id).setValue(notification).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

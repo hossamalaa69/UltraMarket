@@ -12,12 +12,15 @@ public class Notification {
 
     private String productID;
 
-    public Notification(String ID, String title, String body, String imageUrl, String productID) {
+    private long date;
+
+    public Notification(String ID, String title, String body, String imageUrl, String productID, long date) {
         this.ID = ID;
         this.title = title;
         this.body = body;
         this.imageUrl = imageUrl;
         this.productID = productID;
+        this.date = date;
     }
 
     public String getID() {
@@ -58,5 +61,13 @@ public class Notification {
 
     public void setProductID(String productID) {
         this.productID = productID;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
     }
 }
