@@ -96,7 +96,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationBuilder.setAutoCancel(true)
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setWhen(System.currentTimeMillis())
-                    .setSmallIcon(R.drawable.ic_logo)
+                    .setSmallIcon(R.drawable.ic_notification_small)
                     .setLargeIcon(imageProd)
                     .setContentTitle(title)
                     .setContentText(body)
