@@ -31,8 +31,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end|bottom"
-            android:backgroundTint="@color/colorGreen"
-            android:src="@drawable/ic_add_white"
+            android:backgroundTint="@color/White"
+            android:src="@drawable/ic_add_purple"
             android:onClick="uploadFromGallery"
             app:borderWidth="0dp"/>
 

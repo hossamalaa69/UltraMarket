@@ -10,7 +10,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     app:cardElevation="0dp"
     android:focusable="true"
-    android:backgroundTint="@color/colorGreen">
+    android:backgroundTint="@color/White">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,14 +25,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Tesssst"
-            android:textColor="@color/White"
+            android:textColor="@color/black"
             android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_done"
+            android:src="@drawable/ic_done_purple"
             android:visibility="gone" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
