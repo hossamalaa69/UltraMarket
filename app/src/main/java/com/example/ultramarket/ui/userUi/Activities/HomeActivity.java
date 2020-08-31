@@ -76,7 +76,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else {
             Utils.createToast(this, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
         }
-
     }
 
     private TextView mUserName;
@@ -88,6 +87,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.user_activity_home);
         ButterKnife.bind(this);
         setMarketAds();
+        Intent intent = getIntent();
+        String adProduct = intent.getStringExtra("product_id");
+        if (adProduct != null) {
+            Intent  intent1 = new Intent(this, ProductActivity.class);
+            intent1.putExtra("prod_id",adProduct);
+            startActivity(intent1);
+            return;
+        }
         getWindow().setSharedElementEnterTransition(new Explode());
         setSupportActionBar(toolbar);
         setupViewPager();
@@ -162,7 +169,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         if (!task.isSuccessful()) {
                             msg = "Failed Subscribtion in notifications";
                         }
-                        Toast.makeText(HomeActivity.this, msg, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(HomeActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

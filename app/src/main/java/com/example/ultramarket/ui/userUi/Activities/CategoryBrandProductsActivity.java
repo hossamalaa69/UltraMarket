@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Slide;
+import android.transition.Visibility;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.View;

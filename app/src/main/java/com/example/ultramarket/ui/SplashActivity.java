@@ -24,6 +24,7 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
     BroadcastReceiver br;
     private AlertDialog mAlertDialog;
     public static boolean isBackPressed = false;
+    private String adProductId = null;
 
 
     @Override
@@ -36,7 +37,9 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
         if (isAdmin) {
             startActivity(new Intent(this, AdminHomeActivity.class));
         } else {
-            startActivity(new Intent(this, HomeActivity.class));
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("product_id",adProductId);
+            startActivity(intent);
         }
         finish();
     }
@@ -78,9 +81,8 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
     private void checkReceivedNotification() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-
-            String product_id = bundle.getString("product_id");
-            Toast.makeText(this, product_id,Toast.LENGTH_SHORT).show();
+            adProductId = bundle.getString("product_id");
+           // Toast.makeText(this, product_id,Toast.LENGTH_SHORT).show();
         }
     }
 
