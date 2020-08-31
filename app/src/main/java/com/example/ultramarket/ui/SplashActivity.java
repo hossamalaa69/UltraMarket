@@ -69,7 +69,19 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        checkReceivedNotification();
+
         checkInternetConnection();
+    }
+
+    private void checkReceivedNotification() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+
+            String product_id = bundle.getString("product_id");
+            Toast.makeText(this, product_id,Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void checkInternetConnection() {
