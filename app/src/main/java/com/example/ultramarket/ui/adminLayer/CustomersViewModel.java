@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.ultramarket.R;
+import com.example.ultramarket.database.Entities.Order;
 import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.database.Entities.User;
 import com.google.firebase.database.DataSnapshot;
@@ -37,10 +38,29 @@ public class CustomersViewModel extends AndroidViewModel {
                     User user = snap.getValue(User.class);
                     if(user.getEmail().equals(application.getString(R.string.admin_email)))
                         continue;
-                    user.setNumOrders(3);
                     userList.add(user);
                 }
-                listMutableLiveData.setValue(userList);
+
+                DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child(Order.class.getSimpleName());
+                ordersRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                        for(DataSnapshot s: snapshot2.getChildren()){
+                            for(int i=0;i<userList.size();i++){
+                                if(userList.get(i).getID().equals(s.getKey())){
+                                    userList.get(i).setNumOrders((int)s.getChildrenCount());
+                                    break;
+                                }
+                            }
+                        }
+                        listMutableLiveData.setValue(userList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
