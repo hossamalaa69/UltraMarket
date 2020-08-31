@@ -67,14 +67,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String notifyChannelId = getString(R.string.notifiy_id);
 
         //checks android device SDK to see if suitable or not
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+/*
             NotificationChannel notificationChannel = new NotificationChannel(notifyChannelId,"Notification"
                     ,NotificationManager.IMPORTANCE_HIGH);
 
             //sets channel name
             notificationChannel.setDescription("UltraMarket channel");
             notificationManager.createNotificationChannel(notificationChannel);
-
+*/
             //holds the page to go to on pressed (Receive page)
             Intent notificationIntent = new Intent(getApplicationContext(), ProductActivity.class);
 
@@ -105,7 +106,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             notificationManager.notify(new Random().nextInt(),notificationBuilder.build());
 
-        }
+//        }
     }
     // Load bitmap from image url on background thread and display image notification
     private void loadImageUrlThenShowNotification(String title, String body, String prodId, String imageUrl) {

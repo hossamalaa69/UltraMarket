@@ -34,7 +34,7 @@
         android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:indeterminateDrawable="@drawable/custom_progress_bar"
+        android:indeterminateDrawable="@drawable/custom_progress_bar2"
         android:visibility="visible"
         />
 
