@@ -11,6 +11,8 @@
         android:orientation="vertical"
         tools:context=".framgnets.user_fragments.UserHomeFrag">
 
+        <include layout="@layout/user_ad_layout" />
+
         <TextView
             style="@style/titleStyle"
             android:layout_width="match_parent"
@@ -46,14 +48,14 @@
         <Button
             android:id="@+id/user_home_show_more"
             style="@style/titleStyle"
-            android:textStyle="normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/title_margin"
             android:background="@color/White"
-            android:textColor="@color/colorPrimary"
             android:padding="@dimen/title_padding"
-            android:text="@string/show_more" />
+            android:text="@string/show_more"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="normal" />
 
         <TextView
             style="@style/titleStyle"

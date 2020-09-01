@@ -175,6 +175,8 @@
     <string name="notification_topic">offers</string>
     <string name="notification_url">https://fcm.googleapis.com/fcm/send</string>
     <string name="server_key">AAAAWi2_slI:APA91bEdNjnYpt-gOwXh1gm8qOL92jGEDMHYJnKUHy_tjnELXUje2-dncd2CBY9OryB8cAyOyuAI-ZYbA60aYNcZRU1NN8Za5TOtkIlChdBtpp9fSNEeKDJ-kBUsZb8afvV7MduLDfKm</string>
+    <string name="invalid_date">Invalid date. please choose valid date</string>
+    <string name="brand_is">Brand: %1$s</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

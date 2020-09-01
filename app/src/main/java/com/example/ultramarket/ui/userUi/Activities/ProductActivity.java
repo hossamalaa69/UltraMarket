@@ -3,7 +3,6 @@ package com.example.ultramarket.ui.userUi.Activities;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.transition.Explode;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
@@ -64,6 +63,8 @@ public class ProductActivity extends AppCompatActivity {
     LinearLayout mPriceLayout;
     @BindView(R.id.user_product_progress)
     ProgressBar mProgressBar;
+    @BindView(R.id.user_product_brand)
+    TextView prodBrand;
     private ActionBar actionBar;
     private String prodId;
     private Product mProduct;
@@ -117,7 +118,7 @@ public class ProductActivity extends AppCompatActivity {
                 };
                 if (!snapshot.exists()) {
                     cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
-                    mAddToWishlist.setText(String.valueOf( 1));
+                    mAddToWishlist.setText(String.valueOf(1));
                 } else if (operation == INCREASE && snapshot.getValue(Integer.class) + 1 <= mProduct.getCount()) {
                     int num = snapshot.getValue(Integer.class);
                     cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
@@ -142,11 +143,13 @@ public class ProductActivity extends AppCompatActivity {
 
 
     }
-    private void showProgress(){
+
+    private void showProgress() {
         mProgressBar.setVisibility(View.VISIBLE);
         mAddToWishlist.setVisibility(View.INVISIBLE);
     }
-    private void hideProgress(){
+
+    private void hideProgress() {
         mProgressBar.setVisibility(View.GONE);
         mAddToWishlist.setVisibility(View.VISIBLE);
     }
@@ -205,6 +208,7 @@ public class ProductActivity extends AppCompatActivity {
         }
         mPriceLayout.setVisibility(View.VISIBLE);
         mProdName.setText(product.getName());
+        prodBrand.setText(getString(R.string.brand_is,product.getBrand_name()));
         double oldPrice = product.getPrice();
         if (product.isHasOffer()) {
             double newPrice = Utils.calcDiscount(oldPrice, product.getDiscount_percentage());

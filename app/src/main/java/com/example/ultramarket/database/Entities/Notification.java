@@ -23,6 +23,9 @@ public class Notification {
         this.date = date;
     }
 
+    public Notification() {
+    }
+
     public String getID() {
         return ID;
     }

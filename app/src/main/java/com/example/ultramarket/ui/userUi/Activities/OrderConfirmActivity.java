@@ -57,6 +57,10 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
 
     @OnClick(R.id.user_order_confirm_btn)
     public void onConfirmOrderClicked(View view) {
+        if (order.getReceiving_date() < Calendar.getInstance().getTimeInMillis()) {
+            Toast.makeText(this, R.string.invalid_date, Toast.LENGTH_SHORT).show();
+            return;
+        }
         confirmBtn.setEnabled(false);
         if (order.getID() != null) {
             Utils.createToast(this, R.string.already_ordered, Toast.LENGTH_SHORT);
