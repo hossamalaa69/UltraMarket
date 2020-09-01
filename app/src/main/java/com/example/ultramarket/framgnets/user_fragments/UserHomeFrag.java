@@ -1,5 +1,6 @@
 package com.example.ultramarket.framgnets.user_fragments;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
@@ -186,12 +187,15 @@ public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClick
                             notification = mNotifications.get(i);
                         }
                         notiIdx = i;
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateNotification(notification);
-                            }
-                        });
+                        Activity activity = getActivity();
+                        if (activity != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateNotification(notification);
+                                }
+                            });
+                        }
                         try {
                             Thread.sleep(1000 * 5);
                         } catch (InterruptedException e) {
