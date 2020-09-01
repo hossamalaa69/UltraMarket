@@ -33,7 +33,6 @@ import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.framgnets.user_fragments.UserCartFrag;
 import com.example.ultramarket.helpers.AppExecutors;
 import com.example.ultramarket.helpers.Utils;
-import com.example.ultramarket.ui.SplashActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -90,8 +89,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = getIntent();
         String adProduct = intent.getStringExtra("product_id");
         if (adProduct != null) {
-            Intent  intent1 = new Intent(this, ProductActivity.class);
-            intent1.putExtra("prod_id",adProduct);
+            Intent intent1 = new Intent(this, ProductActivity.class);
+            intent1.putExtra("prod_id", adProduct);
             startActivity(intent1);
             return;
         }
@@ -137,41 +136,52 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
-            FirebaseDatabase.getInstance().getReference()
-                    .child(User.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
-                    .child("rate").addValueEventListener(new ValueEventListener() {
+            AppExecutors.getInstance().networkIO().execute(new Runnable() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    int rate = snapshot.getValue(Integer.class);
-                    if (rate == 0) {
-                        mRatingThread.start();
-                    } else {
-                        isRating = false;
-                        if (mRateDialog != null && mRateDialog.isShowing())
-                            mRateDialog.dismiss();
-                    }
-                }
+                public void run() {
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                    FirebaseDatabase.getInstance().getReference()
+                            .child(User.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
+                            .child("rate").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            int rate = snapshot.getValue(Integer.class);
+                            if (rate == 0) {
+                                mRatingThread.start();
+                            } else {
+                                isRating = false;
+                                if (mRateDialog != null && mRateDialog.isShowing())
+                                    mRateDialog.dismiss();
+                            }
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             });
         }
     }
 
     private void setMarketAds() {
-        FirebaseMessaging.getInstance().subscribeToTopic("offers")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Subscribed in notifications successfully";
-                        if (!task.isSuccessful()) {
-                            msg = "Failed Subscribtion in notifications";
-                        }
-                       // Toast.makeText(HomeActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseMessaging.getInstance().subscribeToTopic("offers")
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                String msg = "Subscribed in notifications successfully";
+                                if (!task.isSuccessful()) {
+                                    msg = "Failed Subscribtion in notifications";
+                                }
+                                // Toast.makeText(HomeActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
     }
 
     private void showRateAlertDialog() {
@@ -192,11 +202,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void addRatingToFirebase(int rate) {
         if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
-            FirebaseAuthHelper.getsInstance()
-                    .addRating(FirebaseAuthHelper.getsInstance().getCurrUser().getUid(),
-                            rate, null);
+            AppExecutors.getInstance().networkIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    FirebaseAuthHelper.getsInstance()
+                            .addRating(FirebaseAuthHelper.getsInstance().getCurrUser().getUid(),
+                                    rate, null);
+                }
+            });
         }
-
     }
 
     private void updateNavViewHeader(User user) {
@@ -350,9 +364,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {   //close drawer
             drawerLayout.closeDrawer(GravityCompat.START);
         } else if (viewPager.getCurrentItem() == 0) {
-            SplashActivity.isBackPressed = true;
+            super.onBackPressed();
+        } else {
+            viewPager.setCurrentItem(viewPager.getCurrentItem(), false);
+            viewPager.setCurrentItem(0); // offers fragment
+            drawerLayout.closeDrawer(GravityCompat.START);//close drawer
         }
-        super.onBackPressed();
 
     }
 

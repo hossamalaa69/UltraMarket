@@ -23,7 +23,6 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
         FirebaseAuthHelper.FirebaseAuthCallBacks {
     BroadcastReceiver br;
     private AlertDialog mAlertDialog;
-    public static boolean isBackPressed = false;
     private String adProductId = null;
 
 

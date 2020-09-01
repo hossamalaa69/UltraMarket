@@ -1,5 +1,6 @@
 package com.example.ultramarket.ui.userUi.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -55,6 +57,19 @@ public class TrackOrderActivity extends AppCompatActivity {
 
     @OnClick(R.id.user_track_order_activity_cancel_btn)
     public void onCancelBtnClicked(View view) {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.cancel_order)
+                .setMessage(R.string.are_you_sure_cancel_order)
+                .setPositiveButton(R.string.cancel_order, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        cancelOrder();
+                    }
+                }).setNegativeButton(R.string.cancel, null).create();
+        dialog.show();
+    }
+
+    private void cancelOrder() {
         if (status < Order.STATUS_ON_WAY) {
             AppExecutors.getInstance().networkIO().execute(new Runnable() {
                 @Override
@@ -76,13 +91,14 @@ public class TrackOrderActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity_track_order);
         ButterKnife.bind(this);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar!=null){
+        if (actionBar != null) {
             actionBar.setTitle(R.string.track_order);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }

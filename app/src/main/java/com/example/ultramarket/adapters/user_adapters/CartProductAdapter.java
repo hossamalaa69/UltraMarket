@@ -108,7 +108,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             if (entry.getKey().getID().matches(key) && entry.getValue() > value) {
                 if (value == 0) {
                     interfaceInstance.onRemoveProductClickedListener(key);
-                    Toast.makeText(mContext, R.string.products_count_is_decreasing, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.products_count_is_decreasing, Toast.LENGTH_LONG).show();
                     return;
                 }
                 updateValueOnFirebase(entry.getKey().getID(), value);
@@ -119,7 +119,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         }
         if (i > 0) {
             notifyDataSetChanged();
-            Toast.makeText(mContext, R.string.products_count_is_decreasing, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.products_count_is_decreasing, Toast.LENGTH_LONG).show();
             Toast.makeText(mContext, "products had less value than wanted" + idx, Toast.LENGTH_SHORT).show();
         }
     }
@@ -320,35 +320,50 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         }
 
         public void bind(int position) {
-
             Product product = getProductAt(position);
+            if (product.getCount() > 0) {
+                setAvailable();
+            } else {
+                setNotAvailable();
+            }
             int value = getValueAt(position);
-            if (product != null) {
-                mCount.setText(mContext.getString(R.string.count, value));
-                addToCart.setText(String.valueOf(value));
-                mName.setText(product.getName());
-                if (product.isHasOffer()) {
-                    mOldPrice.setVisibility(View.VISIBLE);
-                    mSavedMoney.setVisibility(View.VISIBLE);
-                    mOldPrice.setText(String.valueOf(product.getPrice()).concat(product.getCurrency()));
-                    double newPrice = Utils.calcDiscount(product.getPrice(), product.getDiscount_percentage());
-                    mNewPrice.setText(String.valueOf(newPrice).concat(product.getCurrency()));
-                    mSavedMoney.setText(mContext.getString(R.string.you_saved_money, (product.getPrice() - newPrice))
-                            .concat(product.getCurrency()));
-                    mOldPrice.setPaintFlags(mOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                } else {
+            mCount.setText(mContext.getString(R.string.count, value));
+            addToCart.setText(String.valueOf(value));
+            mName.setText(product.getName());
+            if (product.isHasOffer()) {
+                mOldPrice.setVisibility(View.VISIBLE);
+                mSavedMoney.setVisibility(View.VISIBLE);
+                mOldPrice.setText(String.valueOf(product.getPrice()).concat(product.getCurrency()));
+                double newPrice = Utils.calcDiscount(product.getPrice(), product.getDiscount_percentage());
+                mNewPrice.setText(String.valueOf(newPrice).concat(product.getCurrency()));
+                mSavedMoney.setText(mContext.getString(R.string.you_saved_money, (product.getPrice() - newPrice))
+                        .concat(product.getCurrency()));
+                mOldPrice.setPaintFlags(mOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
 
-                    mOldPrice.setVisibility(View.GONE);
-                    mSavedMoney.setVisibility(View.GONE);
-                    mNewPrice.setText(String.valueOf(product.getPrice()).concat(product.getCurrency()));
-
-                }
-                Picasso.get().load(product.getImage()).into(mImage);
-                mWeightUnit.setText(product.getUnit());
-                mName.setText(product.getName());
+                mOldPrice.setVisibility(View.GONE);
+                mSavedMoney.setVisibility(View.GONE);
+                mNewPrice.setText(String.valueOf(product.getPrice()).concat(product.getCurrency()));
 
             }
+            Picasso.get().load(product.getImage()).into(mImage);
+            mWeightUnit.setText(product.getUnit());
+            mName.setText(product.getName());
 
+        }
+
+        private void setAvailable() {
+            decreaseToCartBtn.setVisibility(View.VISIBLE);
+            increaseToCartBtn.setVisibility(View.VISIBLE);
+            addToCart.setText(R.string.add);
+            addToCart.setEnabled(true);
+        }
+
+        private void setNotAvailable() {
+            decreaseToCartBtn.setVisibility(View.GONE);
+            increaseToCartBtn.setVisibility(View.GONE);
+            addToCart.setText(R.string.not_available);
+            addToCart.setEnabled(false);
         }
     }
 }

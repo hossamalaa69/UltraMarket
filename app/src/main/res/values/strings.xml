@@ -177,6 +177,8 @@
     <string name="server_key">AAAAWi2_slI:APA91bEdNjnYpt-gOwXh1gm8qOL92jGEDMHYJnKUHy_tjnELXUje2-dncd2CBY9OryB8cAyOyuAI-ZYbA60aYNcZRU1NN8Za5TOtkIlChdBtpp9fSNEeKDJ-kBUsZb8afvV7MduLDfKm</string>
     <string name="invalid_date">Invalid date. please choose valid date</string>
     <string name="brand_is">Brand: %1$s</string>
+    <string name="cancel_order">Cancel Order</string>
+    <string name="are_you_sure_cancel_order">Are you sure you want to cancel this order?</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.helpers.AppExecutors;
 import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.userUi.Activities.ProductActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,6 +46,15 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
     private List<Product> productList;
     private ProductCallBacks interfaceInstance;
 
+    public void updateProduct(Product product) {
+        for (int i = 0; i < productList.size(); i++) {
+            if (product.getID().matches(productList.get(i).getID())) {
+                productList.get(i).setCount(product.getCount());
+                notifyDataSetChanged();
+            }
+        }
+    }
+
     public interface ProductCallBacks {
         void onProductClickedListener(Intent intent, View shared1, View shared2);
     }
@@ -54,6 +64,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
         interfaceInstance = (ProductCallBacks) listener;
         this.productList = productList;
     }
+
     public OfferAdapter(Context mContext, List<Product> productList, Context listener) {
         this.mContext = mContext;
         interfaceInstance = (ProductCallBacks) listener;
@@ -100,6 +111,8 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
         TextView prodSavedAmount;
         @BindView(R.id.user_offers_add_to_wishlist)
         Button prodAddBtn;
+        @BindView(R.id.user_offers_increase_to_wishlist)
+        ImageButton prodIncBtn;
         @BindView(R.id.user_offers_progress)
         ProgressBar progressBar;
         @BindView(R.id.user_offers_decrease_from_wishlist)
@@ -142,45 +155,49 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
                 return;
             }
             disableBtns();
-            DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
-                    .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
-            cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    OnSuccessListener<Void> listener = new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            //update ui
-                            enableBtns();
-                            prodDecreaseInCartBtn.setVisibility(View.VISIBLE);
+            AppExecutors.getInstance().networkIO().execute(() -> {
+                DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
+                        .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
+                cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        OnSuccessListener<Void> listener = new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                //update ui
+                                enableBtns();
+                                prodDecreaseInCartBtn.setVisibility(View.VISIBLE);
+                            }
+                        };
+                        if (!snapshot.exists() && productList.get(getAdapterPosition()).getCount() > 0) {
+                            cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
+                            prodAddBtn.setText(String.valueOf(1));
+                        } else if (snapshot.exists() &&
+                                operation == INCREASE &&
+                                snapshot.getValue(Integer.class) + 1 <= productList.get(getAdapterPosition()).getCount()) {
+                            int num = snapshot.getValue(Integer.class);
+                            cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
+                            prodAddBtn.setText(String.valueOf(num + 1));
+                        } else if (snapshot.exists() &&
+                                operation == DECREASE &&
+                                snapshot.getValue(Integer.class) - 1 > 0) {
+                            int num = snapshot.getValue(Integer.class);
+                            cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
+                            prodAddBtn.setText(String.valueOf(num > 1 ? num - 1 : 0));
+                        } else {
+                            listener.onSuccess(null);
+                            Utils.createToast(mContext, R.string.not_available, Toast.LENGTH_SHORT);
+                            return;
                         }
-                    };
-                    if (!snapshot.exists()) {
-                        cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
-                        prodAddBtn.setText(String.valueOf(1));
-                    } else if (operation == INCREASE && snapshot.getValue(Integer.class) + 1 <= productList.get(getAdapterPosition()).getCount()) {
-                        int num = snapshot.getValue(Integer.class);
-                        cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
-                        prodAddBtn.setText(String.valueOf(num + 1));
-                    } else if (operation == DECREASE && snapshot.getValue(Integer.class) - 1 > 0) {
-                        int num = snapshot.getValue(Integer.class);
-                        cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
-                        prodAddBtn.setText(String.valueOf(num > 1 ? num - 1 : 0));
-                    } else {
-                        listener.onSuccess(null);
-                        Utils.createToast(mContext, R.string.not_available, Toast.LENGTH_SHORT);
-                        return;
+                        Utils.createToast(mContext, R.string.done, Toast.LENGTH_SHORT);
                     }
-                    Utils.createToast(mContext, R.string.done, Toast.LENGTH_SHORT);
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                }
+                    }
+                });
             });
-
-
         }
 
         public ProductViewHolder(@NonNull View itemView) {
@@ -198,6 +215,11 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
         }
 
         public void bind(int position) {
+            if (productList.get(position).getCount() > 0) {
+                setAvailable();
+            } else {
+                setNotAvailable();
+            }
             if (productList.get(position).getImage() != null)
                 Picasso.get().load(productList.get(position).getImage()).into(prodImage);
             prodName.setText(productList.get(position).getName());
@@ -221,5 +243,21 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ProductViewH
             }
 
         }
+
+        private void setNotAvailable() {
+            prodAddBtn.setText(R.string.not_available);
+            prodAddBtn.setEnabled(false);
+            prodIncBtn.setVisibility(View.GONE);
+            prodDecreaseInCartBtn.setVisibility(View.GONE);
+        }
+
+        private void setAvailable() {
+            prodAddBtn.setText(R.string.add);
+            prodAddBtn.setEnabled(true);
+            prodIncBtn.setVisibility(View.VISIBLE);
+            prodDecreaseInCartBtn.setVisibility(View.VISIBLE);
+        }
+
+
     }
 }

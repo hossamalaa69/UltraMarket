@@ -1,5 +1,6 @@
 package com.example.ultramarket.framgnets.user_fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -110,42 +111,37 @@ public class UserCartFrag extends Fragment {
     private void addValueListener() {
         AppExecutors.getInstance()
                 .networkIO()
-                .execute(new Runnable() {
-                             @Override
-                             public void run() {
-                                 FirebaseDatabase.getInstance().getReference()
-                                         .child(Product.class.getSimpleName())
-                                         .addChildEventListener(new ChildEventListener() {
-                                                                    @Override
-                                                                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                .execute(() -> FirebaseDatabase.getInstance().getReference()
+                        .child(Product.class.getSimpleName())
+                        .addChildEventListener(new ChildEventListener() {
+                                                   @Override
+                                                   public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                                       adapter.forceUpdateValue(snapshot.getValue(Product.class).getID(),
+                                                               snapshot.getValue(Product.class).getCount());
+                                                   }
 
-                                                                    }
+                                                   @Override
+                                                   public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                                       adapter.forceUpdateValue(snapshot.getValue(Product.class).getID(),
+                                                               snapshot.getValue(Product.class).getCount());
+                                                   }
 
-                                                                    @Override
-                                                                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                                                                        adapter.forceUpdateValue(snapshot.getValue(Product.class).getID(),
-                                                                                snapshot.getValue(Product.class).getCount());
-                                                                    }
+                                                   @Override
+                                                   public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
-                                                                    @Override
-                                                                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                                                   }
 
-                                                                    }
+                                                   @Override
+                                                   public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                                                                    @Override
-                                                                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                                   }
 
-                                                                    }
+                                                   @Override
+                                                   public void onCancelled(@NonNull DatabaseError error) {
 
-                                                                    @Override
-                                                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                                                    }
-                                                                }
-                                         );
-
-                             }
-                         }
+                                                   }
+                                               }
+                        )
                 );
     }
 
@@ -164,48 +160,45 @@ public class UserCartFrag extends Fragment {
                 public void onRemoveProductClickedListener(String prod_id) {
                     FirebaseDatabase.getInstance().getReference()
                             .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
-                            .child(prod_id).removeValue(new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                            Utils.createToast(getContext(), R.string.delete_product, Toast.LENGTH_SHORT);
-                            adapter.removeProduct(prod_id);
-                            updateOrderDetails();
-                        }
-                    });
+                            .child(prod_id).removeValue((error, ref) -> {
+                                Utils.createToast(getContext(), R.string.delete_product, Toast.LENGTH_SHORT);
+                                adapter.removeProduct(prod_id);
+                                updateOrderDetails();
+                            });
                 }
 
                 @Override
                 public void addProductToFirebaseListener(OnSuccessListener<Void> listener, String prodId, int operation, int count) {
-                    AppExecutors.getInstance().networkIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
-                                    .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
-                            cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (!snapshot.exists()) {
-                                        cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
-                                    } else if (operation == INCREASE && snapshot.getValue(Integer.class) + 1 <= count) {
-                                        int num = snapshot.getValue(Integer.class);
-                                        cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
-                                    } else if (operation == DECREASE && snapshot.getValue(Integer.class) - 1 > 0) {
-                                        int num = snapshot.getValue(Integer.class);
-                                        cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
-                                    } else {
-                                        listener.onSuccess(null);
-                                        Utils.createToast(getContext(), R.string.not_available, Toast.LENGTH_SHORT);
-                                        return;
-                                    }
-                                    Utils.createToast(getContext(), R.string.done, Toast.LENGTH_SHORT);
-
+                    AppExecutors.getInstance().networkIO().execute(() -> {
+                        DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
+                                .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
+                        cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (!snapshot.exists() && count > 0) {
+                                    cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
+                                } else if (snapshot.exists() &&
+                                        operation == INCREASE &&
+                                        snapshot.getValue(Integer.class) + 1 <= count) {
+                                    int num = snapshot.getValue(Integer.class);
+                                    cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
+                                } else if (snapshot.exists() &&
+                                        operation == DECREASE &&
+                                        snapshot.getValue(Integer.class) - 1 > 0) {
+                                    int num = snapshot.getValue(Integer.class);
+                                    cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
+                                } else {
+                                    listener.onSuccess(null);
+                                    Utils.createToast(getContext(), R.string.not_available, Toast.LENGTH_SHORT);
+                                    return;
                                 }
+                                Utils.createToast(getContext(), R.string.done, Toast.LENGTH_SHORT);
+                            }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                }
-                            });
-                        }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
                     });
                 }
             });
@@ -215,46 +208,42 @@ public class UserCartFrag extends Fragment {
     }
 
     private void updateOrderDetails() {
-        cartDetails = getString(R.string.order_details, adapter.getTotalPrice(),
-                adapter.getProductsCurrency(),
-                adapter.getTotalCount());
+        Context context = getContext();
+        if (context != null)
+            cartDetails = context.getString(R.string.order_details, adapter.getTotalPrice(),
+                    adapter.getProductsCurrency(),
+                    adapter.getTotalCount());
         orderDetails.setText(cartDetails);
     }
 
     private void loadData(String userId) {
-        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+        AppExecutors.getInstance().networkIO().execute(() -> FirebaseDatabase.getInstance().getReference()
+                .child("Cart").child(userId).addChildEventListener(new ChildEventListener() {
             @Override
-            public void run() {
-
-                FirebaseDatabase.getInstance().getReference()
-                        .child("Cart").child(userId).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        loadItem(snapshot.getKey(), snapshot.getValue(Integer.class));
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        loadItem(snapshot.getKey(), snapshot.getValue(Integer.class));
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        int y = 0;
-                    }
-                });
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                loadItem(snapshot.getKey(), snapshot.getValue(Integer.class));
             }
-        });
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                loadItem(snapshot.getKey(), snapshot.getValue(Integer.class));
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                int y = 0;
+            }
+        }));
     }
 
     private void initViewModel() {

@@ -19,6 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.user_adapters.OfferAdapter;
 import com.example.ultramarket.database.Entities.Product;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -59,10 +63,32 @@ public class UserOffersFrag extends Fragment implements OfferAdapter.ProductCall
     }
 
     private void setupObservers() {
-        mViewModel.getFeaturedProdList().observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
+        mViewModel.getFeaturedProdList().observe(getViewLifecycleOwner(), products -> mOfferAdapter.setProdList(products));
+        FirebaseDatabase.getInstance().getReference()
+                .child(Product.class.getSimpleName()).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChanged(List<Product> products) {
-                mOfferAdapter.setProdList(products);
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                mOfferAdapter.updateProduct(snapshot.getValue(Product.class));
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

@@ -116,14 +116,18 @@ public class ProductActivity extends AppCompatActivity {
                         mmDecreaseInWishList.setVisibility(View.VISIBLE);
                     }
                 };
-                if (!snapshot.exists()) {
+                if (!snapshot.exists() && mProduct.getCount() > 0) {
                     cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
                     mAddToWishlist.setText(String.valueOf(1));
-                } else if (operation == INCREASE && snapshot.getValue(Integer.class) + 1 <= mProduct.getCount()) {
+                } else if (snapshot.exists() &&
+                        operation == INCREASE &&
+                        snapshot.getValue(Integer.class) + 1 <= mProduct.getCount()) {
                     int num = snapshot.getValue(Integer.class);
                     cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
                     mAddToWishlist.setText(String.valueOf(num + 1));
-                } else if (operation == DECREASE && snapshot.getValue(Integer.class) - 1 > 0) {
+                } else if (snapshot.exists() &&
+                        operation == DECREASE &&
+                        snapshot.getValue(Integer.class) - 1 > 0) {
                     int num = snapshot.getValue(Integer.class);
                     cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
                     mAddToWishlist.setText(String.valueOf(num > 1 ? num - 1 : 0));
@@ -142,6 +146,20 @@ public class ProductActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void setAvailable() {
+        mmDecreaseInWishList.setVisibility(View.VISIBLE);
+        mIncreaseInWishList.setVisibility(View.VISIBLE);
+        mAddToWishlist.setText(R.string.add);
+        mAddToWishlist.setEnabled(true);
+    }
+
+    private void setNotAvailable() {
+        mmDecreaseInWishList.setVisibility(View.GONE);
+        mIncreaseInWishList.setVisibility(View.GONE);
+        mAddToWishlist.setText(R.string.not_available);
+        mAddToWishlist.setEnabled(false);
     }
 
     private void showProgress() {
@@ -181,7 +199,7 @@ public class ProductActivity extends AppCompatActivity {
     private void loadProductData(String prodId) {
         FirebaseDatabase.getInstance().getReference()
                 .child(Product.class.getSimpleName()).child(prodId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Product product = snapshot.getValue(Product.class);
@@ -206,9 +224,14 @@ public class ProductActivity extends AppCompatActivity {
         if (product.getImage() != null) {
             Picasso.get().load(product.getImage()).into(mProdImage);
         }
+        if (product.getCount() > 0) {
+            setAvailable();
+        } else {
+            setNotAvailable();
+        }
         mPriceLayout.setVisibility(View.VISIBLE);
         mProdName.setText(product.getName());
-        prodBrand.setText(getString(R.string.brand_is,product.getBrand_name()));
+        prodBrand.setText(getString(R.string.brand_is, product.getBrand_name()));
         double oldPrice = product.getPrice();
         if (product.isHasOffer()) {
             double newPrice = Utils.calcDiscount(oldPrice, product.getDiscount_percentage());
