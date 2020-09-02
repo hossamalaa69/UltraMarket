@@ -94,6 +94,11 @@ public class AdminHomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, CustomersActivity.class);
                 startActivity(intent);
                 break;
+            case 3:
+                Intent intent3 = new Intent(this, OrdersActivity.class);
+                startActivity(intent3);
+                break;
+
         }
     }
 

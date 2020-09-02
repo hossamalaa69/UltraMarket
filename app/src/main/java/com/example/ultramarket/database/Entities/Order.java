@@ -37,6 +37,10 @@ public class Order implements Serializable {
     private long order_date;
     private int status = STATUS_CONFIRMED;
 
+    @Exclude
+    private String customerId;
+
+
     public Order() {
     }
 
@@ -96,5 +100,15 @@ public class Order implements Serializable {
 
     public void setReceiving_date(long receiving_date) {
         this.receiving_date = receiving_date;
+    }
+
+    @Exclude
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    @Exclude
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 }

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/main_view_product"
+                android:id="@+id/main_view_order"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
@@ -29,30 +29,55 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/product_image_admin"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/logo"
-                    android:layout_centerVertical="true" />
-
                 <TextView
-                    android:id="@+id/product_name_admin"
+                    android:id="@+id/order_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/product_image_admin"
                     android:layout_marginStart="18dp"
-                    android:text="Product Name"
+                    android:text="Order ID: MFGF56G2G5BFKS"
                     android:textColor="@color/White"
                     android:textSize="18sp"
                     android:maxLength="20"
                     android:textStyle="bold"
-                    android:layout_centerVertical="true"
                     />
-
+                <TextView
+                    android:id="@+id/order_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_id"
+                    android:layout_marginStart="18dp"
+                    android:text="Date: 12/10/2020, 18:30:12"
+                    android:textColor="@color/White"
+                    android:textSize="18sp"
+                    android:maxLength="20"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/order_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_date"
+                    android:layout_marginStart="18dp"
+                    android:text="Cost: 1084 $"
+                    android:textColor="@color/White"
+                    android:textSize="18sp"
+                    android:maxLength="20"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/order_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_cost"
+                    android:layout_marginStart="18dp"
+                    android:text="Status: Delivered"
+                    android:textColor="@color/White"
+                    android:textSize="18sp"
+                    android:maxLength="20"
+                    android:textStyle="bold"
+                    />
                 <ImageView
-                    android:id="@+id/drop_button_product_admin"
+                    android:id="@+id/drop_button_order_admin"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
@@ -71,7 +96,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/main_view_product">
+                app:layout_constraintTop_toBottomOf="@id/main_view_order">
 
                 <RelativeLayout
                     android:padding="10dp"

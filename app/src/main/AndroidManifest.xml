@@ -17,19 +17,24 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.userUi.Activities.SearchActivity"
-            android:parentActivityName=".ui.userUi.Activities.HomeActivity"/>
+        <activity android:name=".ui.adminLayer.OrdersActivity"></activity>
+        <activity
+            android:name=".ui.userUi.Activities.SearchActivity"
+            android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
         <activity android:name=".ui.userUi.Activities.NotificationActivity" />
         <activity
             android:name=".ui.userUi.Activities.AboutUsActivity"
             android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
-        <activity android:name=".ui.userUi.Activities.TrackOrderActivity"
-            android:parentActivityName=".ui.userUi.Activities.HomeActivity"/>
-        <activity android:name=".ui.userUi.Activities.OrderConfirmActivity"
-            android:parentActivityName=".ui.userUi.Activities.HomeActivity"/>
+        <activity
+            android:name=".ui.userUi.Activities.TrackOrderActivity"
+            android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
+        <activity
+            android:name=".ui.userUi.Activities.OrderConfirmActivity"
+            android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
         <activity android:name=".ui.userUi.Activities.CategoryBrandProductsActivity" />
-        <activity android:name=".ui.userUi.Activities.ProductActivity"
-            android:parentActivityName=".ui.userUi.Activities.HomeActivity"/>
+        <activity
+            android:name=".ui.userUi.Activities.ProductActivity"
+            android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
         <activity
             android:name=".ui.adminLayer.ProductActivity"
             android:label="Product"
@@ -86,17 +91,20 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-     See README(https://goo.gl/l4GJaQ) for more. -->
+        <!--
+ Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification_small" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-
     </application>
 
 </manifest>
