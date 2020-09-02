@@ -2,6 +2,7 @@ package com.example.ultramarket.database.Entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -40,6 +41,10 @@ public class Order implements Serializable {
     @Exclude
     private String customerId;
 
+    @Exclude
+    @Ignore
+    private boolean isExpanded;
+
 
     public Order() {
     }
@@ -60,6 +65,7 @@ public class Order implements Serializable {
         this.order_date = order_date;
         this.products = products;
         this.receiving_date = receiving_date;
+        this.isExpanded = false;
     }
 
     public void setOrder_date(long order_date) {
@@ -110,5 +116,34 @@ public class Order implements Serializable {
     @Exclude
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
+    }
+
+
+    @Exclude
+    public String getStatusStr(){
+        String status_str = "";
+        switch (this.status) {
+            case STATUS_CONFIRMED:
+                status_str = "Confirmed";
+                break;
+            case STATUS_READY:
+                status_str = "Ready";
+                break;
+            case STATUS_ON_WAY:
+                status_str = "On Way";
+                break;
+        }
+        return status_str;
+    }
+
+    @Ignore
+    @Exclude
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    @Ignore
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
     }
 }

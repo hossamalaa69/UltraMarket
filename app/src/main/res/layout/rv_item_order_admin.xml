@@ -23,7 +23,7 @@
                 android:id="@+id/main_view_order"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
+                android:padding="5dp"
                 android:background="@color/purple1_transparent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -33,48 +33,57 @@
                     android:id="@+id/order_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
+                    android:layout_marginStart="5dp"
                     android:text="Order ID: MFGF56G2G5BFKS"
                     android:textColor="@color/White"
-                    android:textSize="18sp"
-                    android:maxLength="20"
-                    android:textStyle="bold"
+                    android:textSize="12sp"
                     />
-                <TextView
-                    android:id="@+id/order_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/order_id"
-                    android:layout_marginStart="18dp"
-                    android:text="Date: 12/10/2020, 18:30:12"
-                    android:textColor="@color/White"
-                    android:textSize="18sp"
-                    android:maxLength="20"
-                    android:textStyle="bold"
-                    />
+
                 <TextView
                     android:id="@+id/order_cost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/order_date"
-                    android:layout_marginStart="18dp"
+                    android:layout_below="@id/order_id"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
                     android:text="Cost: 1084 $"
                     android:textColor="@color/White"
-                    android:textSize="18sp"
-                    android:maxLength="20"
-                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    />
+
+                <TextView
+                    android:id="@+id/order_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_cost"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Date: 12/10/2020, 18:30:12"
+                    android:textColor="@color/White"
+                    android:textSize="12sp"
+                    />
+                <TextView
+                    android:id="@+id/order_date_delivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_date"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Delivery Date: 13/11/2020, 12:30"
+                    android:textColor="@color/White"
+                    android:textSize="12sp"
                     />
                 <TextView
                     android:id="@+id/order_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/order_cost"
-                    android:layout_marginStart="18dp"
+                    android:layout_below="@id/order_date_delivery"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
                     android:text="Status: Delivered"
                     android:textColor="@color/White"
-                    android:textSize="18sp"
+                    android:textSize="12sp"
                     android:maxLength="20"
-                    android:textStyle="bold"
                     />
                 <ImageView
                     android:id="@+id/drop_button_order_admin"
@@ -88,7 +97,7 @@
             </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/expandableLayout_product"
+                android:id="@+id/expandableLayout_order"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
@@ -100,172 +109,23 @@
 
                 <RelativeLayout
                     android:padding="10dp"
-                    android:paddingTop="8dp"
+                    android:paddingTop="5dp"
                     android:id="@+id/expanded_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/gradient_purple_background"
+                    android:background="@drawable/gradient_green_dark"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginBottom="5dp"
-                    >
+                    android:layout_marginBottom="5dp">
 
-                    <RelativeLayout
-                        android:id="@+id/desc_part"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/products_order_recycler"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:id="@+id/image_desc"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_description"
-                            />
-                        <TextView
-                            android:id="@+id/product_desc_admin"
-                            android:layout_centerVertical="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/image_desc"
-                            android:textColor="@color/White"
-                            android:text="Description part is here"
-                            android:textSize="15sp"
-                            android:layout_marginStart="20dp"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/price_part"
-                        android:layout_marginTop="10dp"
-                        android:layout_below="@id/desc_part"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:id="@+id/image_price"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_price"
-                            />
-                        <TextView
-                            android:id="@+id/prod_price_admin"
-                            android:layout_centerVertical="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/image_price"
-                            android:textColor="@color/White"
-                            android:text="12 LE per item"
-                            android:textSize="15sp"
-                            android:layout_marginStart="20dp"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/discount_part"
-                        android:layout_marginTop="10dp"
-                        android:layout_below="@id/price_part"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:id="@+id/image_discount"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_offer"
-                            />
-                        <TextView
-                            android:id="@+id/prod_discount_admin"
-                            android:layout_centerVertical="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/image_discount"
-                            android:textColor="@color/White"
-                            android:text="Discount 15%"
-                            android:textSize="15sp"
-                            android:layout_marginStart="20dp"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/quantity_part"
-                        android:layout_marginTop="10dp"
-                        android:layout_below="@id/discount_part"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:id="@+id/image_quantity"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_count"
-                            />
-                        <TextView
-                            android:id="@+id/prod_quantity_admin"
-                            android:layout_centerVertical="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/image_quantity"
-                            android:textColor="@color/White"
-                            android:text="20 Units"
-                            android:textSize="15sp"
-                            android:layout_marginStart="20dp"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/orders_part"
-                        android:layout_marginTop="10dp"
-                        android:layout_below="@id/quantity_part"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/image_orders"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_cart_white" />
-
-                        <TextView
-                            android:id="@+id/prod_orders_admin"
-                            android:layout_centerVertical="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/image_orders"
-                            android:textColor="@color/White"
-                            android:text="7"
-                            android:textSize="15sp"
-                            android:layout_marginStart="20dp"/>
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:id="@+id/category_brand_part"
-                        android:layout_marginTop="10dp"
-                        android:layout_below="@id/orders_part"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/product_brand_admin"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/White"
-                            android:text="NIKE"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/product_category_admin"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/product_brand_admin"
-                            android:textColor="@color/White"
-                            android:text="T-Shirts"
-                            android:textSize="18sp"/>
-                    </RelativeLayout>
-
-
+                        android:layout_height="wrap_content"
+                        />
                 </RelativeLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

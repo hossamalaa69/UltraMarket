@@ -17,7 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.adminLayer.OrdersActivity"></activity>
+        <activity android:name=".ui.adminLayer.OrdersActivity"
+            android:label="Orders">
+        </activity>
         <activity
             android:name=".ui.userUi.Activities.SearchActivity"
             android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
