@@ -182,6 +182,9 @@
     <string name="search_for_what_you_want">Search For What you WANT!</string>
     <string name="search_for_product">Search For Product</string>
     <string name="delivered">Delivered</string>
+    <string name="ordered_at">Ordered at: %1$s</string>
+    <string name="arrives_at">Arrives at: %1$s</string>
+    <string name="id_is">ID: %1$s</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

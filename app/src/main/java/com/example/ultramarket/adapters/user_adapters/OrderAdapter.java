@@ -82,8 +82,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
     public class Holder extends RecyclerView.ViewHolder {
         @BindView(R.id.user_order_list_item_rv)
         RecyclerView recyclerView;
-        @BindView(R.id.user_order_list_item_order_id)
-        TextView orderId;
         @BindView(R.id.user_order_list_item_order_time)
         TextView orderTime;
         @BindView(R.id.user_order_list_item_receive_time)
@@ -99,12 +97,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
             if (mShowProducts.isSelected()) {
                 hideProducts();
                 mShowProducts.setCompoundDrawablesWithIntrinsicBounds(
-                        0, 0, R.drawable.arrow_down_24, 0);
+                        R.drawable.ic_cart_purple, 0, R.drawable.arrow_down_24, 0);
                 mShowProducts.setSelected(false);
             } else {
                 showProducts();
                 mShowProducts.setCompoundDrawablesWithIntrinsicBounds(
-                        0, 0, R.drawable.arrow_up_24, 0);
+                        R.drawable.ic_cart_purple, 0, R.drawable.arrow_up_24, 0);
                 mShowProducts.setSelected(true);
             }
         }
@@ -186,14 +184,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
             mShowProducts.setSelected(false);
             totalPrice.setText(mContext.getString(R.string.total_price, orderList.get(pos).getPrice()));
             if (orderList.get(pos).getStatus() != Order.STATUS_DELIVERED) {
-                receiveTime.setText(mContext.getString(R.string.receiving_time, new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
+                receiveTime.setText(mContext.getString(R.string.arrives_at, new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
                         .format(new Date(orderList.get(pos).getReceiving_date()))));
             } else {
                 receiveTime.setText(R.string.delivered);
             }
-            orderTime.setText(mContext.getString(R.string.order_time, new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
+            orderTime.setText(mContext.getString(R.string.ordered_at, new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
                     .format(new Date(orderList.get(pos).getOrder_date()))));
-            orderId.setText(mContext.getString(R.string.order_id_is, orderList.get(pos).getID()));
         }
     }
 }
