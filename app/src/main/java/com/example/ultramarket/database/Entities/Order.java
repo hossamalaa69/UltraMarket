@@ -29,6 +29,8 @@ public class Order implements Serializable {
     public static final int STATUS_READY = 2;
     @Exclude
     public static final int STATUS_ON_WAY = 3;
+    @Exclude
+    public static final int STATUS_DELIVERED = 4;
 
     @PrimaryKey
     private String ID;
@@ -36,7 +38,7 @@ public class Order implements Serializable {
     Map<String, Integer> products;
     private long receiving_date;
     private long order_date;
-    private int status = STATUS_CONFIRMED;
+    private int status;
 
     @Exclude
     private String customerId;
@@ -54,7 +56,7 @@ public class Order implements Serializable {
     }
 
     public boolean setStatus(int status) {
-        if (status < STATUS_CONFIRMED || status > STATUS_ON_WAY) return false;
+        if (status < STATUS_CONFIRMED || status > STATUS_DELIVERED) return false;
         this.status = status;
         return true;
     }

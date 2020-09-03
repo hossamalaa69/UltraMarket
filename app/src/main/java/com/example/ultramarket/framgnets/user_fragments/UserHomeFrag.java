@@ -1,9 +1,10 @@
 package com.example.ultramarket.framgnets.user_fragments;
 
-import android.app.Activity;
+import android.animation.ValueAnimator;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Category;
 import com.example.ultramarket.database.Entities.Notification;
 import com.example.ultramarket.database.Entities.Product;
+import com.example.ultramarket.helpers.AppExecutors;
 import com.example.ultramarket.ui.userUi.Activities.ProductActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -82,6 +84,34 @@ public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClick
     private ArrayList<Notification> mNotifications = new ArrayList<>();
     private boolean newNotification = false;
     private int notiIdx = -1;
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mNotifications.size() > 0) {
+                if (notiIdx < mNotifications.size() - 1) {
+                    notiIdx++;
+                } else {
+                    notiIdx = 0;
+                }
+                Notification notification;
+                if (newNotification) {
+                    notification = mNotifications.get(mNotifications.size() - 1);
+                    newNotification = false;
+                } else {
+                    notification = mNotifications.get(notiIdx);
+                }
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateNotification(notification);
+                    }
+                });
+            }
+            handler.postDelayed(this, 5000);
+        }
+    };
+
 
     public static UserHomeFrag newInstance() {
         return new UserHomeFrag();
@@ -93,17 +123,55 @@ public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClick
     @OnClick(R.id.user_home_show_more)
     void extendCatRv(View view) {
         if (catRvExtended) {
-            ViewGroup.LayoutParams params = rvCategories.getLayoutParams();
-            params.height = rvCategories.getMinimumHeight();
-            showMoreBtn.setText(R.string.show_more);
-            rvCategories.setLayoutParams(params);
+            ValueAnimator animator = ValueAnimator.ofInt(rvCategories.getHeight(), rvCategories.getMinimumHeight());
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    int value = (int) valueAnimator.getAnimatedValue();
+                    ViewGroup.LayoutParams params = rvCategories.getLayoutParams();
+                    params.height = value;
+                    showMoreBtn.setText(R.string.show_more);
+                    rvCategories.setLayoutParams(params);
+                }
+            });
+            animator.setDuration(300);
+            animator.start();
+
         } else {
-            ViewGroup.LayoutParams params = rvCategories.getLayoutParams();
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            rvCategories.setLayoutParams(params);
-            showMoreBtn.setText(R.string.show_less);
+            rvCategories.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            ValueAnimator animator = ValueAnimator.ofInt(rvCategories.getHeight(), rvCategories.getMeasuredHeight());
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    int value = (int) valueAnimator.getAnimatedValue();
+                    ViewGroup.LayoutParams params = rvCategories.getLayoutParams();
+                    params.height = value;
+                    rvCategories.setLayoutParams(params);
+                    showMoreBtn.setText(R.string.show_less);
+                }
+            });
+            animator.setDuration(300);
+            animator.start();
+
         }
         catRvExtended = !catRvExtended;
+    }
+
+    @Override
+    public void onResume() {
+        handler.post(runnable);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        handler.removeCallbacks(runnable);
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -135,8 +203,6 @@ public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClick
         RecyclerView.LayoutManager brandLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         rvBrands.setLayoutManager(brandLayoutManager);
         rvBrands.setHasFixedSize(true);
-
-
         return view;
     }
 
@@ -144,78 +210,41 @@ public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClick
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setObservers();
-
-        FirebaseDatabase.getInstance().getReference()
-                .child(Notification.class.getSimpleName())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        mNotifications.add(snapshot.getValue(Notification.class));
-                        newNotification = true;
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-        Thread mNotificationThread = new Thread(new Runnable() {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
             public void run() {
-                while (true) {
-                    for (int i = 0; i < mNotifications.size(); i++) {
-                        Notification notification;
-                        if (newNotification) {
-                            notification = mNotifications.get(mNotifications.size() - 1);
-                            newNotification = false;
-                        } else {
-                            notification = mNotifications.get(i);
-                        }
-                        notiIdx = i;
-                        Activity activity = getActivity();
-                        if (activity != null) {
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    updateNotification(notification);
-                                }
-                            });
-                        }
-                        try {
-                            Thread.sleep(1000 * 5);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+                FirebaseDatabase.getInstance().getReference()
+                        .child(Notification.class.getSimpleName())
+                        .addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                mNotifications.add(snapshot.getValue(Notification.class));
+                                newNotification = true;
+                            }
+
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
             }
         });
-        mNotificationThread.start();
-    /*  for (int i = 1; i < 10; i++)
-            mViewModel.insertBrand(new Brand(i, "brand", null));
-         for (int i = 1; i < 10; i++)
-            mViewModel.insertCategory(new Category(i, "food", null));
-         for (int i = 1; i < 5; i++)
-            mViewModel.insertProd(new Product(i, "featured prod" + i, null, "1 kg", 123, 14, "hahah", true, 0.5, i, i , new Date()));
-       for (int i = 5; i < 10; i++)
-            mViewModel.insertProd
-            (new Product(i, "product" + i, null, "500 g", 123, 14, "hahah", false, 0, i, i, new Date()));
-*/
     }
 
     private void updateNotification(Notification notification) {
@@ -243,7 +272,7 @@ public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClick
             animation3.setFillAfter(true);
             adName.setAnimation(animation);
             adBody.setAnimation(animation3);
-        } else if (random == 2) {
+        } else {
             TranslateAnimation animation = new TranslateAnimation(
                     adImage.getX() + adImage.getWidth(), adName.getX(), 0, 0);
             animation.setDuration(500);
@@ -254,11 +283,6 @@ public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClick
             animation3.setFillAfter(true);
             adName.setAnimation(animation);
             adBody.setAnimation(animation3);
-        } else {
-            adBody.setAlpha(0f);
-            adName.setAlpha(0f);
-            adBody.animate().alpha(1.0f).setDuration(850).start();
-            adName.animate().alpha(1.0f).setDuration(900).start();
         }
     }
 

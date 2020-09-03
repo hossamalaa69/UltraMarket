@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/user_search_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:background="@color/colorPrimary"
+        android:padding="10dp">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/user_search_sv"
+            android:layout_width="match_parent"
+            app:defaultQueryHint="@string/search_for_product"
+            android:autofillHints="@string/search_for_product"
+            android:layout_height="wrap_content"
+            android:background="@drawable/search_shape"
+            android:paddingVertical="5dp"
+            app:queryBackground="@android:color/transparent"
+            app:queryHint="@string/search_for_product" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_search_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/user_search_empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:text="@string/search_for_what_you_want"
+            app:autoSizeTextType="uniform" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="30dp"
+            android:src="@drawable/logo" />
+    </LinearLayout>
+</LinearLayout>

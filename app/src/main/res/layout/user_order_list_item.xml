@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="@drawable/gradient_purple_background">
+    tools:background="@android:color/darker_gray">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card"
@@ -24,10 +24,10 @@
             <TextView
                 android:id="@+id/user_order_list_item_order_id"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:background="@android:color/transparent"
                 android:padding="10dp"
-                android:text="Order ID: 320345892003920"
+                tools:text="Order ID: 320345892003920"
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:textColor="@color/purple2"
                 app:autoSizeMaxTextSize="24sp"
@@ -36,10 +36,10 @@
             <TextView
                 android:id="@+id/user_order_list_item_total_price"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:background="@android:color/transparent"
                 android:padding="10dp"
-                android:text="Total price : 2344 $"
+                tools:text="Total price : 2344 $"
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:textColor="@color/purple2"
                 app:autoSizeMaxTextSize="18sp"
@@ -48,10 +48,10 @@
             <TextView
                 android:id="@+id/user_order_list_item_order_time"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:background="@android:color/transparent"
                 android:padding="10dp"
-                android:text="Order Time: 20:20:00"
+                tools:text="Order Time: 20:20:00"
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:textColor="@color/purple2"
                 app:autoSizeMaxTextSize="18sp"
@@ -60,10 +60,10 @@
             <TextView
                 android:id="@+id/user_order_list_item_receive_time"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:background="@android:color/transparent"
                 android:padding="10dp"
-                android:text="Receiveing Time: 20:20:00"
+                tools:text="Receiveing Time: 20:20:00"
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:textColor="@color/purple2"
                 app:autoSizeMaxTextSize="18sp"
@@ -89,7 +89,6 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/user_order_list_item_rv"
         android:layout_width="match_parent"

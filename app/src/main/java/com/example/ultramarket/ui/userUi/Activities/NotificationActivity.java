@@ -33,7 +33,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification);
+        setContentView(R.layout.user_activity_notification);
         ButterKnife.bind(this);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

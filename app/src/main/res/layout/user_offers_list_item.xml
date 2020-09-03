@@ -87,6 +87,7 @@
             android:layout_toStartOf="@id/user_offers_increase_to_wishlist"
             android:background="@color/purple2"
             android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_cart_white"
             android:gravity="center"
             android:paddingStart="10dp"
             android:paddingTop="5dp"

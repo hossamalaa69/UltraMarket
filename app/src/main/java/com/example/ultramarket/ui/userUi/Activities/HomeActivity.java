@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.transition.Explode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -62,10 +63,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     TabLayout tabLayout;
     @BindView(R.id.user_toolbar)
     Toolbar toolbar;
-    private Thread mRatingThread;
-    private AlertDialog mRateDialog;
 
-    private RatingBar mRatingBar;
+    private AlertDialog mRateDialog;
+    private Handler handler;
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (isRating) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showRateAlertDialog();
+                    }
+                });
+            }
+            handler.postDelayed(this, 5000);
+        }
+    };
     private boolean isRating = true;
 
     @OnClick(R.id.user_toolbar_location)
@@ -118,23 +132,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             });
                 }
             });
-        mRatingThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                long oldTime = System.currentTimeMillis() / 1000;
-                while (isRating) {
-                    if (System.currentTimeMillis() / 1000 - oldTime > 60) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showRateAlertDialog();
-                            }
-                        });
-                        oldTime = System.currentTimeMillis() / 1000;
-                    }
-                }
-            }
-        });
+
         if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
             AppExecutors.getInstance().networkIO().execute(new Runnable() {
                 @Override
@@ -147,7 +145,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             int rate = snapshot.getValue(Integer.class);
                             if (rate == 0) {
-                                mRatingThread.start();
+                                handler.post(runnable); // show rating dialog
                             } else {
                                 isRating = false;
                                 if (mRateDialog != null && mRateDialog.isShowing())
@@ -187,7 +185,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void showRateAlertDialog() {
         mRateDialog = new AlertDialog.Builder(this).create();
         View view = LayoutInflater.from(this).inflate(R.layout.user_rate_layout, null, false);
-        mRatingBar = view.findViewById(R.id.user_rating_bar);
+        RatingBar mRatingBar = view.findViewById(R.id.user_rating_bar);
         Button cancel = view.findViewById(R.id.user_rate_cancel);
         cancel.setOnClickListener(view1 -> mRateDialog.dismiss());
         mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {

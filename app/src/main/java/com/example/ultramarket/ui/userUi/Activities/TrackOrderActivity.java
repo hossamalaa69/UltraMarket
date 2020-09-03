@@ -39,12 +39,16 @@ public class TrackOrderActivity extends AppCompatActivity {
     View confirmedLink;
     @BindView(R.id.user_track_order_activity_link3)
     View readyLink;
+    @BindView(R.id.user_track_order_activity_link4)
+    View deliveredLink;
     @BindView(R.id.user_track_order_activity_spot2)
     View confirmedSpot;
     @BindView(R.id.user_track_order_activity_spot3)
     View readySpot;
     @BindView(R.id.user_track_order_activity_spot4)
     View onWaySpot;
+    @BindView(R.id.user_track_order_activity_spot5)
+    View deliveredSpot;
     @BindView(R.id.user_track_order_activity_remaining_time)
     TextView remainingTime;
     @BindView(R.id.user_track_order_activity_order_id)
@@ -139,6 +143,7 @@ public class TrackOrderActivity extends AppCompatActivity {
     }
 
     private void updateStatus(int status) {
+        cancelOrderBtn.setEnabled(true);
         if (status >= Order.STATUS_CONFIRMED) {
             confirmedLink.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
             confirmedSpot.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
@@ -149,6 +154,11 @@ public class TrackOrderActivity extends AppCompatActivity {
         }
         if (status >= Order.STATUS_ON_WAY) {
             onWaySpot.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
+        }
+        if (status >= Order.STATUS_DELIVERED) {
+            deliveredLink.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
+            deliveredSpot.setBackgroundColor(ContextCompat.getColor(this, R.color.purple1));
+            cancelOrderBtn.setEnabled(false);
         }
     }
 

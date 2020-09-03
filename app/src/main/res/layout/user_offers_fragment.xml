@@ -5,4 +5,5 @@
     android:padding="@dimen/rv_padding"
     android:id="@+id/usr_rv_offers"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_purple_background"
     tools:context=".framgnets.user_fragments.UserOffersFrag" />

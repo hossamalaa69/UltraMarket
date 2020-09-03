@@ -71,6 +71,7 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
                     .child(Order.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
                     .push();
             order.setID(orderRef.getKey());
+            order.setStatus(Order.STATUS_DELIVERED);
             order.setOrder_date(Calendar.getInstance().getTimeInMillis());
             orderRef.setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override

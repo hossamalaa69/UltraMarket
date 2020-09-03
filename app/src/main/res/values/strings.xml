@@ -179,6 +179,9 @@
     <string name="brand_is">Brand: %1$s</string>
     <string name="cancel_order">Cancel Order</string>
     <string name="are_you_sure_cancel_order">Are you sure you want to cancel this order?</string>
+    <string name="search_for_what_you_want">Search For What you WANT!</string>
+    <string name="search_for_product">Search For Product</string>
+    <string name="delivered">Delivered</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

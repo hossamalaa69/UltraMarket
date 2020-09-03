@@ -68,6 +68,7 @@
             android:layout_margin="5dp"
             android:background="@android:color/darker_gray"
             app:layout_constraintTop_toBottomOf="@id/user_track_order_activity_order_id" />
+
         <ImageView
             android:id="@+id/order_confirmed_sheet_view"
             android:layout_width="70dp"
@@ -168,6 +169,39 @@
             app:layout_constraintStart_toEndOf="@id/order_on_way_sheet_view"
             app:layout_constraintTop_toTopOf="@id/order_on_way_sheet_view" />
 
+        <ImageView
+            android:id="@+id/order_delivered_sheet_view"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/delivered"
+            app:layout_constraintStart_toEndOf="@id/user_track_order_activity_spot5"
+            app:layout_constraintTop_toBottomOf="@id/order_on_way_sheet_view" />
+
+        <TextView
+            android:id="@+id/user_track_order_activity_spot5"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/shape_ramining"
+            app:layout_constraintBottom_toBottomOf="@id/order_delivered_sheet_view"
+            app:layout_constraintEnd_toStartOf="@id/order_delivered_sheet_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/order_delivered_sheet_view" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:padding="10dp"
+            android:text="@string/delivered"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/order_delivered_sheet_view"
+            app:layout_constraintTop_toTopOf="@id/order_delivered_sheet_view" />
+
         <View
             android:id="@+id/user_track_order_activity_link2"
             android:layout_width="2dp"
@@ -191,6 +225,18 @@
             app:layout_constraintStart_toStartOf="@id/user_track_order_activity_spot3"
             app:layout_constraintTop_toBottomOf="@id/user_track_order_activity_spot3" />
 
+        <View
+            android:id="@+id/user_track_order_activity_link4"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:layout_margin="2dp"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toTopOf="@id/user_track_order_activity_spot5"
+            app:layout_constraintEnd_toEndOf="@id/user_track_order_activity_spot5"
+            app:layout_constraintStart_toStartOf="@id/user_track_order_activity_spot5"
+            app:layout_constraintTop_toBottomOf="@id/user_track_order_activity_spot4" />
+
         <Button
             android:id="@+id/user_track_order_activity_cancel_btn"
             android:layout_width="match_parent"
@@ -198,8 +244,8 @@
             android:layout_margin="20dp"
             android:background="@drawable/weight_background_shape"
             android:text="@string/cancel"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:textColor="@android:color/holo_red_dark"
-            app:layout_constraintTop_toBottomOf="@id/order_on_way_sheet_view" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/order_delivered_sheet_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -20,9 +20,10 @@
         <activity android:name=".ui.adminLayer.OrdersActivity"
             android:label="Orders">
         </activity>
-        <activity
-            android:name=".ui.userUi.Activities.SearchActivity"
-            android:parentActivityName=".ui.userUi.Activities.HomeActivity" />
+
+        <activity android:name=".ui.userUi.Activities.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".ui.userUi.Activities.HomeActivity"/>
         <activity android:name=".ui.userUi.Activities.NotificationActivity" />
         <activity
             android:name=".ui.userUi.Activities.AboutUsActivity"

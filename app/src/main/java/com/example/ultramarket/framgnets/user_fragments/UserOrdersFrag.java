@@ -16,7 +16,9 @@ import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.user_adapters.OrderAdapter;
 import com.example.ultramarket.database.Entities.Order;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
+import com.example.ultramarket.helpers.AppExecutors;
 import com.example.ultramarket.helpers.Utils;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,34 +56,67 @@ public class UserOrdersFrag extends Fragment {
     }
 
     private void loadOrders() {
-        FirebaseDatabase.getInstance().getReference()
-                .child(Order.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        adapter.insertOrder(snapshot.getValue(Order.class));
-                    }
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseDatabase.getInstance().getReference()
+                        .child(Order.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
+                        .addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                Order order = snapshot.getValue(Order.class);
+                                if (order != null &&
+                                        System.currentTimeMillis() > order.getReceiving_date() &&
+                                        order.getStatus() != Order.STATUS_DELIVERED) {
+                                    setDelivered(order);
+                                } else {
+                                    adapter.insertOrder(order);
+                                }
+                            }
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                Order order = snapshot.getValue(Order.class);
+                                adapter.insertOrder(order);
+                            }
 
-                    }
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                                adapter.removeOrder(snapshot.getValue(Order.class));
+                            }
 
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                        adapter.removeOrder(snapshot.getValue(Order.class));
-                    }
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                            }
 
-                    }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
 
-                    }
-                });
+            }
+        });
+
+    }
+
+    private void setDelivered(Order order) {
+        order.setStatus(Order.STATUS_DELIVERED);
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseDatabase.getInstance().getReference()
+                        .child(Order.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
+                        .child(order.getID()).child("status").setValue(Order.STATUS_DELIVERED)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                            }
+                        });
+            }
+        });
     }
 
     private void showOrders() {

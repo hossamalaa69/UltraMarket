@@ -1,15 +1,15 @@
 package com.example.ultramarket.adapters.user_adapters;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,6 +66,19 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
         notifyDataSetChanged();
     }
 
+    public void updateOrder(Order order) {
+        for (int i = 0; i < orderList.size(); i++) {
+            if (order.getID().matches(orderList.get(i).getID())) {
+                orderList.remove(i);
+                orderList.add(order);
+                notifyDataSetChanged();
+                return;
+            }
+        }
+        orderList.add(order);
+        notifyDataSetChanged();
+    }
+
     public class Holder extends RecyclerView.ViewHolder {
         @BindView(R.id.user_order_list_item_rv)
         RecyclerView recyclerView;
@@ -86,12 +99,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
             if (mShowProducts.isSelected()) {
                 hideProducts();
                 mShowProducts.setCompoundDrawablesWithIntrinsicBounds(
-                        0, 0,  R.drawable.arrow_down_24, 0);
+                        0, 0, R.drawable.arrow_down_24, 0);
                 mShowProducts.setSelected(false);
             } else {
                 showProducts();
                 mShowProducts.setCompoundDrawablesWithIntrinsicBounds(
-                        0, 0,  R.drawable.arrow_up_24, 0);
+                        0, 0, R.drawable.arrow_up_24, 0);
                 mShowProducts.setSelected(true);
             }
         }
@@ -102,26 +115,57 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             recyclerView.setNestedScrollingEnabled(true);
             recyclerView.setVisibility(View.VISIBLE);
-            TranslateAnimation animate = new TranslateAnimation(
-                    0,
-                    0,
-                    recyclerView.getHeight(),
-                    0);
-            animate.setDuration(300);
-            animate.setFillAfter(true);
-            recyclerView.startAnimation(animate);
+            recyclerView.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            ValueAnimator animator = ValueAnimator.ofInt(recyclerView.getHeight(), recyclerView.getMeasuredHeight());
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    int value = (int) valueAnimator.getAnimatedValue();
+                    ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+                    params.height = value;
+                    recyclerView.setLayoutParams(params);
+                }
+            });
+            animator.setDuration(500);
+            animator.start();
+
         }
 
         private void hideProducts() {
-            recyclerView.setVisibility(View.GONE);
-            TranslateAnimation animate = new TranslateAnimation(
-                    0,
-                    0,
-                    recyclerView.getHeight(),
-                    0);
-            animate.setDuration(500);
-            animate.setFillAfter(true);
-            recyclerView.startAnimation(animate);
+            ValueAnimator animator = ValueAnimator.ofInt(recyclerView.getHeight(), 0);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    int value = (int) valueAnimator.getAnimatedValue();
+                    ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+                    params.height = value;
+                    recyclerView.setLayoutParams(params);
+                }
+            });
+            animator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    recyclerView.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+            animator.setDuration(500);
+            animator.start();
+
         }
 
         public Holder(@NonNull View itemView) {
@@ -141,8 +185,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
             recyclerView.setVisibility(View.GONE);
             mShowProducts.setSelected(false);
             totalPrice.setText(mContext.getString(R.string.total_price, orderList.get(pos).getPrice()));
-            receiveTime.setText(mContext.getString(R.string.receiving_time, new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
-                    .format(new Date(orderList.get(pos).getReceiving_date()))));
+            if (orderList.get(pos).getStatus() != Order.STATUS_DELIVERED) {
+                receiveTime.setText(mContext.getString(R.string.receiving_time, new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
+                        .format(new Date(orderList.get(pos).getReceiving_date()))));
+            } else {
+                receiveTime.setText(R.string.delivered);
+            }
             orderTime.setText(mContext.getString(R.string.order_time, new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
                     .format(new Date(orderList.get(pos).getOrder_date()))));
             orderId.setText(mContext.getString(R.string.order_id_is, orderList.get(pos).getID()));
