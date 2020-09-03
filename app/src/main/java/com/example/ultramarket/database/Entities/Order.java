@@ -31,6 +31,7 @@ public class Order implements Serializable {
     public static final int STATUS_ON_WAY = 3;
     @Exclude
     public static final int STATUS_DELIVERED = 4;
+    public static final int  STATUS_INVISIBLE = 0 ;
 
     @PrimaryKey
     private String ID;
@@ -56,7 +57,7 @@ public class Order implements Serializable {
     }
 
     public boolean setStatus(int status) {
-        if (status < STATUS_CONFIRMED || status > STATUS_DELIVERED) return false;
+        if (status < STATUS_INVISIBLE || status > STATUS_DELIVERED) return false;
         this.status = status;
         return true;
     }
@@ -147,5 +148,13 @@ public class Order implements Serializable {
     @Ignore
     public void setExpanded(boolean expanded) {
         isExpanded = expanded;
+    }
+
+    public void replace(Order order) {
+        this.order_date = order.getOrder_date();
+        receiving_date = order.getReceiving_date();
+        this.products = order.getProducts();
+        this.price = order.getPrice();
+        this.status = order.getStatus();
     }
 }

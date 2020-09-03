@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UserOrdersFrag extends Fragment {
+public class UserOrdersFrag extends Fragment implements OrderAdapter.OrderCallbacks {
     public static final CharSequence TITLE = "Orders";
 /*
 
@@ -66,10 +66,10 @@ public class UserOrdersFrag extends Fragment {
                             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                                 Order order = snapshot.getValue(Order.class);
                                 if (order != null &&
-                                        System.currentTimeMillis() > order.getReceiving_date() &&
-                                        order.getStatus() != Order.STATUS_DELIVERED) {
+                                        System.currentTimeMillis() > order.getReceiving_date() &&(
+                                        order.getStatus() != Order.STATUS_DELIVERED ||order.getStatus() != Order.STATUS_INVISIBLE)) {
                                     setDelivered(order);
-                                } else {
+                                } else if (order != null && order.getStatus() != Order.STATUS_INVISIBLE) {
                                     adapter.insertOrder(order);
                                 }
                             }
@@ -77,7 +77,11 @@ public class UserOrdersFrag extends Fragment {
                             @Override
                             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                                 Order order = snapshot.getValue(Order.class);
-                                adapter.insertOrder(order);
+                                if (order!=null && order.getStatus() == Order.STATUS_INVISIBLE) {
+                                    adapter.removeOrder(order);
+                                } else {
+                                    adapter.updateOrder(order);
+                                }
                             }
 
                             @Override
@@ -135,11 +139,23 @@ public class UserOrdersFrag extends Fragment {
         View view = inflater.inflate(R.layout.user_orders_fragment, container, false);
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new OrderAdapter(getContext(), null);
+        adapter = new OrderAdapter(getContext(), null, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
-
         return view;
+    }
+
+    @Override
+    public void setOrderInvisible(String orderId) {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseDatabase.getInstance().getReference()
+                        .child(Order.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
+                        .child(orderId)
+                        .child("status").setValue(Order.STATUS_INVISIBLE);
+            }
+        });
     }
 
     @Override

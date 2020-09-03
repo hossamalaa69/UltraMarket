@@ -2,19 +2,24 @@ package com.example.ultramarket.adapters.user_adapters;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Order;
+import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.userUi.Activities.TrackOrderActivity;
 
 import java.text.SimpleDateFormat;
@@ -29,9 +34,15 @@ import butterknife.OnClick;
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
     private List<Order> orderList;
     private Context mContext;
+    private OrderCallbacks interfaceInstance;
 
-    public OrderAdapter(Context mContext, List<Order> orderList) {
+    public interface OrderCallbacks {
+        void setOrderInvisible(String id);
+    }
+
+    public OrderAdapter(Context mContext, List<Order> orderList, Fragment listener) {
         this.orderList = orderList;
+        this.interfaceInstance = (OrderCallbacks) listener;
         this.mContext = mContext;
     }
 
@@ -40,7 +51,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
             orderList = new ArrayList<>();
         }
         orderList.add(order);
-        notifyDataSetChanged();
+        notifyItemInserted(orderList.size() - 1);
+    }
+
+    private void showDeleteOrderDialog(String orderId) {
+        AlertDialog dialog = new AlertDialog.Builder(mContext)
+                .setTitle(R.string.delete_order)
+                .setMessage(R.string.delete_order_note)
+                .setPositiveButton(R.string.delete_order, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        interfaceInstance.setOrderInvisible(orderId);
+                    }
+                }).setNegativeButton(R.string.cancel, null).create();
+        dialog.show();
     }
 
     @NonNull
@@ -62,21 +86,38 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
     }
 
     public void removeOrder(Order order) {
-        orderList.remove(order);
-        notifyDataSetChanged();
+        int pos = getOrderPos(order.getID());
+        if (pos > -1) {
+            orderList.remove(pos);
+            notifyItemRemoved(pos);
+        }
+    }
+
+
+    private int getOrderPos(String id) {
+        for (int i = 0; i < orderList.size(); i++) {
+            if (orderList.get(i).getID().matches(id)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void updateOrder(Order order) {
+        if (getOrderPos(order.getID()) == -1) {
+            insertOrder(order);
+        }
         for (int i = 0; i < orderList.size(); i++) {
             if (order.getID().matches(orderList.get(i).getID())) {
-                orderList.remove(i);
-                orderList.add(order);
+                orderList.get(i).replace(order);
                 notifyDataSetChanged();
                 return;
             }
         }
-        orderList.add(order);
-        notifyDataSetChanged();
+    }
+
+    public Order getOrderAt(int adapterPosition) {
+        return orderList.get(adapterPosition);
     }
 
     public class Holder extends RecyclerView.ViewHolder {
@@ -175,6 +216,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
                     Intent intent = new Intent(mContext, TrackOrderActivity.class);
                     intent.putExtra("order_id", orderList.get(getAdapterPosition()).getID());
                     mContext.startActivity(intent);
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Order order = orderList.get(getAdapterPosition());
+                    if (order.getStatus() == Order.STATUS_DELIVERED)
+                        showDeleteOrderDialog(order.getID());
+                    else {
+                        Utils.createToast(mContext, R.string.order_not_delivered_yet, Toast.LENGTH_SHORT);
+                    }
+                    return true;
                 }
             });
         }

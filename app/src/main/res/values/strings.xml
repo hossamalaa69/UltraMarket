@@ -185,6 +185,9 @@
     <string name="ordered_at">Ordered at: %1$s</string>
     <string name="arrives_at">Arrives at: %1$s</string>
     <string name="id_is">ID: %1$s</string>
+    <string name="delete_order">Delete Order</string>
+    <string name="order_not_delivered_yet">Order Not Delevired Yet</string>
+    <string name="delete_order_note">This order won\'t be visible to you any more</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>
