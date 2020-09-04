@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Category;
+import com.example.ultramarket.database.Entities.Order;
 import com.example.ultramarket.database.Entities.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +20,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductManagementViewModel extends AndroidViewModel {
 
@@ -30,6 +33,8 @@ public class ProductManagementViewModel extends AndroidViewModel {
 
         DatabaseReference productDbRef = FirebaseDatabase.getInstance().getReference().child(Product.class.getSimpleName());
         List<Product> productList = new ArrayList<>();
+        List<Order> orderList = new ArrayList<>();
+        Map<String, Integer> products_sells = new HashMap<>();
         productDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -67,8 +72,33 @@ public class ProductManagementViewModel extends AndroidViewModel {
                                         }
                                     }
                                 }
+                                DatabaseReference ordersDb = FirebaseDatabase.getInstance().getReference().child(Order.class.getSimpleName());
+                                ordersDb.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        orderList.clear();
+                                        for (DataSnapshot snap : snapshot.getChildren()) {
+                                            for (DataSnapshot s: snap.getChildren()){
+                                                Order order = s.getValue(Order.class);
+                                                for (Map.Entry<String,Integer> entry : order.getProducts().entrySet()) {
+                                                    int oldQuantity = 0;
+                                                    if(products_sells.get(entry.getKey()) != null)
+                                                        oldQuantity = products_sells.get(entry.getKey());
+                                                    products_sells.put(entry.getKey(), entry.getValue() + oldQuantity);
+                                                }
+                                            }
+                                        }
 
-                                productListMutableLiveData.setValue(productList);
+                                        for(int i=0;i<productList.size();i++){
+                                            productList.get(i).setOrders_number(products_sells.get(productList.get(i).getID()));
+                                        }
+                                        productListMutableLiveData.setValue(productList);
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(application.getApplicationContext(), "Orders Cancelled", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
 
                             @Override
