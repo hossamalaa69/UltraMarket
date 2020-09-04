@@ -17,18 +17,19 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--TODO add this for api key -->
+        <activity android:name=".ui.adminLayer.DashBoardActivity"></activity>
+        <!-- TODO add this for api key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAoO4FVciat9f_C7QIBKSgQrbsjeZrt3-U"/>
-        <!--TODO add this-->
+            android:value="AIzaSyAoO4FVciat9f_C7QIBKSgQrbsjeZrt3-U" /> <!-- TODO add this -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity android:name=".ui.userUi.Activities.MapActivity"/>
+
+        <activity android:name=".ui.userUi.Activities.MapActivity" />
         <activity
             android:name=".ui.adminLayer.OrdersActivity"
-            android:label="Orders"/>
+            android:label="Orders" />
         <activity
             android:name=".ui.userUi.Activities.SearchActivity"
             android:parentActivityName=".ui.userUi.Activities.HomeActivity"

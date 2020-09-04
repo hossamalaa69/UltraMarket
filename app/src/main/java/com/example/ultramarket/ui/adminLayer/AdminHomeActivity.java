@@ -86,6 +86,10 @@ public class AdminHomeActivity extends AppCompatActivity {
     private void sendToTarget(int position){
 
         switch (position) {
+            case 0:
+                Intent i0 = new Intent(this, DashBoardActivity.class);
+                startActivity(i0);
+                break;
             case 1:
                 Intent i = new Intent(this, WarehouseActivity.class);
                 startActivity(i);
@@ -113,8 +117,6 @@ public class AdminHomeActivity extends AppCompatActivity {
         statsAdapter = new StatsAdapter(descriptions, images, this);
         //sets adapter for the recycler view
         recyclerView.setAdapter(statsAdapter);
-
-
     }
 
     private void fillData() {

@@ -31,6 +31,7 @@ public class Order implements Serializable {
     public static final int STATUS_ON_WAY = 3;
     @Exclude
     public static final int STATUS_DELIVERED = 4;
+
     public static final int  STATUS_INVISIBLE = 0 ;
 
     @PrimaryKey
@@ -126,6 +127,9 @@ public class Order implements Serializable {
     public String getStatusStr(){
         String status_str = "";
         switch (this.status) {
+            case STATUS_INVISIBLE:
+                status_str = "Invisible";
+                break;
             case STATUS_CONFIRMED:
                 status_str = "Confirmed";
                 break;
@@ -134,6 +138,9 @@ public class Order implements Serializable {
                 break;
             case STATUS_ON_WAY:
                 status_str = "On Way";
+                break;
+            case STATUS_DELIVERED:
+                status_str = "Delivered";
                 break;
         }
         return status_str;
