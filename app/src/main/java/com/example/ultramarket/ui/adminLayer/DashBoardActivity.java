@@ -11,23 +11,21 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.ultramarket.R;
-import com.example.ultramarket.database.Entities.User;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -48,13 +46,30 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
 
+    private TextView totalProfits;
+
+    private TextView todayProfits;
+
+    private TextView bestProdName;
+
+    private ImageView bestProdImg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
 
+        initViews();
         setupLiveData();
 
+    }
+
+    private void initViews() {
+        progressBar = findViewById(R.id.progress_bar_stats);
+        todayProfits = (TextView) findViewById(R.id.stats_today_profits);
+        totalProfits = (TextView) findViewById(R.id.stats_total_profts);
+        bestProdName = (TextView) findViewById(R.id.stats_best_selling);
+        bestProdImg = (ImageView) findViewById(R.id.image_best_prod);
     }
 
     private void setupLiveData() {
@@ -63,13 +78,52 @@ public class DashBoardActivity extends AppCompatActivity {
         dashBoardViewModel.loadAllOrders().observe(this, new Observer<Map<String, Double>>() {
             @Override
             public void onChanged(Map<String, Double> stringDoubleMap) {
-                progressBar = findViewById(R.id.progress_bar_stats);
-                progressBar.setVisibility(View.GONE);
                 Map<String, Double> sortedMap = sortMap(stringDoubleMap);
+                setTodayTotalProfits(sortedMap);
                 drawGraph(sortedMap);
             }
         });
+
+        dashBoardViewModel.loadBestProduct();
+        dashBoardViewModel.loadBestProduct().observe(this, new Observer<Map<String, String>>() {
+            @Override
+            public void onChanged(Map<String,String> map) {
+                progressBar.setVisibility(View.GONE);
+                for(Map.Entry<String, String> entry:map.entrySet()){
+                    bestProdName.setText(entry.getKey());
+                    Glide.with(DashBoardActivity.this)
+                            .load(entry.getValue())
+                            .placeholder(R.drawable.ic_products)
+                            .into(bestProdImg);
+                }
+            }
+        });
     }
+
+    private void setTodayTotalProfits(Map<String, Double> sortedMap) {
+        double total_profits = 0.00;
+        double today_profits = 0.00;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String today_date = simpleDateFormat.format(new Date().getTime());
+
+        for (Map.Entry<String,Double> entry : sortedMap.entrySet()) {
+            total_profits += entry.getValue();
+            if(entry.getKey().equals(today_date))
+                today_profits = entry.getValue();
+        }
+
+        total_profits = BigDecimal.valueOf(total_profits)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
+
+        today_profits = BigDecimal.valueOf(today_profits)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
+
+        todayProfits.setText("" + today_profits + " LE");
+        totalProfits.setText("" + total_profits + " LE");
+    }
+
 
     private void drawGraph(Map<String, Double> sortedMap) {
             List<String> list = new ArrayList<>(sortedMap.keySet());
@@ -97,7 +151,6 @@ public class DashBoardActivity extends AppCompatActivity {
             String newDate = simpleDateFormat.format(date);
             newMap.put(newDate, oldMap.get(newDate));
         }
-
         return newMap;
     }
 
@@ -139,6 +192,7 @@ public class DashBoardActivity extends AppCompatActivity {
         lineChartDownFill.setPinchZoom(false);
         lineChartDownFill.setDrawGridBackground(false);
         lineChartDownFill.setMaxHighlightDistance(200);
+
 
         Description description = new Description();
         description.setText("Date");
@@ -202,7 +256,7 @@ public class DashBoardActivity extends AppCompatActivity {
         lineData.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return value + "k";
+                return value + "k LE";
             }
         });
 

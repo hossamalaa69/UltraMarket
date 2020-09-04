@@ -13,22 +13,140 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginTop="15dp"
-            android:layout_weight="1"
-            android:text="Total Profits"
-            android:textColor="@color/White"
-            android:textSize="30sp"
-            android:layout_gravity="center"/>
+            android:layout_margin = "10dp"
+            android:layout_weight="3">
+
+            <RelativeLayout
+                android:id="@+id/r1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_date_today"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp">
+            </ImageView>
+            <TextView
+                android:id="@+id/todays_profit"
+                android:layout_toEndOf="@id/img1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today's Profits:"
+                android:textColor="@color/pink2"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/stats_today_profits"
+                android:layout_below="@id/todays_profit"
+                android:layout_toEndOf="@id/img1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="00.00 LE"
+                android:textColor="@color/White"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_gravity="center"/>
+            </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/r2"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/r1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_total"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp">
+            </ImageView>
+            <TextView
+                android:id="@+id/total_profit"
+                android:layout_toEndOf="@id/img2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Profits:"
+                android:textColor="@color/pink2"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/stats_total_profts"
+                android:layout_below="@id/total_profit"
+                android:layout_toEndOf="@id/img2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="00.00 LE"
+                android:textColor="@color/White"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_gravity="center"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_below="@id/r2"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/image_best_prod"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_products"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp">
+            </ImageView>
+            <TextView
+                android:id="@+id/best_selling"
+                android:layout_toEndOf="@id/image_best_prod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Best Selling Product:"
+                android:textColor="@color/pink2"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/stats_best_selling"
+                android:layout_below="@id/best_selling"
+                android:layout_toEndOf="@id/image_best_prod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Amazon Shoes"
+                android:textColor="@color/White"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_gravity="center"/>
+        </RelativeLayout>
+
+        </RelativeLayout>
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/graph_chart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:layout_margin="15dp"
+            android:layout_weight="6"
+            android:layout_margin="5dp"
             />
     </LinearLayout>
 
