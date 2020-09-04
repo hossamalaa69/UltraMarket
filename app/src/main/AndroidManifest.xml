@@ -17,8 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.adminLayer.DashBoardActivity"></activity>
-        <!-- TODO add this for api key -->
+        <activity android:name=".ui.adminLayer.DashBoardActivity"
+            android:label="Dashboard">
+        </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAoO4FVciat9f_C7QIBKSgQrbsjeZrt3-U" /> <!-- TODO add this -->
