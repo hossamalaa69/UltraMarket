@@ -1,5 +1,6 @@
 package com.example.ultramarket.ui.userUi.Activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -25,7 +27,11 @@ import androidx.core.content.ContextCompat;
 import com.example.ultramarket.R;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.Utils;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,10 +41,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LocationActivity extends AppCompatActivity implements LocationListener, ActivityCompat.OnRequestPermissionsResultCallback {
+public class LocationActivity extends AppCompatActivity implements  ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int REQUEST_CODE = 1;
     private LocationManager locationManager;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private boolean locPermission;
+    private static final String TAG = "LocationActivity";
 
     @OnClick(R.id.user_location_use_curr_loc_btn)
     public void onGetLocationClicked(View view) {
@@ -49,6 +58,12 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         }
     }
 
+    @OnClick(R.id.user_location_choose_manually)
+    public void onSearchLocationClicked(View view) {
+        startActivity(new Intent(this, MapActivity.class));
+        finish();
+    }
+
     @BindView(R.id.user_location_progress_bar)
     ProgressBar mProgressBar;
     @BindView(R.id.user_location_use_curr_loc_btn)
@@ -57,34 +72,61 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CODE) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0){
+                for (int grantResult : grantResults) {
+                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                        Utils.createToast(this, R.string.permission_denied, Toast.LENGTH_SHORT);
+                        return;
+                    }
+                }
                 Utils.createToast(this, R.string.permission_confirmed, Toast.LENGTH_SHORT);
                 checkForPermissions();
-            } else {
-                Utils.createToast(this, R.string.permission_denied, Toast.LENGTH_SHORT);
             }
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void checkForPermissions() {
-        if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                &&ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
                     REQUEST_CODE);
         } else {
             mGetLocationBtn.setEnabled(false);
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            locPermission = true;
+            getdeviceLocation();
+
         }
     }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
+    private void getdeviceLocation() {
+        //TODO init fused location
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        try {
+            //check if permission is granted
+            if (locPermission) {
+                // focus on type of Task here is gms.Task
+                Task location = mFusedLocationProviderClient.getLastLocation();
+                location.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful())// got the location
+                        {
+                            Location currLoc = (Location) task.getResult();
+                            getLocationDetails(currLoc.getLatitude(), currLoc.getLongitude());
+                            updateLocationOfUser(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
+                        } else {
+                            Toast.makeText(LocationActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        } catch (SecurityException e) {
+            Log.d(TAG, "getDeviceLocation: SecurityException" + e.getMessage());
 
+        }
     }
 
     private void getLocationDetails(double latitude, double longitude) {
@@ -118,23 +160,6 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         });
         dialog.show();
     }
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
-            mLatitude = location.getLatitude();
-            mLongitude = location.getLongitude();
-            getLocationDetails(location.getLatitude(), location.getLongitude());
-            updateLocationOfUser(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
-            locationManager.removeUpdates(this);
-        }
-    }
-
-    @Override
-    public void onProviderDisabled(@NonNull String provider) {
-
-    }
-
     private void updateLocationOfUser(String uid) {
         com.example.ultramarket.database.Entities.Location location = new com.example.ultramarket.database.Entities.Location(
                 mCountry,
@@ -143,7 +168,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
                 String.valueOf(mLatitude),
                 String.valueOf(mLongitude)
         );
-        FirebaseAuthHelper.getsInstance().updateLocation(location, FirebaseAuthHelper.getsInstance().getCurrUser().getUid(),
+        FirebaseAuthHelper.getsInstance().updateLocation(location,uid,
                 new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

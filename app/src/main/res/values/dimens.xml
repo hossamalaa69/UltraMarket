@@ -36,4 +36,6 @@
     <dimen name="profile_button_margin">10dp</dimen>
     <dimen name="profile_user_name_size">28sp</dimen>
     <dimen name="dialog_view_margin">10dp</dimen>
+    <dimen name="map_view_margin">10dp</dimen>
+    <dimen name="my_location_btn_size">40dp</dimen>
 </resources>

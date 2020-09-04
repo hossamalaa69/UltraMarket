@@ -66,7 +66,7 @@
     <string name="lets_try_to_find_if_we_deliver_to_your_place">lets try to find if we deliver to your place</string>
     <string name="choose_your_location">CHOOSE YOUR LOCATION</string>
     <string name="use_my_current_location">USE MY CURRENT LOCATION</string>
-    <string name="choose_manually">Choose manually</string>
+    <string name="choose_manually">Choose manually\nOpen MAP</string>
     <string name="allow_location_perimission">you should allow app to know your location</string>
     <string name="location_access_message">to add locatoin you need to allow locatioin access</string>
     <string name="permission_denied">permission denied …!</string>
@@ -188,6 +188,10 @@
     <string name="delete_order">Delete Order</string>
     <string name="order_not_delivered_yet">Order Not Delevired Yet</string>
     <string name="delete_order_note">This order won\'t be visible to you any more</string>
+    <string name="search_for_your_place">Search for your place</string>
+    <string name="my_location">My location</string>
+    <string name="map">Map</string>
+    <string name="or">Or</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,12 +14,14 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="20dp"
             android:gravity="center"
             android:text="@string/lets_try_to_find_if_we_deliver_to_your_place"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:textColor="@color/pink1"
+            app:autoSizeTextType="uniform" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -27,7 +30,7 @@
             android:layout_margin="@dimen/splash_logo_margin"
             android:background="@android:color/transparent"
             android:contentDescription="@string/logo_image"
-            android:src="@drawable/logo" />
+            android:src="@drawable/world" />
 
         <ProgressBar
             android:id="@+id/user_location_progress_bar"
@@ -35,14 +38,28 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/user_location_choose_manually"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="20dp"
             android:gravity="center"
-            android:text="@string/choose_your_location"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
-
+            android:text="@string/choose_manually"
+            android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"
+            android:textColor="@color/pink2"
+            app:autoSizeTextType="uniform"
+            app:drawableStartCompat="@drawable/map"
+            android:drawablePadding="5dp"
+            tools:ignore="MissingPrefix" />
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="@string/or"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            app:autoSizeTextType="uniform" />
         <Button
             android:id="@+id/user_location_use_curr_loc_btn"
             android:layout_width="match_parent"
@@ -52,13 +69,6 @@
             android:text="@string/use_my_current_location"
             android:textColor="@android:color/white" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"
-            android:text="@string/choose_manually"
-            android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title" />
+
     </LinearLayout>
 </ScrollView>
