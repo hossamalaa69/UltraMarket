@@ -2,6 +2,8 @@ package com.example.ultramarket.ui.userUi.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -34,6 +36,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -156,7 +159,7 @@ public class UserProfile extends AppCompatActivity {
                     FirebaseAuthHelper.getsInstance().addUserImageUri(downloadUri.toString(), new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Picasso.get().load(downloadUri).into(mUserImg);
+                            Picasso.get().load(currUser.getImageUrl()).resize(300,300).into(mUserImg);
                             mImageProgressBar.setVisibility(View.GONE);
                         }
                     });
@@ -312,7 +315,7 @@ public class UserProfile extends AppCompatActivity {
             mUserRoad.setText(getString(R.string.road, currUser.getLocation().getRoad_name()));
             mUserName.setText(currUser.getName());
             mUserCountry.setText(getString(R.string.country, currUser.getLocation().getCountry_name()));
-            Picasso.get().load(currUser.getImageUrl()).into(mUserImg);
+            Picasso.get().load(currUser.getImageUrl()).resize(300,300).into(mUserImg);
         }
     }
 }

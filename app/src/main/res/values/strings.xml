@@ -192,6 +192,7 @@
     <string name="my_location">My location</string>
     <string name="map">Map</string>
     <string name="or">Or</string>
+    <string name="product_ran_out">product ran out</string>
     <string-array name="currency_array">
         <item>LE</item>
         <item>$</item>

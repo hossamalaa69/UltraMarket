@@ -39,7 +39,7 @@ import butterknife.OnClick;
 import static com.example.ultramarket.ui.userUi.Activities.ProductActivity.DECREASE;
 import static com.example.ultramarket.ui.userUi.Activities.ProductActivity.INCREASE;
 
-public class UserCartFrag extends Fragment {
+public class UserCartFrag extends Fragment implements CartProductAdapter.ProductCallBacks {
     public static final CharSequence TITLE = "Cart";
     @BindView(R.id.user_wishlist_frag_login_layout)
     View loginLayout;
@@ -155,53 +155,7 @@ public class UserCartFrag extends Fragment {
             cartLayout.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            adapter = new CartProductAdapter(getContext(), null, new CartProductAdapter.ProductCallBacks() {
-                @Override
-                public void onRemoveProductClickedListener(String prod_id) {
-                    FirebaseDatabase.getInstance().getReference()
-                            .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
-                            .child(prod_id).removeValue((error, ref) -> {
-                                Utils.createToast(getContext(), R.string.delete_product, Toast.LENGTH_SHORT);
-                                adapter.removeProduct(prod_id);
-                                updateOrderDetails();
-                            });
-                }
-
-                @Override
-                public void addProductToFirebaseListener(OnSuccessListener<Void> listener, String prodId, int operation, int count) {
-                    AppExecutors.getInstance().networkIO().execute(() -> {
-                        DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
-                                .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
-                        cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (!snapshot.exists() && count > 0) {
-                                    cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
-                                } else if (snapshot.exists() &&
-                                        operation == INCREASE &&
-                                        snapshot.getValue(Integer.class) + 1 <= count) {
-                                    int num = snapshot.getValue(Integer.class);
-                                    cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
-                                } else if (snapshot.exists() &&
-                                        operation == DECREASE &&
-                                        snapshot.getValue(Integer.class) - 1 > 0) {
-                                    int num = snapshot.getValue(Integer.class);
-                                    cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
-                                } else {
-                                    listener.onSuccess(null);
-                                    Utils.createToast(getContext(), R.string.not_available, Toast.LENGTH_SHORT);
-                                    return;
-                                }
-                                Utils.createToast(getContext(), R.string.done, Toast.LENGTH_SHORT);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                            }
-                        });
-                    });
-                }
-            });
+            adapter = new CartProductAdapter(getContext(), null, this);
             recyclerView.setAdapter(adapter);
             recyclerView.setHasFixedSize(true);
         }
@@ -216,34 +170,80 @@ public class UserCartFrag extends Fragment {
         orderDetails.setText(cartDetails);
     }
 
+    @Override
+    public void onRemoveProductClickedListener(String prod_id) {
+        FirebaseDatabase.getInstance().getReference()
+                .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
+                .child(prod_id).removeValue((error, ref) -> {
+            Utils.createToast(getContext(), R.string.product_ran_out, Toast.LENGTH_SHORT);
+            adapter.removeProduct(prod_id);
+            updateOrderDetails();
+        });
+    }
+
+    @Override
+    public void addProductToFirebaseListener(OnSuccessListener<Void> listener, String prodId, int operation, int count) {
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
+                    .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
+            cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!snapshot.exists() && count > 0) {
+                        cartRef.child(prodId).setValue(1).addOnSuccessListener(listener);
+                    } else if (snapshot.exists() &&
+                            operation == INCREASE &&
+                            snapshot.getValue(Integer.class) + 1 <= count) {
+                        int num = snapshot.getValue(Integer.class);
+                        cartRef.child(prodId).setValue(num + 1).addOnSuccessListener(listener);
+                    } else if (snapshot.exists() &&
+                            operation == DECREASE &&
+                            snapshot.getValue(Integer.class) - 1 > 0) {
+                        int num = snapshot.getValue(Integer.class);
+                        cartRef.child(prodId).setValue(num > 1 ? num - 1 : 0).addOnSuccessListener(listener);
+                    } else {
+                        listener.onSuccess(null);
+                        Utils.createToast(getContext(), R.string.not_available, Toast.LENGTH_SHORT);
+                        return;
+                    }
+                    Utils.createToast(getContext(), R.string.done, Toast.LENGTH_SHORT);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        });
+    }
+
     private void loadData(String userId) {
         AppExecutors.getInstance().networkIO().execute(() -> FirebaseDatabase.getInstance().getReference()
                 .child("Cart").child(userId).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                loadItem(snapshot.getKey(), snapshot.getValue(Integer.class));
-            }
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        loadItem(snapshot.getKey(), snapshot.getValue(Integer.class));
+                    }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                loadItem(snapshot.getKey(), snapshot.getValue(Integer.class));
-            }
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        loadItem(snapshot.getKey(), snapshot.getValue(Integer.class));
+                    }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
-            }
+                    }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-            }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                int y = 0;
-            }
-        }));
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        int y = 0;
+                    }
+                }));
     }
 
     private void initViewModel() {
@@ -272,7 +272,10 @@ public class UserCartFrag extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Product product = snapshot.getValue(Product.class);
                         if (product != null && !adapter.hasEntry(product.getID())) {
-                            adapter.insertProduct(product, value);
+                            if (product.getCount() == 0)
+                                onRemoveProductClickedListener(product.getID());
+                            else
+                                adapter.insertProduct(product, value);
                         } else if (product != null)
                             adapter.updateValue(product.getID(), value);
                         updateOrderDetails();

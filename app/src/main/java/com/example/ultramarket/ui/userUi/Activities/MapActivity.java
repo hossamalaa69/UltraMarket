@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.ultramarket.R;
+import com.example.ultramarket.adapters.user_adapters.PlacesAutoSuggestionAdapter;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.Utils;
 import com.google.android.gms.location.FusedLocationProviderClient;

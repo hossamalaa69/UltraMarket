@@ -47,6 +47,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     }
 
     public void insertProduct(Product product, int value) {
+
         if (productsMap == null) {
             productsMap = new HashMap<>();
         }
@@ -153,6 +154,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     }
 
     public double getTotalPrice() {
+        if(productsMap==null) return 0;
         double price = 0;
         for (Map.Entry<Product, Integer> entry : productsMap.entrySet()) {
             if (entry.getKey().isHasOffer()) {
@@ -164,6 +166,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     }
 
     public int getTotalCount() {
+        if(productsMap==null) return 0;
         int count = 0;
         for (Map.Entry<Product, Integer> entry : productsMap.entrySet()) {
             count += entry.getValue();
@@ -172,6 +175,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     }
 
     public String getProductsCurrency() {
+        if(productsMap==null) return "";
         for (Map.Entry<Product, Integer> entry :
                 productsMap.entrySet()) {
             return entry.getKey().getCurrency();
@@ -183,6 +187,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     ArrayList<String> productsNames;
 
     public Map<String, Integer> getCartDetails() {
+        if(productsMap==null) return null;
         Map<String, Integer> products = new HashMap<>();
         productsNames = new ArrayList<>();
         for (Map.Entry<Product, Integer> entry :

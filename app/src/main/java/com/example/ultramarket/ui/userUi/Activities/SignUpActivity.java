@@ -1,6 +1,7 @@
 package com.example.ultramarket.ui.userUi.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -19,6 +20,7 @@ import com.example.ultramarket.database.Entities.User;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.adminLayer.AdminHomeActivity;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,7 +85,12 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
             insertedUser = user;
         insertedUser.setID(user.getID());
         FirebaseAuthHelper.getsInstance().insertUser(insertedUser);
+
+        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                .setDisplayName(insertedUser.getName()).setPhotoUri(Uri.parse(insertedUser.getImageUrl())).build();
+        FirebaseAuthHelper.getsInstance().getCurrUser().updateProfile(profileChangeRequest);
         FirebaseAuthHelper.getsInstance().isAdmin(insertedUser.getID(), SignUpActivity.this);
+
     }
 
     @Override

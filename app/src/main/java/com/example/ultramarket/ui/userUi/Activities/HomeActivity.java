@@ -65,7 +65,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
 
     private AlertDialog mRateDialog;
-    private Handler handler;
+    private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }
                 });
             }
-            handler.postDelayed(this, 5000);
+            handler.postDelayed(this, 1000 * 60);
         }
     };
     private boolean isRating = true;
@@ -183,6 +183,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void showRateAlertDialog() {
+        if (mRateDialog != null && mRateDialog.isShowing()) {
+            mRateDialog.cancel();
+            mRateDialog = null;
+        }
         mRateDialog = new AlertDialog.Builder(this).create();
         View view = LayoutInflater.from(this).inflate(R.layout.user_rate_layout, null, false);
         RatingBar mRatingBar = view.findViewById(R.id.user_rating_bar);
@@ -214,9 +218,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void updateNavViewHeader(User user) {
         if (user != null) {
             mUserName.setText(user.getName());
-            if (user.getImageUrl() != null)
-                Picasso.get().load(user.getImageUrl()).into(mUserIcon);
-            else {
+            if (user.getImageUrl() != null) {
+                Picasso.get().load(user.getImageUrl())
+                        .resize(100, 100).into(mUserIcon);
+            } else {
                 mUserIcon.setImageResource(R.drawable.logo);
             }
         } else {

@@ -136,7 +136,10 @@ public class TrackOrderActivity extends AppCompatActivity {
 
     private void updateUI(Order order) {
         status = order.getStatus();
-        startTimeThread(order.getReceiving_date());
+        if (status < Order.STATUS_DELIVERED)
+            startTimeThread(order.getReceiving_date());
+        else
+            remainingTime.setText(R.string.delivered);
         orderId.setText(order.getID());
         updateStatus(order.getStatus());
 

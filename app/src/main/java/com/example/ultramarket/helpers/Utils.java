@@ -1,6 +1,7 @@
 package com.example.ultramarket.helpers;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
@@ -29,6 +30,21 @@ public class Utils {
             }
         }
         return isMobileConn | isWifiConn;
+    }
+
+    public static Bitmap resizeImage(Bitmap originalImage, int maxSize) {
+        int width = originalImage.getWidth();
+        int height = originalImage.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(originalImage, width, height, true);
     }
 
     public static double calcDiscount(double oldPrice, double percentage) {
