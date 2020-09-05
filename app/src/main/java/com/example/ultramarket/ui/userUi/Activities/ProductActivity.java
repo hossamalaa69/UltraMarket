@@ -97,11 +97,11 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void addProductToFirebase(String prodId, int operation) {
-        showProgress();
         if (FirebaseAuthHelper.getsInstance().getCurrUser() == null) {
             Utils.createToast(ProductActivity.this, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
             return;
         }
+        showProgress();
         DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
                 .child("Cart").child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
         cartRef.child(prodId).addListenerForSingleValueEvent(new ValueEventListener() {

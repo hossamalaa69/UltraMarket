@@ -1,15 +1,12 @@
 package com.example.ultramarket.ui.userUi.Activities;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,27 +38,40 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LocationActivity extends AppCompatActivity implements  ActivityCompat.OnRequestPermissionsResultCallback {
+public class LocationActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private static final int REQUEST_CODE = 1;
-    private LocationManager locationManager;
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int PERMISSION_REQUEST_CODE = 123;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private boolean locPermission;
+    private boolean locPermission = false;
     private static final String TAG = "LocationActivity";
 
     @OnClick(R.id.user_location_use_curr_loc_btn)
     public void onGetLocationClicked(View view) {
-        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null)
-            checkForPermissions();
-        else {
+        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
+            {
+
+                if (locPermission) {
+                    mGetLocationBtn.setEnabled(false);
+                    getDeviceLocation();
+                } else {
+                    checkForPermissions();
+                }
+            }
+        } else {
             Utils.createToast(this, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
         }
     }
 
     @OnClick(R.id.user_location_choose_manually)
     public void onSearchLocationClicked(View view) {
-        startActivity(new Intent(this, MapActivity.class));
-        finish();
+        if (locPermission) {
+            startActivity(new Intent(this, MapActivity.class));
+            finish();
+        } else {
+            checkForPermissions();
+        }
     }
 
     @BindView(R.id.user_location_progress_bar)
@@ -71,37 +81,35 @@ public class LocationActivity extends AppCompatActivity implements  ActivityComp
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE) {
-            if (grantResults.length > 0){
-                for (int grantResult : grantResults) {
-                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                        Utils.createToast(this, R.string.permission_denied, Toast.LENGTH_SHORT);
-                        return;
-                    }
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE: {
+                
+                if (grantResults.length > 0) {
+                        if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                            Toast.makeText(this, "permission denied", Toast.LENGTH_SHORT).show();
+                            locPermission = false;
+                            return;
+                        }
+                    // initialize map
+                    locPermission = true;
                 }
-                Utils.createToast(this, R.string.permission_confirmed, Toast.LENGTH_SHORT);
-                checkForPermissions();
             }
         }
     }
 
     private void checkForPermissions() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                &&ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
-                    REQUEST_CODE);
-        } else {
-            mGetLocationBtn.setEnabled(false);
+        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION};
+        if (ContextCompat.checkSelfPermission(this, FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locPermission = true;
-            getdeviceLocation();
-
+        } else {
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
         }
     }
 
-    private void getdeviceLocation() {
+    private void getDeviceLocation() {
         //TODO init fused location
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
@@ -160,6 +168,7 @@ public class LocationActivity extends AppCompatActivity implements  ActivityComp
         });
         dialog.show();
     }
+
     private void updateLocationOfUser(String uid) {
         com.example.ultramarket.database.Entities.Location location = new com.example.ultramarket.database.Entities.Location(
                 mCountry,
@@ -168,7 +177,7 @@ public class LocationActivity extends AppCompatActivity implements  ActivityComp
                 String.valueOf(mLatitude),
                 String.valueOf(mLongitude)
         );
-        FirebaseAuthHelper.getsInstance().updateLocation(location,uid,
+        FirebaseAuthHelper.getsInstance().updateLocation(location, uid,
                 new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -195,6 +204,7 @@ public class LocationActivity extends AppCompatActivity implements  ActivityComp
         }
         mProgressBar.setVisibility(View.GONE);
         mGetLocationBtn.setEnabled(true);
+        checkForPermissions();
 
     }
 

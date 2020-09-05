@@ -137,7 +137,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             AppExecutors.getInstance().networkIO().execute(new Runnable() {
                 @Override
                 public void run() {
-
                     FirebaseDatabase.getInstance().getReference()
                             .child(User.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
                             .child("rate").addValueEventListener(new ValueEventListener() {

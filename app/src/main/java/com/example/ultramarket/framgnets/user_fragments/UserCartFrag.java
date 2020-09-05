@@ -79,7 +79,6 @@ public class UserCartFrag extends Fragment implements CartProductAdapter.Product
     @OnClick(R.id.user_wishlist_login_btn)
     public void onLoginClicked(View view) {
         listener.onLoginClickListener();
-        hideLoginLayout();
     }
 
     private void hideLoginLayout() {
@@ -105,7 +104,8 @@ public class UserCartFrag extends Fragment implements CartProductAdapter.Product
         super.onActivityCreated(savedInstanceState);
         initLayoutViews();
         initViewModel();
-        addValueListener();
+        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null)
+            addValueListener();
     }
 
     private void addValueListener() {
@@ -251,6 +251,7 @@ public class UserCartFrag extends Fragment implements CartProductAdapter.Product
             showLoginLayout();
             return;
         }
+        hideLoginLayout();
         loadData(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
     }
 
