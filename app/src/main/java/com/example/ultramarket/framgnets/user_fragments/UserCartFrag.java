@@ -53,6 +53,8 @@ public class UserCartFrag extends Fragment implements CartProductAdapter.Product
     TextView orderDetails;
     @BindView(R.id.user_cart_details_layout)
     View orderDetailsLayout;
+    @BindView(R.id.user_wishlist_frag_empty)
+    View emptyCart;
     private CartProductAdapter adapter;
     private String cartDetails;
 
@@ -158,6 +160,7 @@ public class UserCartFrag extends Fragment implements CartProductAdapter.Product
             adapter = new CartProductAdapter(getContext(), null, this);
             recyclerView.setAdapter(adapter);
             recyclerView.setHasFixedSize(true);
+            recyclerView.setNestedScrollingEnabled(true);
         }
     }
 
@@ -179,6 +182,18 @@ public class UserCartFrag extends Fragment implements CartProductAdapter.Product
             adapter.removeProduct(prod_id);
             updateOrderDetails();
         });
+    }
+
+    @Override
+    public void onListStatesChanges(int status) {
+        switch (status) {
+            case CartProductAdapter.EMPTY_LIST:
+                emptyCart.setVisibility(View.VISIBLE);
+                break;
+            case CartProductAdapter.NON_EMPTY_LIST:
+                emptyCart.setVisibility(View.GONE);
+                break;
+        }
     }
 
     @Override

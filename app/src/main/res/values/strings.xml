@@ -193,6 +193,8 @@
     <string name="map">Map</string>
     <string name="or">Or</string>
     <string name="product_ran_out">product ran out</string>
+    <string name="no_product_added">No product added</string>
+    <string name="empty_cart">empty cart</string>
     <string-array name="currency_array">
         <item>LE</item>
     </string-array>

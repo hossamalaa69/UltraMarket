@@ -36,6 +36,9 @@ import static com.example.ultramarket.ui.userUi.Activities.ProductActivity.DECRE
 import static com.example.ultramarket.ui.userUi.Activities.ProductActivity.INCREASE;
 
 public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.Holder> {
+    public static final int EMPTY_LIST = 1;
+    public static final int NON_EMPTY_LIST = 2;
+
 
     public Context mContext;
     public Map<Product, Integer> productsMap;
@@ -51,6 +54,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         if (productsMap == null) {
             productsMap = new HashMap<>();
         }
+        interfaceInstance.onListStatesChanges(NON_EMPTY_LIST);
         productsMap.put(product, value);
         notifyDataSetChanged();
     }
@@ -147,6 +151,8 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             if (entry.getKey().getID().matches(prod_id)) {
                 productsMap.remove(entry.getKey());
                 notifyDataSetChanged();
+                if(productsMap.size()==0)
+                    interfaceInstance.onListStatesChanges(EMPTY_LIST);
                 return;
             }
         }
@@ -204,7 +210,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
     public interface ProductCallBacks {
         void onRemoveProductClickedListener(String prod_id);
-
+        void onListStatesChanges(int status);
         void addProductToFirebaseListener(OnSuccessListener<Void> listener, String prodId, int operation, int count);
     }
 

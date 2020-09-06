@@ -159,7 +159,7 @@ public class PlacesAutoSuggestionAdapter
                     results.count = 0;
                 }
 
-                return results;
+                return null;
             }
 
             @Override

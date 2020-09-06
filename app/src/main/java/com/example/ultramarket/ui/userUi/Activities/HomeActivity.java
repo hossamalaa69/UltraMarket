@@ -366,7 +366,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {   //close drawer
             drawerLayout.closeDrawer(GravityCompat.START);
         } else if (viewPager.getCurrentItem() == 0) {
-            super.onBackPressed();
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_MAIN);
+            i.addCategory(Intent.CATEGORY_HOME);
+            this.startActivity(i);
         } else {
             viewPager.setCurrentItem(viewPager.getCurrentItem(), false);
             viewPager.setCurrentItem(0); // offers fragment
