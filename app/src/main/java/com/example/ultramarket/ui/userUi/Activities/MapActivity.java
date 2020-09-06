@@ -226,7 +226,7 @@ public class MapActivity extends AppCompatActivity implements GoogleApiClient.On
                 return false;
             }
         });
-        mSearchView.setAdapter(autoSuggAdapter);
+      //  mSearchView.setAdapter(autoSuggAdapter);
     }
 
     private void geoLocation(String s) {

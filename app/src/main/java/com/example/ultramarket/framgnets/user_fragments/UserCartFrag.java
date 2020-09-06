@@ -60,6 +60,10 @@ public class UserCartFrag extends Fragment implements CartProductAdapter.Product
 
     @OnClick(R.id.user_cart_order_cart)
     public void orderCartClicked(View view) {
+        if(adapter.getTotalCount() == 0){
+            Utils.createToast(getContext(),R.string.you_dont_have_products_to_order,Toast.LENGTH_LONG);
+            return;
+        }
         Order order = new Order(null, adapter.getCartDetails(), adapter.getTotalPrice(), 0, 0);
         Intent intent = new Intent(getContext(), OrderConfirmActivity.class);
         Bundle bundle = new Bundle();
