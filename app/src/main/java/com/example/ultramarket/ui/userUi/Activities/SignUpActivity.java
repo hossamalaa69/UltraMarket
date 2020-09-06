@@ -79,7 +79,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
     @Override
     public void onLoginStateChanges(User user) {
         User insertedUser;
-        if (isNewEmail){
+        if (isNewEmail) {
             insertedUser = getUserDataFromUi();
             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                     .setDisplayName(insertedUser.getName()).setPhotoUri(Uri.parse(insertedUser.getImageUrl())).build();

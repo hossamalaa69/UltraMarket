@@ -3,6 +3,7 @@ package com.example.ultramarket.ui.userUi.Activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.Button;
@@ -55,7 +56,8 @@ public class TrackOrderActivity extends AppCompatActivity {
     TextView orderId;
     @BindView(R.id.user_track_order_activity_cancel_btn)
     Button cancelOrderBtn;
-    Thread timeTread;
+    Handler timeHandler = new Handler();
+    Runnable runnable;
     int status;
     String orderIDStr;
 
@@ -166,7 +168,7 @@ public class TrackOrderActivity extends AppCompatActivity {
     }
 
     private void startTimeThread(long time) {
-        timeTread = new Thread(new Runnable() {
+        runnable = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
@@ -180,20 +182,17 @@ public class TrackOrderActivity extends AppCompatActivity {
                             remainingTime.setText(date);
                         }
                     });
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    timeHandler.postDelayed(runnable, 1000 * 60);
                 }
             }
         });
-        timeTread.start();
+        timeHandler.post(runnable);
     }
 
     @Override
     protected void onDestroy() {
-        timeTread.interrupt();
+        if (runnable != null)
+            timeHandler.removeCallbacks(runnable);
         super.onDestroy();
     }
 }

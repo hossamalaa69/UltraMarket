@@ -7,34 +7,45 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.SearchView;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.adapters.user_adapters.PlacesAutoSuggestionAdapter;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.Utils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.internal.OnConnectionFailedListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,23 +56,28 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MapActivity extends AppCompatActivity {
+public class MapActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "MapActivity";
+    private static final LatLngBounds sLatLogBound = new LatLngBounds(
+            new LatLng(-40,-168), new LatLng(71,136));
     private double mLatitude;
     private double mLongitude;
     private String mCountry;
     private String mCity;
     private String mRoad;
     private boolean mSearchViewIsVisible = true;
+    private PlacesAutoSuggestionAdapter autoSuggAdapter;
+    private RecyclerView autoSuggRecyclerView;
+    private GoogleApiClient googleApiClient;
 
-    @BindView(R.id.user_map_activity_search_view)
-    SearchView mSearchView;
+    @BindView(R.id.user_map_activity_search_et)
+    AutoCompleteTextView mSearchView;
     @BindView(R.id.user_map_activity_fragment)
     View mapView;
 
     @OnClick(R.id.user_map_activity_fap_save_location)
-    public void onSaveClicked(View view){
-        getLocationDetails(mLatitude,mLongitude);
+    public void onSaveClicked(View view) {
+        getLocationDetails(mLatitude, mLongitude);
         updateLocationOfUser(FirebaseAuthHelper.getsInstance().getCurrUser().getUid());
     }
 
@@ -90,16 +106,17 @@ public class MapActivity extends AppCompatActivity {
         mapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mSearchViewIsVisible){
+                if (mSearchViewIsVisible) {
                     searchViewTransitionHide();
-                }else{
+                } else {
                     searchViewTransitionShow();
                 }
-                mSearchViewIsVisible = ! mSearchViewIsVisible;
+                mSearchViewIsVisible = !mSearchViewIsVisible;
             }
         });
 
     }
+
     private String getLocationDetails(double latitude, double longitude) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
@@ -114,6 +131,7 @@ public class MapActivity extends AppCompatActivity {
         }
         return "";
     }
+
     private void updateLocationOfUser(String uid) {
         com.example.ultramarket.database.Entities.Location location = new com.example.ultramarket.database.Entities.Location(
                 mCountry,
@@ -122,7 +140,7 @@ public class MapActivity extends AppCompatActivity {
                 String.valueOf(mLatitude),
                 String.valueOf(mLongitude)
         );
-        FirebaseAuthHelper.getsInstance().updateLocation(location,uid,
+        FirebaseAuthHelper.getsInstance().updateLocation(location, uid,
                 new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -159,13 +177,14 @@ public class MapActivity extends AppCompatActivity {
         mSearchView.setAnimation(animation);
         animation.start();
     }
- private void searchViewTransitionShow() {
+
+    private void searchViewTransitionShow() {
         TranslateAnimation animation = new TranslateAnimation(
                 0,
                 0,
                 -mSearchView.getHeight(),
                 mSearchView.getY()
-                );
+        );
         animation.setDuration(300);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -183,31 +202,31 @@ public class MapActivity extends AppCompatActivity {
 
             }
         });
-     mSearchView.setAnimation(animation);
-     animation.start();
+        mSearchView.setAnimation(animation);
+        animation.start();
     }
 
     private void initSearchView() {
-        mSearchView.setOnClickListener(new View.OnClickListener() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this,this)
+                .build();
+        autoSuggAdapter = new PlacesAutoSuggestionAdapter(this,googleApiClient,sLatLogBound,null);
+        mSearchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                mSearchView.onActionViewExpanded();
-            }
-        });
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                hideSoftKeyboard();
-                geoLocation(s);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH
+                        || i == EditorInfo.IME_ACTION_DONE
+                        || keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
+                    geoLocation(textView.getText().toString().trim());
+                    hideSoftKeyboard();
+                }
                 return false;
             }
         });
+        mSearchView.setAdapter(autoSuggAdapter);
     }
 
     private void geoLocation(String s) {
@@ -240,7 +259,7 @@ public class MapActivity extends AppCompatActivity {
                         Location currLoc = (Location) task.getResult();
                         moveCameraToLocation(new LatLng(currLoc.getLatitude(), currLoc.getLongitude()), DEFAULT_ZOOM,
                                 "My Location");
-                        mSearchView.setQuery("My Location", false);
+                        mSearchView.setText("My Location", false);
                     } else {
                         Toast.makeText(MapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                     }
@@ -285,7 +304,7 @@ public class MapActivity extends AppCompatActivity {
                 mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
-                        moveCameraToLocation(latLng,DEFAULT_ZOOM,getLocationDetails(latLng.latitude,latLng.longitude));
+                        moveCameraToLocation(latLng, DEFAULT_ZOOM, getLocationDetails(latLng.latitude, latLng.longitude));
                     }
                 });
                 initSearchView();
@@ -297,5 +316,10 @@ public class MapActivity extends AppCompatActivity {
     //hide the keyboard
     private void hideSoftKeyboard() {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

@@ -11,12 +11,16 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <SearchView
-        android:id="@+id/user_map_activity_search_view"
+    <AutoCompleteTextView
+        android:id="@+id/user_map_activity_search_et"
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
         android:layout_margin="@dimen/map_view_margin"
+        android:paddingEnd="5dp"
+        android:paddingStart="?android:actionBarSize"
+        android:inputType="text"
+        android:hint="@string/search_for_your_place"
+        android:autofillHints="@string/search_for_your_place"
         android:background="@drawable/search_shape"
         app:layout_constraintTop_toTopOf="parent" />
     <ImageButton
@@ -26,7 +30,7 @@
         android:layout_margin="@dimen/map_view_margin"
 
         android:layout_height="@dimen/my_location_btn_size"
-        app:layout_constraintTop_toBottomOf="@id/user_map_activity_search_view"
+        app:layout_constraintTop_toBottomOf="@id/user_map_activity_search_et"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/gps_fixed_24"
         android:contentDescription="@string/my_location" />
