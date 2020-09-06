@@ -231,14 +231,11 @@ public class DashBoardActivity extends AppCompatActivity {
         lineDataSet.setFillColor(Color.BLACK);
         //set the transparency
         lineDataSet.setFillAlpha(80);
-
+        lineDataSet.setColor(getResources().getColor(R.color.pink2));
         //set the gradiant then the above draw fill color will be replace
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.gradient_pink_background);
         lineDataSet.setFillDrawable(drawable);
 
-        //set legend disable or enable to hide {the left down corner name of graph}
-        Legend legend = lineChartDownFill.getLegend();
-        legend.setEnabled(false);
 
         //to remove the cricle from the graph
         lineDataSet.setDrawCircles(true);
