@@ -79,16 +79,16 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
     @Override
     public void onLoginStateChanges(User user) {
         User insertedUser;
-        if (isNewEmail)
+        if (isNewEmail){
             insertedUser = getUserDataFromUi();
+            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(insertedUser.getName()).setPhotoUri(Uri.parse(insertedUser.getImageUrl())).build();
+            FirebaseAuthHelper.getsInstance().getCurrUser().updateProfile(profileChangeRequest);
+        }
         else
             insertedUser = user;
         insertedUser.setID(user.getID());
         FirebaseAuthHelper.getsInstance().insertUser(insertedUser);
-
-        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                .setDisplayName(insertedUser.getName()).setPhotoUri(Uri.parse(insertedUser.getImageUrl())).build();
-        FirebaseAuthHelper.getsInstance().getCurrUser().updateProfile(profileChangeRequest);
         FirebaseAuthHelper.getsInstance().isAdmin(insertedUser.getID(), SignUpActivity.this);
 
     }

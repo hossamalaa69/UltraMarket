@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_purple_background"
+    tools:context=".ui.adminLayer.CategoriesDashboardActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:text="Categories Statistics"
+            android:textSize="25sp"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:textColor="@color/White"/>
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_chart_categories"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:layout_margin="5dp"
+            />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_categories_stats"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminateDrawable="@drawable/custom_progress_bar"
+        />
+
+</RelativeLayout>

@@ -120,8 +120,6 @@ public class ProductActivity extends AppCompatActivity  {
             product_count.setText(hashMap.get("Count"));
             product_percent.setText(hashMap.get("discount_percentage"));
 
-            ArrayAdapter myAdap = (ArrayAdapter) spinner_currency.getAdapter();
-            spinner_currency.setSelection(myAdap.getPosition(hashMap.get("Currency")));
             ArrayAdapter myAdap2 = (ArrayAdapter) spinner_unit.getAdapter();
             spinner_unit.setSelection(myAdap2.getPosition(hashMap.get("Unit")));
 

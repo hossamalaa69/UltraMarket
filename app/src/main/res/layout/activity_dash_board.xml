@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/gradient_purple_background"
     tools:context=".ui.adminLayer.DashBoardActivity">
 
@@ -14,10 +14,10 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin = "10dp"
-            android:layout_weight="3">
+            android:layout_weight="1">
 
             <RelativeLayout
                 android:id="@+id/r1"
@@ -26,11 +26,11 @@
 
             <ImageView
                 android:id="@+id/img1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/ic_date_today"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp">
+                android:layout_marginEnd="5dp">
             </ImageView>
             <TextView
                 android:id="@+id/todays_profit"
@@ -40,7 +40,7 @@
                 android:text="Today's Profits:"
                 android:textColor="@color/pink2"
                 android:textStyle="bold"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -53,25 +53,24 @@
                 android:text="00.00 LE"
                 android:textColor="@color/White"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_gravity="center"/>
             </RelativeLayout>
 
 
         <RelativeLayout
             android:id="@+id/r2"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/r1"
+            android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/img2"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/ic_total"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp">
+                android:layout_marginEnd="5dp">
             </ImageView>
             <TextView
                 android:id="@+id/total_profit"
@@ -81,7 +80,7 @@
                 android:text="Total Profits:"
                 android:textColor="@color/pink2"
                 android:textStyle="bold"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -94,25 +93,27 @@
                 android:text="00.00 LE"
                 android:textColor="@color/White"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_gravity="center"/>
         </RelativeLayout>
 
 
         <RelativeLayout
+            android:id="@+id/r3"
             android:layout_below="@id/r2"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/image_best_prod"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_products"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp">
+                android:layout_marginEnd="5dp">
             </ImageView>
             <TextView
                 android:id="@+id/best_selling"
@@ -122,7 +123,7 @@
                 android:text="Best Selling Product:"
                 android:textColor="@color/pink2"
                 android:textStyle="bold"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -135,8 +136,59 @@
                 android:text="Amazon Shoes"
                 android:textColor="@color/White"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_gravity="center"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/r4"
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/r3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_brands"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/semi_transparent"
+                android:layout_alignParentStart="true"
+                app:cardCornerRadius="3dp"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardElevation="0dp"
+                android:onClick="openBrandsDashboard"
+                android:focusable="true">
+                <TextView
+                    android:padding="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="See Brands Sells"
+                    android:textColor="@color/White"
+                    android:textSize="16sp"/>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_categories"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/semi_transparent"
+                android:layout_marginStart="5dp"
+                app:cardCornerRadius="3dp"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardElevation="0dp"
+                android:onClick="openCategoriesDashboard"
+                android:focusable="true">
+                <TextView
+                    android:padding="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="See Categories Sells"
+                    android:textColor="@color/White"
+                    android:textSize="16sp"/>
+            </androidx.cardview.widget.CardView>
+
         </RelativeLayout>
 
         </RelativeLayout>
@@ -145,7 +197,7 @@
             android:id="@+id/graph_chart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6"
+            android:layout_weight="1"
             android:layout_margin="5dp"
             />
     </LinearLayout>

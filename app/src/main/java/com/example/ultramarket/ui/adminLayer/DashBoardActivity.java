@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -199,7 +200,6 @@ public class DashBoardActivity extends AppCompatActivity {
         description.setTextColor(Color.WHITE);
         description.setTextSize(15);
         description.setTextAlign(Paint.Align.RIGHT);
-
         lineChartDownFill.setDescription(description);
 
         ArrayList<Entry> entryArrayList = new ArrayList<>();
@@ -266,4 +266,13 @@ public class DashBoardActivity extends AppCompatActivity {
 
     }
 
+    public void openBrandsDashboard(View view) {
+        Intent i = new Intent(this, BrandsDashboardActivity.class);
+        startActivity(i);
+    }
+
+    public void openCategoriesDashboard(View view) {
+        Intent i = new Intent(this, CategoriesDashboardActivity.class);
+        startActivity(i);
+    }
 }

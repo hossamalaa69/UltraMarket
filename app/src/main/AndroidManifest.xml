@@ -17,9 +17,18 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.adminLayer.DashBoardActivity"
-            android:label="Dashboard">
-        </activity>
+        <activity android:name=".ui.adminLayer.CategoriesDashboardActivity"
+            android:label="Dashboard"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.adminLayer.BrandsDashboardActivity"
+            android:label="Dashboard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.adminLayer.DashBoardActivity"
+            android:label="Dashboard"
+            android:screenOrientation="portrait"
+            />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAoO4FVciat9f_C7QIBKSgQrbsjeZrt3-U" /> <!-- TODO add this -->
@@ -58,19 +67,23 @@
             android:label="Products Management" />
         <activity
             android:name=".ui.adminLayer.CategoryActivity"
-            android:label="Category" />
+            android:label="Category"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.adminLayer.CategoriesManagementActivity"
             android:label="Categories Management" />
         <activity
             android:name=".ui.adminLayer.BrandActivity"
-            android:label="Brand" />
+            android:label="Brand"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.adminLayer.BrandsManagementActivity"
             android:label="Brands Management" />
         <activity
             android:name=".ui.adminLayer.WarehouseActivity"
-            android:label="Warehouse" />
+            android:label="Warehouse"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".ui.userUi.Activities.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -96,7 +109,9 @@
         </activity>
         <activity
             android:name=".ui.adminLayer.AdminHomeActivity"
-            android:label="Home" />
+            android:label="Home"
+            android:screenOrientation="portrait"
+            />
 
         <service
             android:name=".firebase.MyFirebaseMessagingService"
