@@ -102,17 +102,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setMarketAds();
         Intent intent = getIntent();
         String adProduct = intent.getStringExtra("product_id");
-        if (adProduct != null) {
-            Intent intent1 = new Intent(this, ProductActivity.class);
-            intent1.putExtra("prod_id", adProduct);
-            startActivity(intent1);
-            return;
-        }
         getWindow().setSharedElementEnterTransition(new Explode());
         setSupportActionBar(toolbar);
         setupViewPager();
         setUpDrawerLayout();
-        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null)
+        if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
             AppExecutors.getInstance().networkIO().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -132,6 +126,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             });
                 }
             });
+        }
 
         if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
             AppExecutors.getInstance().networkIO().execute(new Runnable() {
@@ -159,6 +154,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     });
                 }
             });
+        }
+        if (adProduct != null) {
+            Intent intent1 = new Intent(this, ProductActivity.class);
+            intent1.putExtra("prod_id", adProduct);
+            startActivity(intent1);
         }
     }
 

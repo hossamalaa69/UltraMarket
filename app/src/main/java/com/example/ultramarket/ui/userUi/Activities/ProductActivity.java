@@ -70,7 +70,7 @@ public class ProductActivity extends AppCompatActivity {
     private ActionBar actionBar;
     private String prodId;
     private Product mProduct;
-
+    private boolean inNotification = false;
     private void disableBtns() {
         mmDecreaseInWishList.setEnabled(false);
         mIncreaseInWishList.setEnabled(false);
@@ -192,6 +192,7 @@ public class ProductActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             prodId = intent.getStringExtra("prod_id");
+            inNotification = intent.getBooleanExtra("is_notification",false);
             if (prodId != null) {
                 loadProductData(prodId);
             }
@@ -267,5 +268,10 @@ public class ProductActivity extends AppCompatActivity {
         }
         mProdWeightUnit.setText(product.getUnit());
         mProdDescription.setText(product.getDescription());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

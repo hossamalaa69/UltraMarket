@@ -7,9 +7,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -22,7 +20,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +29,6 @@ import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.internal.OnConnectionFailedListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
@@ -59,7 +55,7 @@ import butterknife.OnClick;
 public class MapActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "MapActivity";
     private static final LatLngBounds sLatLogBound = new LatLngBounds(
-            new LatLng(-40,-168), new LatLng(71,136));
+            new LatLng(-40, -168), new LatLng(71, 136));
     private double mLatitude;
     private double mLongitude;
     private String mCountry;
@@ -210,9 +206,9 @@ public class MapActivity extends AppCompatActivity implements GoogleApiClient.On
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this,this)
+                .enableAutoManage(this, this)
                 .build();
-        autoSuggAdapter = new PlacesAutoSuggestionAdapter(this,googleApiClient,sLatLogBound,null);
+        autoSuggAdapter = new PlacesAutoSuggestionAdapter(this, googleApiClient, sLatLogBound, null);
         mSearchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -220,13 +216,13 @@ public class MapActivity extends AppCompatActivity implements GoogleApiClient.On
                         || i == EditorInfo.IME_ACTION_DONE
                         || keyEvent.getAction() == KeyEvent.ACTION_DOWN
                         || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
-                    geoLocation(textView.getText().toString().trim());
+                    geoLocation(mSearchView.getText().toString().trim());
                     hideSoftKeyboard();
                 }
                 return false;
             }
         });
-      //  mSearchView.setAdapter(autoSuggAdapter);
+    //    mSearchView.setAdapter(autoSuggAdapter);
     }
 
     private void geoLocation(String s) {
@@ -257,12 +253,14 @@ public class MapActivity extends AppCompatActivity implements GoogleApiClient.On
                     if (task.isSuccessful())// got the location
                     {
                         Location currLoc = (Location) task.getResult();
-                        moveCameraToLocation(new LatLng(currLoc.getLatitude(), currLoc.getLongitude()), DEFAULT_ZOOM,
-                                "My Location");
-                        mSearchView.setText("My Location", false);
-                    } else {
-                        Toast.makeText(MapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                        if (currLoc != null) {
+                            moveCameraToLocation(new LatLng(currLoc.getLatitude(), currLoc.getLongitude()), DEFAULT_ZOOM,
+                                    "My Location");
+                            mSearchView.setText("My Location", false);
+                            return;
+                        }
                     }
+                    Toast.makeText(MapActivity.this, "unable to get current location, check location is on", Toast.LENGTH_LONG).show();
                 }
             });
 
