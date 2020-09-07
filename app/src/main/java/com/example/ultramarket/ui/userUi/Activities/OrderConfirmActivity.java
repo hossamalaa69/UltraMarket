@@ -11,24 +11,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ultramarket.R;
 import com.example.ultramarket.database.Entities.Order;
-import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
-import com.example.ultramarket.helpers.AppExecutors;
 import com.example.ultramarket.helpers.Utils;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,81 +59,24 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
             return;
         }
         if (FirebaseAuthHelper.getsInstance().getCurrUser() != null) {
-            DatabaseReference orderRef = FirebaseDatabase.getInstance().getReference()
-                    .child(Order.class.getSimpleName()).child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
-                    .push();
-            order.setID(orderRef.getKey());
-            order.setStatus(Order.STATUS_CONFIRMED);
-            order.setOrder_date(Calendar.getInstance().getTimeInMillis());
-            orderRef.setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    deleteFromProducts(order.getProducts());
-                    updateOrderDetails();
-                    removeCart();
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(OrderConfirmActivity.this, PaypalActivity.class);
-                            intent.putExtra("total_price",String.valueOf(order.getPrice()));
-                            intent.putExtra("currency", currency);
-                            intent.putExtra("products", getProductsDetails());
-                            startActivity(intent);
-                            OrderConfirmActivity.this.finish();
-                    /*        Intent intent = new Intent(OrderConfirmActivity.this, TrackOrderActivity.class);
-                            intent.putExtra("order_id", order.getID());
-                            startActivity(intent);
-                            OrderConfirmActivity.this.finish();
-                    */
-                        }
-                    });
-                }
-            });
+            //start paypal activity
+            Intent intent = new Intent(OrderConfirmActivity.this, PaypalActivity.class);
+            intent.putExtra("order", order);
+            intent.putExtra("currency", currency);
+            intent.putExtra("products", getProductsDetails());
+            startActivity(intent);
+            OrderConfirmActivity.this.finish();
         } else {
             Utils.createToast(this, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
         }
     }
 
-    private void removeCart() {
-        AppExecutors.getInstance().networkIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                FirebaseDatabase.getInstance().getReference()
-                        .child("Cart")
-                        .child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
-                        .removeValue(new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                            }
-                        });
-            }
-        });
-    }
 
-    private void deleteFromProducts(Map<String, Integer> products) {
-        for (Map.Entry<String, Integer> product : products.entrySet()) {
-            AppExecutors.getInstance().networkIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    DatabaseReference prodRef = FirebaseDatabase.getInstance().getReference()
-                            .child(Product.class.getSimpleName()).child(product.getKey()).child("count");
-                    prodRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            prodRef.setValue(snapshot.getValue(Integer.class) - product.getValue());
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-            });
-        }
-        confirmBtn.setEnabled(true);
-        Utils.createToast(OrderConfirmActivity.this, R.string.order_sent, Toast.LENGTH_SHORT);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateOrderDetails();
     }
 
     private void updateOrderDetails() {
