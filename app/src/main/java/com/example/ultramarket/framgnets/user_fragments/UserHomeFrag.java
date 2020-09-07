@@ -84,6 +84,8 @@ public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClick
     private ArrayList<Notification> mNotifications = new ArrayList<>();
     private boolean newNotification = false;
     private int notiIdx = -1;
+
+
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
@@ -156,6 +158,7 @@ public class UserHomeFrag extends Fragment implements ProductAdapter.OnItemClick
         }
         catRvExtended = !catRvExtended;
     }
+
 
     @Override
     public void onResume() {
