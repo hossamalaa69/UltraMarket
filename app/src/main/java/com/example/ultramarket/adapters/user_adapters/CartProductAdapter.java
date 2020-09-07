@@ -82,6 +82,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     public void clear() {
         if (productsMap != null)
             productsMap.clear();
+        productsMap = null; 
         notifyDataSetChanged();
     }
 

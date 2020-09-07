@@ -168,24 +168,22 @@ public class TrackOrderActivity extends AppCompatActivity {
     }
 
     private void startTimeThread(long time) {
-        runnable = new Thread(new Runnable() {
+        runnable = new Runnable() {
             @Override
             public void run() {
-                while (true) {
-                    CharSequence date = DateUtils
-                            .getRelativeTimeSpanString(time,
-                                    Calendar.getInstance().getTimeInMillis(),
-                                    0);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            remainingTime.setText(date);
-                        }
-                    });
-                    timeHandler.postDelayed(runnable, 1000 * 60);
-                }
+                CharSequence date = DateUtils
+                        .getRelativeTimeSpanString(time,
+                                Calendar.getInstance().getTimeInMillis(),
+                                0);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        remainingTime.setText(date);
+                    }
+                });
+                timeHandler.postDelayed(runnable, 1000 * 60);
             }
-        });
+        };
         timeHandler.post(runnable);
     }
 

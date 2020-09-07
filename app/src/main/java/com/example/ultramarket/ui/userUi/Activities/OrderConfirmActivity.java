@@ -12,6 +12,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -78,11 +79,37 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
                 public void onSuccess(Void aVoid) {
                     deleteFromProducts(order.getProducts());
                     updateOrderDetails();
+                    removeCart();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(OrderConfirmActivity.this, TrackOrderActivity.class);
+                            intent.putExtra("order_id", order.getID());
+                            startActivity(intent);
+                            OrderConfirmActivity.this.finish();
+                        }
+                    });
                 }
             });
         } else {
             Utils.createToast(this, R.string.you_must_signin_first, Toast.LENGTH_SHORT);
         }
+    }
+
+    private void removeCart() {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseDatabase.getInstance().getReference()
+                        .child("Cart")
+                        .child(FirebaseAuthHelper.getsInstance().getCurrUser().getUid())
+                        .removeValue(new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                            }
+                        });
+            }
+        });
     }
 
     private void deleteFromProducts(Map<String, Integer> products) {
