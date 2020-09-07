@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide;
 import com.example.ultramarket.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -35,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,9 +77,9 @@ public class DashBoardActivity extends AppCompatActivity {
         dashBoardViewModel.loadAllOrders().observe(this, new Observer<Map<String, Double>>() {
             @Override
             public void onChanged(Map<String, Double> stringDoubleMap) {
-                Map<String, Double> sortedMap = sortMap(stringDoubleMap);
-                setTodayTotalProfits(sortedMap);
-                drawGraph(sortedMap);
+                List<String> sortedDates = getSortedDates(stringDoubleMap);
+                setTodayTotalProfits(stringDoubleMap);
+                initLineChartDownFill(sortedDates, stringDoubleMap);
             }
         });
 
@@ -126,12 +124,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
-    private void drawGraph(Map<String, Double> sortedMap) {
-            List<String> list = new ArrayList<>(sortedMap.keySet());
-            initLineChartDownFill(list, sortedMap);
-    }
-
-    private Map<String, Double> sortMap(Map<String, Double> oldMap){
+    private List<String> getSortedDates(Map<String, Double> oldMap){
 
         List<String> stringList = new ArrayList<>(oldMap.keySet());
         ArrayList<Date> dateList = new ArrayList<Date>();
@@ -146,13 +139,13 @@ public class DashBoardActivity extends AppCompatActivity {
         }
 
         Collections.sort(dateList);
-
-        Map<String, Double> newMap = new HashMap<>();
+        List<String> newDates = new ArrayList<>();
+        newDates.clear();
         for (Date date : dateList) {
             String newDate = simpleDateFormat.format(date);
-            newMap.put(newDate, oldMap.get(newDate));
+            newDates.add(newDate);
         }
-        return newMap;
+        return newDates;
     }
 
     private void initLineChartDownFill(List<String> dates, Map<String, Double> map) {
