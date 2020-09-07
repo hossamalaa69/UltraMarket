@@ -123,11 +123,11 @@ public class PaypalActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                    /*        Intent intent = new Intent(OrderConfirmActivity.this, TrackOrderActivity.class);
+                            Intent intent = new Intent(PaypalActivity.this, TrackOrderActivity.class);
                             intent.putExtra("order_id", order.getID());
                             startActivity(intent);
-                            OrderConfirmActivity.this.finish();
-                    */
+                            PaypalActivity.this.finish();
+
                     }
                 });
             }

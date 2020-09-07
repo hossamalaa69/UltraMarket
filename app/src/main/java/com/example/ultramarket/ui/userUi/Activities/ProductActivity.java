@@ -20,6 +20,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ultramarket.R;
+import com.example.ultramarket.database.Entities.Brand;
 import com.example.ultramarket.database.Entities.Product;
 import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.Utils;
@@ -28,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -204,8 +206,22 @@ public class ProductActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Product product = snapshot.getValue(Product.class);
                         if (product != null) {
-                            mProduct = product;
-                            updateUI(product);
+                            DatabaseReference brandDbRef = FirebaseDatabase.getInstance()
+                                    .getReference().child(Brand.class.getSimpleName()).child(product.getBrand_ID());
+                            brandDbRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        Brand brand = dataSnapshot.getValue(Brand.class);
+                                        product.setBrand_name(brand.getName());
+                                        mProduct = product;
+                                        updateUI(product);
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(ProductActivity.this, "failed loading brand", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                         }
                     }
 
