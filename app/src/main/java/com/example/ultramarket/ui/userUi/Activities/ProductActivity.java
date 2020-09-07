@@ -211,7 +211,7 @@ public class ProductActivity extends AppCompatActivity {
                             brandDbRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        Brand brand = dataSnapshot.getValue(Brand.class);
+                                    Brand brand = dataSnapshot.getValue(Brand.class);
                                         product.setBrand_name(brand.getName());
                                         mProduct = product;
                                         updateUI(product);

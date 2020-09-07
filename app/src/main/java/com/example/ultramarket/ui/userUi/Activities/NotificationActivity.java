@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -59,6 +60,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                         for (DataSnapshot shot : snapshot.getChildren()) {
                             notificationList.add(shot.getValue(Notification.class));
                         }
+                        Collections.reverse(notificationList);
                         adapter.setNotificationList(notificationList);
                     }
 
