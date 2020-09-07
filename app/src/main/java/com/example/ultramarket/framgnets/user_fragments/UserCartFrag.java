@@ -70,6 +70,7 @@ public class UserCartFrag extends Fragment implements CartProductAdapter.Product
         bundle.putSerializable("order", order);
         intent.putExtra("bundle", bundle);
         intent.putExtra("products", adapter.getCartProductNames());
+        intent.putExtra("currency", adapter.getProductsCurrency());
         startActivity(intent);
     }
 

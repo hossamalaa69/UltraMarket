@@ -45,6 +45,7 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
     private Order order;
     private Calendar calendar;
     private ArrayList<String> productNames;
+    private String currency;
 
     @BindView(R.id.user_order_confirm_btn)
     Button confirmBtn;
@@ -80,13 +81,21 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
                     deleteFromProducts(order.getProducts());
                     updateOrderDetails();
                     removeCart();
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Intent intent = new Intent(OrderConfirmActivity.this, TrackOrderActivity.class);
+                            Intent intent = new Intent(OrderConfirmActivity.this, PaypalActivity.class);
+                            intent.putExtra("total_price",String.valueOf(order.getPrice()));
+                            intent.putExtra("currency", currency);
+                            intent.putExtra("products", getProductsDetails());
+                            startActivity(intent);
+                            OrderConfirmActivity.this.finish();
+                    /*        Intent intent = new Intent(OrderConfirmActivity.this, TrackOrderActivity.class);
                             intent.putExtra("order_id", order.getID());
                             startActivity(intent);
                             OrderConfirmActivity.this.finish();
+                    */
                         }
                     });
                 }
@@ -138,12 +147,7 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
     }
 
     private void updateOrderDetails() {
-        String productsDetails = "";
-        int i = 0;
-        for (Map.Entry<String, Integer> entry : order.getProducts().entrySet()) {
-            productsDetails = productsDetails.concat("(" + entry.getValue() + ") ").concat(productNames.get(i) + "\n");
-            i++;
-        }
+        String productsDetails = getProductsDetails();
         FirebaseUser user = FirebaseAuthHelper.getsInstance().getCurrUser();
         orderDetails.setText(OrderConfirmActivity.this.getString(
                 R.string.confirm_order_details,
@@ -157,6 +161,16 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
                 order.getOrder_date() > 0 ?
                         new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss")
                                 .format(new Date(order.getOrder_date())) : "Not ordered yet"));
+    }
+
+    private String getProductsDetails() {
+        String productsDetails = "";
+        int i = 0;
+        for (Map.Entry<String, Integer> entry : order.getProducts().entrySet()) {
+            productsDetails = productsDetails.concat("(" + entry.getValue() + ") ").concat(productNames.get(i) + "\n");
+            i++;
+        }
+        return productsDetails;
     }
 
     @Override
@@ -204,6 +218,7 @@ public class OrderConfirmActivity extends AppCompatActivity implements DatePicke
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
         productNames = intent.getStringArrayListExtra("products");
+        currency = intent.getStringExtra("currency");
         if (bundle != null) {
             order = (Order) bundle.getSerializable("order");
         }

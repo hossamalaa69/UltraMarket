@@ -9,6 +9,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -17,17 +21,22 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.adminLayer.CategoriesDashboardActivity"
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+        <activity android:name=".ui.userUi.Activities.PaypalActivity"></activity>
+        <activity
+            android:name=".ui.adminLayer.CategoriesDashboardActivity"
             android:label="Dashboard"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.adminLayer.BrandsDashboardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.adminLayer.BrandsDashboardActivity"
             android:label="Dashboard"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.adminLayer.DashBoardActivity"
             android:label="Dashboard"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -68,22 +77,21 @@
         <activity
             android:name=".ui.adminLayer.CategoryActivity"
             android:label="Category"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.adminLayer.CategoriesManagementActivity"
             android:label="Categories Management" />
         <activity
             android:name=".ui.adminLayer.BrandActivity"
             android:label="Brand"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.adminLayer.BrandsManagementActivity"
             android:label="Brands Management" />
         <activity
             android:name=".ui.adminLayer.WarehouseActivity"
             android:label="Warehouse"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.userUi.Activities.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -110,8 +118,7 @@
         <activity
             android:name=".ui.adminLayer.AdminHomeActivity"
             android:label="Home"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".firebase.MyFirebaseMessagingService"
