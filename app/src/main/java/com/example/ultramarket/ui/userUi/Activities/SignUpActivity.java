@@ -82,7 +82,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
         if (isNewEmail) {
             insertedUser = getUserDataFromUi();
             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(insertedUser.getName()).setPhotoUri(Uri.parse(insertedUser.getImageUrl())).build();
+                    .setDisplayName(insertedUser.getName()).build();
             FirebaseAuthHelper.getsInstance().getCurrUser().updateProfile(profileChangeRequest);
         }
         else
