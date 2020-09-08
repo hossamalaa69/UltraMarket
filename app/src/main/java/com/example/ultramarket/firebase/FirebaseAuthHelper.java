@@ -96,7 +96,10 @@ public class FirebaseAuthHelper {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            signInUserWithEmailAndPassword(user, password, firebaseAuthCallBacks);
+                            if (mFirebaseAuth.getCurrentUser() != null) {
+                                user.setID(mFirebaseAuth.getCurrentUser().getUid());
+                                insertUser(user, password, null);
+                            }
                         } else {
                             firebaseAuthCallBacks.onFailedToSignUp();
                         }
@@ -114,10 +117,7 @@ public class FirebaseAuthHelper {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            if (mFirebaseAuth.getCurrentUser() != null) {
-                                user.setID(mFirebaseAuth.getCurrentUser().getUid());
-                                insertUser(user);
-                            }
+
                         }
                     }
                 });
@@ -215,7 +215,7 @@ public class FirebaseAuthHelper {
                 RC_SIGN_IN);
     }
 
-    public void insertUser(User user) {
+    public void insertUser(User user, String password, FirebaseAuthCallBacks listener) {
         AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -224,7 +224,16 @@ public class FirebaseAuthHelper {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.exists()) {
-                            userRef.child(user.getID()).setValue(user);
+                            userRef.child(user.getID()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        signInUserWithEmailAndPassword(user, password, firebaseAuthCallBacks);
+                                    } else {
+                                        firebaseAuthCallBacks.onFailedToSignUp();
+                                    }
+                                }
+                            });
                         }
                     }
 

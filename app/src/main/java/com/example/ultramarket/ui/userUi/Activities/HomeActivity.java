@@ -137,13 +137,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             .child("rate").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            int rate = snapshot.getValue(Integer.class);
-                            if (rate == 0) {
-                                handler.post(runnable); // show rating dialog
-                            } else {
-                                isRating = false;
-                                if (mRateDialog != null && mRateDialog.isShowing())
-                                    mRateDialog.dismiss();
+                            if (snapshot.exists()) {
+                                int rate = snapshot.getValue(Integer.class);
+                                if (rate == 0) {
+                                    handler.post(runnable); // show rating dialog
+                                } else {
+                                    isRating = false;
+                                    if (mRateDialog != null && mRateDialog.isShowing())
+                                        mRateDialog.dismiss();
+                                }
                             }
                         }
 

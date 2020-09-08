@@ -94,7 +94,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
         } else
             insertedUser = user;
         insertedUser.setID(user.getID());
-        FirebaseAuthHelper.getsInstance().insertUser(insertedUser);
+      //  FirebaseAuthHelper.getsInstance().insertUser(insertedUser);
         FirebaseAuthHelper.getsInstance().isAdmin(insertedUser.getID(), SignUpActivity.this);
 
     }
