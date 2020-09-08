@@ -196,6 +196,7 @@
     <string name="no_product_added">No product added</string>
     <string name="empty_cart">empty cart</string>
     <string name="you_dont_have_products_to_order">you don\'t have products to order</string>
+    <string name="failed_to_sign_up">failed to sign up, try again with different email</string>
     <string-array name="currency_array">
         <item>LE</item>
     </string-array>

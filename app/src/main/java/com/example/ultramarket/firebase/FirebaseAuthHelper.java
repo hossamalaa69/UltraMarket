@@ -82,7 +82,10 @@ public class FirebaseAuthHelper {
     }
 
     public void logOut(Context context, OnSuccessListener<Void> listener) {
-        AuthUI.getInstance().signOut(context).addOnSuccessListener(listener);
+        if (listener != null)
+            AuthUI.getInstance().signOut(context).addOnSuccessListener(listener);
+        else
+            AuthUI.getInstance().signOut(context);
     }
 
     public void createUserWithEmailAndPassword(User user, String password, FirebaseAuthCallBacks firebaseAuthCallBacks) {
@@ -93,8 +96,9 @@ public class FirebaseAuthHelper {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             signInUserWithEmailAndPassword(user, password, firebaseAuthCallBacks);
+                        } else {
+                            firebaseAuthCallBacks.onFailedToSignUp();
                         }
                     }
                 });
@@ -110,8 +114,10 @@ public class FirebaseAuthHelper {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            user.setID(mFirebaseAuth.getCurrentUser().getUid());
-                            insertUser(user);
+                            if (mFirebaseAuth.getCurrentUser() != null) {
+                                user.setID(mFirebaseAuth.getCurrentUser().getUid());
+                                insertUser(user);
+                            }
                         }
                     }
                 });
@@ -155,6 +161,8 @@ public class FirebaseAuthHelper {
         void onCheckAdminResult(boolean isAdmin);
 
         void onLoggedOutStateChanges();
+
+        void onFailedToSignUp();
     }
 
     public FirebaseAuthHelper() {
@@ -212,7 +220,7 @@ public class FirebaseAuthHelper {
             @Override
             public void run() {
                 DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child(User.class.getSimpleName());
-                userRef.child(user.getID()).addValueEventListener(new ValueEventListener() {
+                userRef.child(user.getID()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.exists()) {

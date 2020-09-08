@@ -18,6 +18,7 @@ import com.example.ultramarket.firebase.FirebaseAuthHelper;
 import com.example.ultramarket.helpers.Utils;
 import com.example.ultramarket.ui.adminLayer.AdminHomeActivity;
 import com.example.ultramarket.ui.userUi.Activities.HomeActivity;
+import com.example.ultramarket.ui.userUi.Activities.SignUpActivity;
 
 public class SplashActivity extends AppCompatActivity implements NetworkReceiver.ConnectionReceiver,
         FirebaseAuthHelper.FirebaseAuthCallBacks {
@@ -25,6 +26,13 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
     private AlertDialog mAlertDialog;
     private String adProductId = null;
 
+    @Override
+    public void onFailedToSignUp() {
+        Utils.createToast(this, R.string.failed_to_sign_up, Toast.LENGTH_LONG);
+        FirebaseAuthHelper.getsInstance().logOut(this,null);
+        startActivity(new Intent(this, SignUpActivity.class));
+        finish();
+    }
 
     @Override
     public void onLoginStateChanges(User user) {
@@ -37,7 +45,7 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
             startActivity(new Intent(this, AdminHomeActivity.class));
         } else {
             Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("product_id",adProductId);
+            intent.putExtra("product_id", adProductId);
             startActivity(intent);
         }
         finish();
@@ -81,7 +89,7 @@ public class SplashActivity extends AppCompatActivity implements NetworkReceiver
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             adProductId = bundle.getString("product_id");
-           // Toast.makeText(this, product_id,Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, product_id,Toast.LENGTH_SHORT).show();
         }
     }
 

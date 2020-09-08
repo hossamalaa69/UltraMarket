@@ -1,7 +1,6 @@
 package com.example.ultramarket.ui.userUi.Activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -77,6 +76,14 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
     }
 
     @Override
+    public void onFailedToSignUp() {
+        Utils.createToast(this, R.string.failed_to_sign_up, Toast.LENGTH_LONG);
+        FirebaseAuthHelper.getsInstance().logOut(this, null);
+        mProgressBar.setVisibility(android.view.View.GONE);
+
+    }
+
+    @Override
     public void onLoginStateChanges(User user) {
         User insertedUser;
         if (isNewEmail) {
@@ -84,8 +91,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseAuthHel
             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                     .setDisplayName(insertedUser.getName()).build();
             FirebaseAuthHelper.getsInstance().getCurrUser().updateProfile(profileChangeRequest);
-        }
-        else
+        } else
             insertedUser = user;
         insertedUser.setID(user.getID());
         FirebaseAuthHelper.getsInstance().insertUser(insertedUser);
