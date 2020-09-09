@@ -3,7 +3,7 @@
 ## DESCRIPTION: 
 ### The APP has two layers (User/Admin)
 ##### •User Layer:
-###### 1-Sign Up 
+ 1-Sign Up 
 ###### 2-Login (Email/gmail) 
 ###### 3-Shopping
     - Filter Products 
