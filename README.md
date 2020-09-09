@@ -41,7 +41,7 @@
      		-Call/Email Customer with one click
 
 ##DEMO VIDEO:
-	-YOUTUBE LINK: https://youtu.be/vsqe3lMrcyk
+	-[YOUTUBE LINK]: (https://youtu.be/vsqe3lMrcyk)
 ##APIS USED:
 	1- Firebase API
 	2- Google Maps API
