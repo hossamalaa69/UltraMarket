@@ -1,8 +1,8 @@
 # **OVERVIEW:**
 	E-commerce Application For Both Admin/User with advanced ui design and animation
 ## DESCRIPTION: 
-The APP has two layers (User/Admin)
-•User Layer:
+### The APP has two layers (User/Admin)
+##### •User Layer:
 	1-Sign Up
  	2-Login (Email/gmail)
   	3-Shopping:
@@ -19,7 +19,7 @@ The APP has two layers (User/Admin)
      		-Cancel/Remove Orders
  	7-Search
  	8-Push Notifications For Recent Offers
-  •Admin Layer:
+##### •Admin Layer:
 	1-Dashboard:
       		-Products Profits Graph 
       		-Most Selling Items
@@ -40,7 +40,7 @@ The APP has two layers (User/Admin)
      		-View All Customers Statistics
      		-Call/Email Customer with one click
 ## DEMO VIDEO:
-	- [YOUTUBE LINK]: (https://youtu.be/vsqe3lMrcyk)
+	- [ YOUTUBE LINK ]: ( https://youtu.be/vsqe3lMrcyk )
 ## APIS USED:
 	1- Firebase API
 	2- Google Maps API
