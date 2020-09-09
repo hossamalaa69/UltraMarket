@@ -26,13 +26,13 @@
     - Brands Sells Graph
     - Categories Sells Graph
 ###### 2-Warehouse:
-    - Products:
+    Products:
 	- View All Info
 	- Insert/Update/Delete
-    - Categories:
+    Categories:
         - View All Info
         - Insert/Update/Delete
-    - Brands:
+    Brands:
         - View All Info
         - Insert/Update/Delete
 ###### 3-Orders
