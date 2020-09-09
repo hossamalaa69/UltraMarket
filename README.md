@@ -1,5 +1,5 @@
 # OVERVIEW:
-	E-commerce Application For Both Admin/User with advanced ui design and animation
+	E-commerce Application For Both Admin/User 
 ## DESCRIPTION: 
 ### The APP has two layers (User/Admin)
 ##### •User Layer:
