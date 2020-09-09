@@ -3,22 +3,22 @@
 ## DESCRIPTION: 
 ### The APP has two layers (User/Admin)
 ##### •User Layer:
-   ###### 1-Sign Up 
-   ###### 2-Login (Email/gmail) 
-   ###### 3-Shopping 
-   		-Filter Products 
-    		-Filter Categories 
+  \t 1-Sign Up 
+  \t 2-Login (Email/gmail) 
+  \t 3-Shopping 
+   \t\t		-Filter Products 
+    \t\t	-Filter Categories 
     		-Filter Brands
     		-Filter By Offer
-   ###### 4-Maps/Localization
-   ###### 5-Cart
-   ###### 6-Orders:
+   4-Maps/Localization
+   5-Cart
+   6-Orders:
    		-PayPal payment method
     		-Tracking Order
     		-Orders History
     		-Cancel/Remove Orders
-   ###### 7-Search
-   ###### 8-Push Notifications For Recent Offers
+   7-Search
+   8-Push Notifications For Recent Offers
 ##### •Admin Layer:
    ###### 1-Dashboard:
  	-Products Profits Graph 
