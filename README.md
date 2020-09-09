@@ -27,8 +27,8 @@
     - Categories Sells Graph
 ###### 2-Warehouse:
     Products:
-	- View All Info
-	- Insert/Update/Delete
+    	- View All Info
+    	- Insert/Update/Delete
     Categories:
         - View All Info
         - Insert/Update/Delete
@@ -40,7 +40,7 @@
    	- View All Customers Statistics
    	- Call/Email Customer with one click
 ## DEMO VIDEO:
-go to youtube [YOUTUBE LINK](https://youtu.be/vsqe3lMrcyk/).
+Open [DEMO VIDEO](https://youtu.be/vsqe3lMrcyk/).
 ## APIS USED:
 	1- Firebase API
 	2- Google Maps API
