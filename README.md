@@ -39,7 +39,6 @@
  	4-Customers:
      		-View All Customers Statistics
      		-Call/Email Customer with one click
-
 ##DEMO VIDEO:
 	-[YOUTUBE LINK]: (https://youtu.be/vsqe3lMrcyk)
 ##APIS USED:
