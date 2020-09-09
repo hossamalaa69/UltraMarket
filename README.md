@@ -1,6 +1,6 @@
-OVERVIEW:
+#**OVERVIEW:**
 	E-commerce Application For Both Admin/User with advanced ui design and animation
-DESCRIPTION: 
+##DESCRIPTION: 
   The APP has two layers (User/Admin)
   •User Layer:
   	1-Sign Up
@@ -32,7 +32,7 @@ DESCRIPTION:
       		* Categories:
           	   -View All Info
           	   -Insert/Update/Delete
-      		* Brands:
+      		Brands:
           	   -View All Info
           	   -Insert/Update/Delete
  	3-Orders
@@ -40,9 +40,9 @@ DESCRIPTION:
      		-View All Customers Statistics
      		-Call/Email Customer with one click
 
-DEMO VIDEO:
+##DEMO VIDEO:
 	-YOUTUBE LINK: https://youtu.be/vsqe3lMrcyk
-APIS USED:
+##APIS USED:
 	1- Firebase API
 	2- Google Maps API
 	3- Google Places API 
