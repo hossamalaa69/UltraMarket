@@ -1,4 +1,4 @@
-![#BA68C8](https://placehold.it/15/BA68C8/000000?text=+)  Android
+![#BA68C8](https://placehold.it/15/BA68C8/000000?text=+)  Android 
 ![#E91E63](https://placehold.it/15/E91E63/000000?text=+)  Firebase    	
 ![#F44336](https://placehold.it/15/F44336/000000?text=+)  E-Commerce	
 ![#FF4081](https://placehold.it/15/FF4081/000000?text=+)  Delivery    	
