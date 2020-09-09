@@ -28,7 +28,7 @@
 ###### 2-Warehouse:
     Products:
     	- View All Info
-    	- Insert/Update/Delete
+	- Insert/Update/Delete
     Categories:
     	- View All Info
 	- Insert/Update/Delete
