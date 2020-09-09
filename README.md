@@ -26,15 +26,15 @@
     - Brands Sells Graph
     - Categories Sells Graph
 ###### 2-Warehouse:
-    -Products:
-	-View All Info
-	-Insert/Update/Delete
-    -Categories:
-        -View All Info
-        -Insert/Update/Delete
-    -Brands:
-        -View All Info
-        -Insert/Update/Delete
+    - Products:
+	- View All Info
+	- Insert/Update/Delete
+    - Categories:
+        - View All Info
+        - Insert/Update/Delete
+    - Brands:
+        - View All Info
+        - Insert/Update/Delete
 ###### 3-Orders
 ###### 4-Customers:
    	- View All Customers Statistics
