@@ -33,8 +33,8 @@
     	- View All Info
 		- Insert/Update/Delete
     -Brands:
-    		- View All Info
-	- Insert/Update/Delete
+    	- View All Info
+		- Insert/Update/Delete
 ###### 3-Orders
 ###### 4-Customers:
    	- View All Customers Statistics
