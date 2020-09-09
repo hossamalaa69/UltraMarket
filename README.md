@@ -3,8 +3,8 @@
 ## DESCRIPTION: 
 ### The APP has two layers (User/Admin)
 ##### •User Layer:
-\n\t 1-Sign Up 
-\n\t 2-Login (Email/gmail) 
+###### 1-Sign Up 
+###### 2-Login (Email/gmail) 
 ###### 3-Shopping
     - Filter Products 
     - Filter Categories 
@@ -40,7 +40,7 @@
    	- View All Customers Statistics
    	- Call/Email Customer with one click
 ## DEMO VIDEO:
-	[YOUTUBE LINK](https://youtu.be/vsqe3lMrcyk)
+go to youtube [YOUTUBE LINK](https://youtu.be/vsqe3lMrcyk/).
 ## APIS USED:
 	1- Firebase API
 	2- Google Maps API
