@@ -1,3 +1,12 @@
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+  
 # OVERVIEW:
 	E-commerce Application For Both Admin/User 
 ## DESCRIPTION: 
